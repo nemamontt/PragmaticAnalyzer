@@ -1,0 +1,289 @@
+﻿<UserControl x:Class="PragmaticAnalyzer.MVVM.Views.Main.ViewerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="640"
+             d:DesignWidth="1200">
+    <Grid>
+        <Viewbox Stretch="Uniform">
+            <Canvas Height="640"
+                    Width="1200">
+                <Image Source="/Images/scheme.jpg"
+                       Height="640"
+                       Width="1200"
+                       Canvas.Top="3" />
+
+                <Grid Canvas.Top="469"
+                      Canvas.Left="-37">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Наименование БД"
+                                       FontWeight="Bold"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Уязвимостей"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Угроз"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Техник и тактик"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Рисков ИБ"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Экслойтов"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Нарушителей"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Специалистов по ЗИ"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Мер защиты"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Эталонного состояния"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Текущего состояния"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="Дата изменения"
+                                       FontWeight="Bold"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.Vulnerabilitie}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.Threat}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.Tactic}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.Outcomes}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.Exploit}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.Violator}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.Specialist}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.ProtectionMeasure}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.RefStatus}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                        <Border  BorderBrush="Black"
+                                 BorderThickness="1">
+                            <TextBlock Text="{Binding LastUpdateConfig.CurStatus}"
+                                       Margin="1"
+                                       FontSize="8" />
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <Button Content="Специалист по ЗИ"
+                        Cursor="Hand"
+                        FontSize="17"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.SpecialistVm}"
+                        Canvas.Left="1"
+                        RenderTransformOrigin="0.5,0.5"
+                        Height="47"
+                        Width="210"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Canvas.Top="5">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform Angle="0.211" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+
+                <Button Content="Меры защиты"
+                        Cursor="Hand"
+                        FontSize="17"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.ProtectionMeasureVm}"
+                        Canvas.Left="189"
+                        Canvas.Top="79"
+                        Height="46"
+                        Width="210"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top" />
+
+                <Button Content="Уязвимости"
+                        Cursor="Hand"
+                        FontSize="17"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.VulnerabilitieVm}"
+                        Canvas.Left="421"
+                        Canvas.Top="153"
+                        Height="46"
+                        Width="210" />
+
+                <Button Content="Нарушитель"
+                        Cursor="Hand"
+                        FontSize="17"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.ViolatorVm}"
+                        Canvas.Top="342"
+                        Height="48"
+                        Width="212" />
+
+                <Button Content="Угрозы"
+                        Cursor="Hand"
+                        FontSize="17"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.ThreatVm}"
+                        Canvas.Left="189"
+                        Canvas.Top="419"
+                        Height="45"
+                        Width="210" />
+
+                <Button  Content="Техники и тактики"
+                         Cursor="Hand"
+                         FontSize="17"
+                         Command="{Binding SetCurrentViewCommand}"
+                         CommandParameter="{Binding ViewModelsService.TacticVm}"
+                         Canvas.Left="420"
+                         Canvas.Top="490"
+                         Height="46"
+                         Width="208"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Center" />
+
+                <Button Content="Риски ИБ"
+                        Cursor="Hand"
+                        FontSize="17"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.OutcomeVm}"
+                        Canvas.Left="695"
+                        Canvas.Top="230"
+                        Height="47"
+                        Width="209" />
+
+                <Button Content="Эксплойты"
+                        Cursor="Hand"
+                        FontSize="17"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.ExploitVm}"
+                        Canvas.Left="676"
+                        Canvas.Top="553"
+                        Height="47"
+                        Width="209"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top" />
+
+                <Button  Content="Данные о текущем состоянии ПФ СОПКА"
+                         Cursor="Hand"
+                         FontSize="12"
+                         Command="{Binding SetCurrentViewCommand}"
+                         CommandParameter="{Binding ViewModelsService.CurrentStatusVm}"
+                         Canvas.Left="923"
+                         Canvas.Top="405"
+                         Height="46"
+                         Width="277"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Top" />
+
+                <Button Content="Данные об эталонном состоянии ПФ СОПКА"
+                        Cursor="Hand"
+                        FontSize="10"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.ReferenceStatusVm}"
+                        Canvas.Left="991"
+                        Canvas.Top="159"
+                        Height="50"
+                        Width="209"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top" />
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</UserControl>

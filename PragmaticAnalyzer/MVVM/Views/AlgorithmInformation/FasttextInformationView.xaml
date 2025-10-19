@@ -1,0 +1,205 @@
+﻿<UserControl x:Class="PragmaticAnalyzer.MVVM.Views.AlgorithmInformation.FasttextInformationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views.AlgorithmInformation"
+             xmlns:config="clr-namespace:PragmaticAnalyzer.Configs"
+             xmlns:viewmodel="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+             d:DataContext="{d:DesignInstance Type=viewmodel:InformationViewModel}"
+             mc:Ignorable="d"
+             d:DesignHeight="2000"
+             d:DesignWidth="800">
+    <Grid>
+        <ScrollViewer>
+            <StackPanel>
+                <Button Background="Transparent"
+                        Cursor="Hand"
+                        Command="{Binding OpenFileCommand}"
+                        CommandParameter="{x:Static config:GlobalConfig.LinkOne}">
+                    <TextBlock Text="Алгоритм Fasttext"
+                               FontSize="50"
+                               FontFamily="Impact"
+                               Margin="5" />
+                </Button>
+
+                <WrapPanel>
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="5">
+                        <StackPanel Margin="5">
+                            <TextBlock Text="Предназначен для создания векторных представлений слов, разработанный Facebook AI Research."
+                                       FontSize="15"
+                                       FontFamily="Franklin Gothic" />
+
+                            <TextBlock Text="Архитектура Fasttext довольно схожа с word2vec, но в ней есть ряд особенностей:&#x0a;  1. Fasttext учитывает подслова (n – граммы(2) (фиксированный набор букв определённой длины (обычно две, три буквы), состоящий из частей слов), что довольно лучше позволяет обрабатывать редкие морфологически сложные слова.&#x0a;  2. Перед работой с текстом предобработка (процесс преобразования исходного текста в формат, пригодный для обработки алгоритмами машинного обучения) не обязательна, так как слова разбиваются на подслова (определённые части) которые в совокупности могут образовывать ранее не встречаемые слова, или слова с ошибками."
+                                       TextWrapping="Wrap"
+                                       Margin="0 5 0 0"
+                                       FontSize="15"
+                                       FontFamily="Franklin Gothic" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="5">
+                        <StackPanel Margin="5">
+                            <Button Background="Transparent"
+                                    Cursor="Hand"
+                                    Command="{Binding OpenFileCommand}"
+                                    CommandParameter="{x:Static config:GlobalConfig.LinkTwo}"
+                                    HorizontalAlignment="Left">
+                                <TextBlock Text="Векторизация"
+                                           FontSize="25"
+                                           FontFamily="Impact"
+                                           Margin="5" />
+                            </Button>
+
+                            <TextBlock Text="Процесс преобразования текста в числовой формат, который могут понимать и обрабатывать алгоритмы машинного обучения) происходит тоже со своими особенностями. Эмбеддинги (способ представления слов, предложений, изображений и других типов данных в виде числовых векторов) формируются как совокупность n-грамм. Каждая n—грамма в отдельности имеет свой вектор, вносящий вклад в целое слово. Подробно посмотреть о процессе векторизации можно здесь."
+                                       TextWrapping="Wrap"
+                                       Margin="0 5 0 0"
+                                       FontSize="15"
+                                       FontFamily="Franklin Gothic" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="5">
+                        <StackPanel Margin="5">
+                            <Button Background="Transparent"
+                                    Cursor="Hand"
+                                    Command="{Binding OpenFileCommand}"
+                                    CommandParameter="{x:Static config:GlobalConfig.LinkThree}"
+                                    HorizontalAlignment="Left">
+                                <TextBlock Text="Предобработка "
+                                           FontSize="25"
+                                           FontFamily="Impact"
+                                           Margin="5" />
+                            </Button>
+
+                            <TextBlock Text="Которая в свою очередь включает в себя:
+&#x0a;1.	Фильтрацию знаков препинания. Из анализируемого текста удаляются абсолютно все знаки препинания: точки, запятые, двоеточия и прочие знаки препинания.
+&#x0a;2.	Приведение всех слов к нижнему регистру.
+&#x0a;3.	Токенизацию или разбиение анализируемого текста на отдельные значимые единицы, называемые токенами.
+&#x0a;4.	Лемматизацию полученных токенов, которые приводятся к нормальной форме. Пример: слово «угрозами» станет просто «угроза».
+&#x0a;5.	Фильтрации по стоп-словарю. В анализируемом текстовом описании имеют место быть «слова паразиты», которые мешают правильному обучению модели. К таким словам относят различные, союзы, частицы, местоимения."
+                                       TextWrapping="Wrap"
+                                       Margin="0 5 0 0"
+                                       FontSize="15"
+                                       FontFamily="Franklin Gothic" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="5">
+                        <StackPanel Margin="5">
+                            <TextBlock Text="Архитектура "
+                                       FontSize="25"
+                                       FontFamily="Impact"
+                                       Margin="5" />
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Которых выделяют две:"
+                                           FontSize="15"
+                                           FontFamily="Franklin Gothic" />
+
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0 5 0 0">
+                                    <Button Background="Transparent"
+                                            Cursor="Hand"
+                                            Command="{Binding OpenFileCommand}"
+                                            CommandParameter="{x:Static config:GlobalConfig.LinkFour}"
+                                            HorizontalAlignment="Left">
+                                        <TextBlock Text="1. Skip-gramm"
+                                                   FontSize="15"
+                                                   FontFamily="Franklin Gothic" />
+                                    </Button>
+
+                                    <TextBlock Text=" - нейросеть предсказывает слова, которые могут находиться в контексте (стоять вокруг исходного слова)."
+                                               TextWrapping="Wrap"
+                                               Margin="0 5 0 0"
+                                               FontSize="15"
+                                               FontFamily="Franklin Gothic" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0 5 0 0">
+                                    <Button Background="Transparent"
+                                            Cursor="Hand"
+                                            Command="{Binding OpenFileCommand}"
+                                            CommandParameter="{x:Static config:GlobalConfig.LinkFour}"
+                                            HorizontalAlignment="Left">
+                                        <TextBlock Text="2. CBOW"
+                                                   FontSize="15"
+                                                   FontFamily="Franklin Gothic" />
+                                    </Button>
+
+                                    <TextBlock Text=" - нейросеть предсказывает слова, которые стояи в контексте (рядом) с другими словами."
+                                               TextWrapping="Wrap"
+                                               Margin="0 5 0 0"
+                                               FontSize="15"
+                                               FontFamily="Franklin Gothic" />
+                                </StackPanel>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="5">
+                        <StackPanel Margin="5">
+                            <Button Background="Transparent"
+                                    Cursor="Hand"
+                                    Command="{Binding OpenFileCommand}"
+                                    CommandParameter="{x:Static config:GlobalConfig.LinkFive}"
+                                    HorizontalAlignment="Left">
+                                <TextBlock Text="Прямое распределение "
+                                           FontSize="25"
+                                           FontFamily="Impact"
+                                           Margin="5" />
+                            </Button>
+                            <TextBlock Text="Является первой частью процесса обучения модели.
+&#x0a;На начальном этапе алгоритм формирует матрицу весов, состоящую из n-грамм и, возможно, отдельных слов. Коэффициенты (веса) векторов каждой n-граммы в нулевой момент времени выбираются случайным образом. Размер векторов определяют произвольно. Каждый вес этого вектора будет отождествлять какой-то признак, по которому в совокупности будет производиться сопоставление. Вектор формируется как сумма векторов n-грамм. Из анализируемого и контекстного слова получаются два вектора. Результатом матричного произведения этих векторов будет число, которое показывает схожесть между словами. Производя данную операцию со всеми словами из текста в результате, получим новый вектор, размер которого будет равен количеству неповторяющихся слов данного теста. Пропустив его через функцию SOFTMAX(7), которая вернет вероятностное распределение всех его значений, порядковый номер самого вероятного слова и будет контекстным к изначальному."
+                                       TextWrapping="Wrap"
+                                       Margin="0 5 0 0"
+                                       FontSize="15"
+                                       FontFamily="Franklin Gothic" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="5">
+                        <StackPanel Margin="5">
+                            <Button Background="Transparent"
+                                    Cursor="Hand"
+                                    Command="{Binding OpenFileCommand}"
+                                    CommandParameter="{x:Static config:GlobalConfig.LinkSix}"
+                                    HorizontalAlignment="Left">
+                                <TextBlock Text="Обратное распространение"
+                                           FontSize="25"
+                                           FontFamily="Impact"
+                                           Margin="5" />
+                            </Button>
+
+                            <TextBlock Text="Является второй частью процесса обучения модели.
+                                       &#x0a;После того, как нейросеть нашла слово, которое она считает наиболее вероятным контекстным словом к исходному, ей необходимо дать понять правильно ли она это сделала. Для этого после каждой итерации ей необходимо получать правильный ответ, на основе которого будет производиться обновление коэффициентов для каждого слова и соответственно для каждой n- граммы. Подробная информация со всеми формулами будет здесь. После того как нейросеть обучилась на текстовых входных данных, проявляется зависимость, которая выражается в числе произведений векторов, рост которых обусловлен частотой встречи слов в тексте, что повышает вероятность на выходе функции SOFTMAX. "
+                                       TextWrapping="Wrap"
+                                       Margin="0 5 0 0"
+                                       FontSize="15"
+                                       FontFamily="Franklin Gothic" />
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,139 @@
+﻿<Window x:Class="PragmaticAnalyzer.MVVM.Views.Main.OntologyManagerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views.Main"
+        xmlns:vmMain="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+        d:DataContext="{d:DesignInstance Type=vmMain:OntologyViewModel}"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Height="450"
+        Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="0.4*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Margin="2">
+            <Grid Margin="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Название"
+                           FontSize="15"
+                           FontFamily="Consolas"
+                           Margin="0 5 5 5" />
+
+                <Border Grid.Row="1"
+                        BorderBrush="Black"
+                        BorderThickness="1">
+                    <ScrollViewer>
+                        <TextBox TextWrapping="Wrap"
+                                 FontSize="20"
+                                 AcceptsReturn="True"
+                                 Text="{Binding EnteredName}"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Margin="2">
+            <Grid Margin="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Описание"
+                           FontSize="15"
+                           FontFamily="Consolas"
+                           Margin="0 5 5 5" />
+
+                <Border Grid.Row="1"
+                        BorderBrush="Black"
+                        BorderThickness="1">
+                    <ScrollViewer>
+                        <TextBox TextWrapping="Wrap"
+                                 FontSize="20"
+                                 AcceptsReturn="True"
+                                 Text="{Binding EnteredDescription}" />
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Margin="2">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition  Width="0,2*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"                       
+                           Text="Добавить сущность в выбранную онтологию:"
+                           FontSize="15"
+                           FontFamily="Consolas" />
+
+                <CheckBox Grid.Row="0"
+                          Grid.Column="1"
+                          Margin="5 0 0 0"
+                          VerticalAlignment="Center"
+                          IsEnabled="{Binding IsEnabledCheckBox}"
+                          IsChecked="{Binding AddNewEntity}" />
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="3"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Margin="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Margin="5"
+                        Cursor="Hand"
+                        Command="{Binding ApplyCommand}">
+                    <TextBlock Text="Применить"
+                               FontSize="15"
+                               FontFamily="Consolas" />
+                </Button>
+
+                <Button Grid.Column="1"
+                        Margin="5"
+                        Cursor="Hand"
+                        Command="{Binding BackCommand}">
+                    <TextBlock Text="Назад"
+                               FontSize="15"
+                               FontFamily="Consolas" />
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

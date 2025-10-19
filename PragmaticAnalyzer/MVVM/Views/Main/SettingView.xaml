@@ -1,0 +1,205 @@
+﻿<UserControl x:Class="PragmaticAnalyzer.MVVM.Views.Main.SettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Margin="5"
+                    CornerRadius="10"
+                    BorderThickness="1"
+                    BorderBrush="Black">
+                <Grid  Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <TextBlock Text="Настройка моделей Word2Vec"
+                                   VerticalAlignment="Center"
+                                   FontSize="30"
+                                   FontFamily="Consolas" />
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Grid.Column="0"
+                                  Margin="1"
+                                  Cursor="Hand"
+                                  FontSize="20"
+                                  ItemsSource="{Binding WordTwoVecConfigs}"
+                                  SelectedItem="{Binding SelectedWordTwoVecConfig}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding DisplayedName}" />
+                                        <TextBlock Text=" — используется"
+                                                   Visibility="{Binding IsUsed, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   Foreground="Gray"
+                                                   Margin="5,0,0,0" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Button Grid.Column="1"
+                                Margin="1"
+                                Content="Загрузить модель"
+                                Cursor="Hand"
+                                Command="{Binding UploadWordTwoVecModelCommand}" />
+
+
+                        <Button Grid.Column="2"
+                                Margin="1"
+                                Content="Обучить модель"
+                                Cursor="Hand"
+                                Command="{Binding TrainWordTwoVecModelCommand}" />
+                    </Grid>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <ProgressBar Grid.Column="0"
+                                     Margin="1"
+                                     IsIndeterminate="{Binding ProgressWordTwoVec}" />
+
+                        <Button Grid.Column="1"
+                                Margin="1"
+                                Cursor="Hand"
+                                Content="Использовать модель"
+                                Command="{Binding UseWordTwoVecModelCommand}" />
+
+                        <Button Grid.Column="2"
+                                Margin="1"
+                                Content="Удалить модель"
+                                Cursor="Hand"
+                                Command="{Binding DeleteWordTwoVecModelCommand}" />
+
+                        <Button Grid.Column="3"
+                                Margin="1"
+                                Content="Дообучить модель"
+                                Cursor="Hand"
+                                Command="{Binding FurtherEducationWordTwoVecModelCommand}" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Margin="5"
+                    CornerRadius="10"
+                    BorderThickness="1"
+                    BorderBrush="Black">
+                <Grid  Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <TextBlock Text="Настройка моделей FastText"
+                                   VerticalAlignment="Center"
+                                   FontSize="30"
+                                   FontFamily="Consolas" />
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Grid.Column="0"
+                                  Margin="1"
+                                  Cursor="Hand"
+                                  FontSize="20"
+                                  ItemsSource="{Binding FastTextConfigs}"
+                                  SelectedItem="{Binding SelectedFastTextConfig, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding DisplayedName}" />
+                                        <TextBlock Text=" — используется"
+                                                   Visibility="{Binding IsUsed, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   Foreground="Gray"
+                                                   Margin="5,0,0,0" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Button Grid.Column="1"
+                                Margin="1"
+                                Content="Загрузить модель"
+                                Cursor="Hand"
+                                Command="{Binding UploadFastTextModelCommand}" />
+
+                        <Button Grid.Column="2"
+                                Margin="1"
+                                Content="Обучить модель"
+                                Cursor="Hand"
+                                Command="{Binding TrainFastTextModelCommand}" />
+                    </Grid>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <ProgressBar Grid.Column="0"
+                                     Margin="1"
+                                     IsIndeterminate="{Binding ProgressFastText}" />
+
+                        <Button Grid.Column="1"
+                                Margin="1"
+                                Cursor="Hand"
+                                Content="Использовать модель"
+                                Command="{Binding UseFastTextModelCommand}" />
+
+                        <Button Grid.Column="2"
+                                Margin="1"
+                                Content="Удалить модель"
+                                Cursor="Hand"
+                                Command="{Binding DeleteFastTextModelCommand}" />
+
+                        <Button Grid.Column="3"
+                                Margin="1"
+                                Content="Дообучить модель"
+                                Cursor="Hand"
+                                Command="{Binding FurtherEducationFastTextModelCommand}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

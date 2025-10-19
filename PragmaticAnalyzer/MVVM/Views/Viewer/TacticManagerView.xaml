@@ -1,0 +1,134 @@
+﻿<Window x:Class="PragmaticAnalyzer.MVVM.Views.Viewer.TacticManagerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views.Viewer"
+        mc:Ignorable="d"
+        Height="650"
+        Width="500"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Номер"
+                   FontFamily="Consolas"
+                   FontSize="20"
+                   Margin="10 0 0 0" />
+
+        <StackPanel Grid.Row="1"
+                    Margin="10"
+                    Orientation="Horizontal">
+            <TextBlock Text="Т"
+                       FontSize="20"
+                       FontFamily="Consolas"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+            
+            <Border Margin="10 0 10 0"
+                    BorderBrush="Black"
+                    BorderThickness="0.5">
+                <TextBlock FontSize="15"
+                           Width="30"
+                           Name="NumberTextBlock"
+                           TextAlignment="Center" />
+            </Border>
+            
+            <TextBlock Text="."
+                       FontFamily="Consolas"
+                       FontSize="20" />
+            
+            <Border Margin="10 0 0 0"
+                    BorderBrush="Black"
+                    BorderThickness="0.5">
+                <TextBlock FontSize="15"
+                           Width="30"
+                           Name="SubNumberTextBlock"
+                           TextAlignment="Center" />
+            </Border>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2"
+                   Text="Описание"
+                   FontFamily="Consolas"
+                   FontSize="20"
+                   Margin="10 0 0 0" />
+
+        <Grid Grid.Row="3"
+              Margin="10">
+            <Border BorderBrush="Black"
+                    BorderThickness="1">
+                <ScrollViewer>
+                    <TextBox Name="DescriptionTextBox"
+                             TextWrapping="Wrap"
+                             FontSize="20"
+                             AcceptsReturn="True" />
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="4"
+              Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition  Width="0,2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Техника:"
+                       FontFamily="Consolas"
+                       FontSize="20" />
+
+            <Button Grid.Row="0"
+                    Grid.Column="2"
+                    Grid.RowSpan="2"
+                    Content="Готово"
+                    Margin="5 0 0 0"
+                    FontSize="20"
+                    FontFamily="Consolas"
+                    Name="DoneButton" />
+
+            <CheckBox Grid.Row="0"
+                      Grid.Column="1"
+                      Name="OptionCheckBox"
+                      IsChecked="False"
+                      Margin="5 0 0 0"
+                      Checked="OptionCheckBoxChecked"
+                      Unchecked="OptionCheckBoxUnchecked">
+            </CheckBox>
+
+            <TextBlock Text="Добавить технику в:"
+                       FontFamily="Consolas"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       FontSize="20" />
+
+            <ComboBox Grid.Row="1"
+                      Grid.Column="1"                
+                      Name="ListTechniqueComboBox"
+                      ItemsSource="{Binding Tactics}"
+                      SelectionChanged="ListTechniqueComboBoxSelectionChanged"
+                      Margin="5 0 0 0"
+                      IsEnabled="False">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"
+                                   FontFamily="Consolas" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+    </Grid>
+</Window>

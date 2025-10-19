@@ -1,0 +1,56 @@
+﻿using System.IO;
+
+namespace PragmaticAnalyzer.Configs
+{
+    /// <summary>
+    /// Класс с глобальными путями 
+    /// </summary>
+    public static class GlobalConfig
+    {
+        //
+        // Сводка:
+        //     Пути к каталогам.
+        public static readonly string DatabasePath = Path.Combine(Environment.CurrentDirectory, "Database");
+        public static readonly string ExploitTextPath = Path.Combine(Environment.CurrentDirectory, "ExploitText");
+        public static readonly string ModelsPath = Path.Combine(Environment.CurrentDirectory, "Models");
+        public static readonly string ConfigPath = Path.Combine(Environment.CurrentDirectory, "Config");
+        public static readonly string ResourcePath = Path.Combine(Environment.CurrentDirectory, "Resource");
+        //
+        // Сводка:
+        //     Пути к сторонним исполняемым файлам.
+        public static readonly string MatcherPath = Path.Combine(Environment.CurrentDirectory,"matcher.exe");
+        //
+        // Сводка:
+        //     Пути к конфигурационным файлам.
+        public static readonly string LastUpdateConfig = Path.Combine(ConfigPath, "lastUpdateConfig.json");
+        public static readonly string ExploitConfigPath = Path.Combine(ConfigPath, "exploitConfig.json");
+        public static readonly string ThreatConfigPath = Path.Combine(ConfigPath, "threadConfig.json");
+        public static readonly string VulConfigPath = Path.Combine(ConfigPath, "vulConfig.json");
+        public static readonly string WordTwoVecConfigPath = Path.Combine(ConfigPath, "word2vecConfig.json");
+        public static readonly string FastTextConfigPath = Path.Combine(ConfigPath, "fastTextConfig.json");
+        //
+        // Сводка:
+        //     Пути к базам данных.
+        public static readonly string VulnerabilitiePath = Path.Combine(DatabasePath, "vulnerabilitieDb.json");
+        public static readonly string ThreatPath = Path.Combine(DatabasePath, "threatDb.json");
+        public static readonly string TacticPath = Path.Combine(DatabasePath, "tacticDb.json");
+        public static readonly string ProtectionMeasurePath = Path.Combine(DatabasePath, "protectionMeasureDb.json");
+        public static readonly string OutcomesPath = Path.Combine(DatabasePath, "outcomesDb.json");
+        public static readonly string ExploitPath = Path.Combine(DatabasePath, "exploitDb.json");
+        public static readonly string ViolatorPath = Path.Combine(DatabasePath, "violatorDb.json");
+        public static readonly string SpecialistPath = Path.Combine(DatabasePath, "specialistDb.json");
+        public static readonly string RefStatPath = Path.Combine(DatabasePath, "refStatusDb.json");
+        public static readonly string CurStatPath = Path.Combine(DatabasePath, "curStatusDb.json");
+        public static readonly string OntologyPath = Path.Combine(DatabasePath, "ontologyDb.json");
+        //
+        // Сводка:
+        //     Пути к информационным ресурсам.
+        public static readonly string LinkOne = Path.Combine(ResourcePath, "linkOne.pdf");
+        public static readonly string LinkTwo = Path.Combine(ResourcePath, "linkTwo.pdf");
+        public static readonly string LinkThree = Path.Combine(ResourcePath, "linkThree.pdf");
+        public static readonly string LinkFour = Path.Combine(ResourcePath, "linkFour.pdf");
+        public static readonly string LinkFive = Path.Combine(ResourcePath, "linkFive.pdf");
+        public static readonly string LinkSix = Path.Combine(ResourcePath, "linkSix.pdf");
+        public static readonly string LinkSeven = Path.Combine(ResourcePath, "linkSeven.pdf");
+    }
+}
