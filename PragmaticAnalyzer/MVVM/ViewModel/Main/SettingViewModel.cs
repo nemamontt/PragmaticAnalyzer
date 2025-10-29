@@ -6,6 +6,7 @@ using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.Messages;
 using PragmaticAnalyzer.Services;
+using PragmaticAnalyzer.WorkingServer.Retrain;
 using PragmaticAnalyzer.WorkingServer.Train;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -56,10 +57,13 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             {
                 return;
             }
-
+            var finalPath = Path.Combine(GlobalConfig.ModelsPath, Path.GetFileName(currentPath));
+            if (finalPath == currentPath)
+            {
+                return;
+            }
             try
             {
-                var finalPath = Path.Combine(GlobalConfig.ModelsPath, Path.GetFileName(currentPath));
                 if (File.Exists(finalPath))
                 {
                     File.Delete(finalPath);
@@ -113,8 +117,24 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             }
         }, o => SelectedWordTwoVecConfig is not null && SelectedWordTwoVecConfig.IsUsed is false);
 
-        public RelayCommand FurtherEducationWordTwoVecModelCommand => GetCommand(async o =>
+        public RelayCommand RetrainWordTwoVecModelCommand => GetCommand(async o =>
         {
+            ProgressWordTwoVec = true;
+
+            RequestRetrain request = new("127.0.0.1", "5000", SelectedWordTwoVecConfig.Path, Algorithm.WordTwoVec);
+            var result = await _apiService.SendRequestAsync<ResponseRetrain>(request);
+
+            if (result.IsSuccess)
+            {
+                SelectedWordTwoVecConfig.IsTrained = true;
+            }
+            else
+            {
+                ProgressWordTwoVec = false;
+                MessageBox.Show(result.ErrorMessage);
+            }
+
+            ProgressWordTwoVec = false;
         }, o => SelectedWordTwoVecConfig?.IsTrained is false);
 
         public RelayCommand TrainWordTwoVecModelCommand => GetCommand(async o =>
@@ -122,9 +142,9 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             ProgressWordTwoVec = true;
 
             RequestTrain request = new("127.0.0.1", "5000", Algorithm.WordTwoVec);
-            var result = await _apiService.SendTrainRequestAsync(request);
+            var result = await _apiService.SendRequestAsync<ResponseTrain>(request);
 
-            if(result.IsSuccess)
+            if (result.IsSuccess)
             {
                 WordTwoVecConfigs.Add(new()
                 {
@@ -137,9 +157,10 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             }
             else
             {
+                ProgressWordTwoVec = false;
                 MessageBox.Show(result.ErrorMessage);
             }
-            
+
             ProgressWordTwoVec = false;
         });
 
@@ -213,9 +234,24 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             }
         }, o => SelectedFastTextConfig is not null && SelectedFastTextConfig.IsUsed is false);
 
-        public RelayCommand FurtherEducationFastTextModelCommand => GetCommand(o =>
+        public RelayCommand RetrainFastTextModelCommand => GetCommand(async o =>
         {
+            ProgressFastText = true;
 
+            RequestRetrain request = new("127.0.0.1", "5000", SelectedFastTextConfig.Path, Algorithm.FastText);
+            var result = await _apiService.SendRequestAsync<ResponseRetrain>(request);
+
+            if (result.IsSuccess)
+            {
+                SelectedFastTextConfig.IsTrained = true;
+            }
+            else
+            {
+                ProgressFastText = false;
+                MessageBox.Show(result.ErrorMessage);
+            }
+
+            ProgressFastText = false;
         }, o => SelectedFastTextConfig?.IsTrained is false);
 
         public RelayCommand TrainFastTextModelCommand => GetCommand(async o =>

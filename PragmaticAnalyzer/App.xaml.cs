@@ -11,10 +11,10 @@ namespace PragmaticAnalyzer
             var viewModelsService = new ViewModelsService();
             var mainVm = viewModelsService.MainVm;
 
-            var mainView = new MainView { DataContext = mainVm };
+            var mainView = new MainView(mainVm);
             mainView.Show();
 
-            await viewModelsService.InitializeAsync();
+            await viewModelsService.InitializeAsync();  
 
             base.OnStartup(e);
         }

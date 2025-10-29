@@ -1,13 +1,16 @@
 ﻿using PragmaticAnalyzer.DTO;
+using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Configs
 {
-    public class AvailableDatabaseConfig
+    public class AvailableDatabaseConfig(string displayedName, string fullName, long sizeBytes, DateTime lastModified, DataType detectedType)
     {
-        public DataType Name { get; set; }
-        public string FullName { get; set; }
-        public long SizeBytes { get; set; }
-        public bool IsChecked { get; set; }
-        public DateTime LastModified { get; set; }
+        [JsonIgnore]
+        public bool IsChecked { get; set; } = true;
+        public string DisplayedName { get; private set; } = displayedName;
+        public string FullName { get; private set; } = fullName;
+        public long SizeBytes { get; private set; } = sizeBytes;
+        public DateTime LastModified { get; private set; } = lastModified;
+        public DataType DetectedType { get; private set; } = detectedType;
     }
 }

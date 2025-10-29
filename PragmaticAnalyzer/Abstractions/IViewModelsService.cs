@@ -21,5 +21,8 @@ namespace PragmaticAnalyzer.Abstractions
         ConnectionViewModel ConnectionVm { get; }
         InformationViewModel InformationVm { get; }
         CreatorViewModel CreatorVm { get; }
+
+        Task InitializeAsync();
+        Task CompletionWorkAsync();
     }
 }

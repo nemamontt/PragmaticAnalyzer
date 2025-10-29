@@ -39,6 +39,7 @@
                 <TextBox Grid.Column="1"
                          Width="300"
                          Cursor="IBeam"
+                         IsEnabled="{Binding IsEnabledEnteredNameDatabase}"
                          Text="{Binding EnteredNameDatabase}"/>
             </Grid>
         </Border>
@@ -107,7 +108,13 @@
                 Margin="2">
             <ListBox ItemsSource="{Binding EnteredFieldsDatabase}"
                      SelectedItem="{Binding SelectedFieldDatabase}"
-                     BorderBrush="LightGray" />
+                     BorderBrush="LightGray">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding .}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Border>
 
         <Border Grid.Row="4"

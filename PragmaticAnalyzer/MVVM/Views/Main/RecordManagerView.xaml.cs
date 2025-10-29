@@ -2,17 +2,18 @@
 
 namespace PragmaticAnalyzer.MVVM.Views.Main
 {
-    public partial class DatabaseManagerView
+
+    public partial class RecordManagerView
     {
-        public DatabaseManagerView(CreatorViewModel vm)
+        public RecordManagerView(CreatorViewModel vm)
         {
             InitializeComponent();
             DataContext = vm;
 
             Closed += (s, e) =>
             {
-                vm.CompleteDatabaseManager();
-            };   
+                vm.CompleteRecordManager(); 
+            };
         }
     }
 }

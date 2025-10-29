@@ -105,7 +105,7 @@
                                 Margin="1"
                                 Content="Дообучить модель"
                                 Cursor="Hand"
-                                Command="{Binding FurtherEducationWordTwoVecModelCommand}" />
+                                Command="{Binding RetrainWordTwoVecModelCommand}" />
                     </Grid>
                 </Grid>
             </Border>
@@ -196,7 +196,7 @@
                                 Margin="1"
                                 Content="Дообучить модель"
                                 Cursor="Hand"
-                                Command="{Binding FurtherEducationFastTextModelCommand}" />
+                                Command="{Binding RetrainFastTextModelCommand}" />
                     </Grid>
                 </Grid>
             </Border>

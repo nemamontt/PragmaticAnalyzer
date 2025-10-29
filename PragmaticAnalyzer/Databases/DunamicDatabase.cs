@@ -1,20 +1,16 @@
 ﻿using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Core;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    public class Scheme : ViewModelBase
+    public class DunamicDatabase : ViewModelBase
     {
-        private int _recordCounter = 1;
-        public string? Name
-        {
-            get => Get<string>();
-            private set
-            {
-                Set(value ?? "Название не указано");
-            }
-        }
+        public int RecordCounter { get; set; }
+        public Guid GuidId { get; } = Guid.NewGuid();
+        public string Name { get => Get<string>(); private set => Set(value); }
         public string? IndexPrefix
         {
             get => Get<string>();
@@ -24,49 +20,86 @@ namespace PragmaticAnalyzer.Databases
             }
         }
         public ObservableCollection<string> CustomFieldNames { get; private set; }
-        public ObservableCollection<Record> Records { get; private set; }
+        [JsonIgnore]
+        public ObservableCollection<DunamicRecord> Records { get; private set; }
 
-        public Scheme(string? name, string? indexPrefix, ObservableCollection<string> customFieldName)
+        public DunamicDatabase(string name, string? indexPrefix, ObservableCollection<string> customFieldNames)
         {
             Name = name;
             IndexPrefix = indexPrefix;
-            CustomFieldNames = customFieldName ?? [];
+            CustomFieldNames = customFieldNames ?? [];
             Records = [];
+            Records.CollectionChanged += OnRecordsCollectionChanged;
+        }
+
+        private void OnRecordsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                int startIndex = e.OldStartingIndex;
+
+                for (int i = startIndex; i < Records.Count; i++)
+                {
+                    var newIndex = i;
+                    Records[i].IndexValue = $"{IndexPrefix}-{newIndex}";
+                }
+
+                RecordCounter--; 
+            }
+        }
+
+        private void SyncRecordsWithSchema()
+        {
+            var validFieldNames = new HashSet<string>(CustomFieldNames, StringComparer.OrdinalIgnoreCase);
+
+            foreach (var record in Records)
+            {
+                var keysToRemove = record.Fields.Keys.ToList()
+                                         .Where(key => !validFieldNames.Contains(key))
+                                         .ToList();
+
+                foreach (var key in keysToRemove)
+                {
+                    record.Fields.Remove(key);
+                }
+            }
         }
 
         public void ChangeScheme(string? name, string? indexPrefix, ObservableCollection<string>? customFieldName)
         {
-            if (name != null && name != string.Empty)
+            if (name != null && name != string.Empty && Name != name)
             {
                 Name = name;
             }
-            if (indexPrefix != null && indexPrefix != string.Empty)
+            if (indexPrefix != null && indexPrefix != string.Empty && IndexPrefix != indexPrefix)
             {
                 IndexPrefix = indexPrefix;
-                _recordCounter = 1;
+                RecordCounter = 1;
                 foreach (var record in Records)
                 {
-                    record.IndexValue = IndexPrefix + "-" + _recordCounter;
-                    _recordCounter++;
+                    record.IndexValue = IndexPrefix + "-" + RecordCounter;
+                    RecordCounter++;
                 }
             }
-            if (customFieldName != null) //удалить поля из Records
+            if (customFieldName != null)
             {
                 CustomFieldNames.Clear();
-                foreach (var fieldName in customFieldName)
+                foreach (var customField in customFieldName)
                 {
-                    CustomFieldNames.Add(fieldName);
+                    CustomFieldNames.Add(customField);
                 }
+
+                SyncRecordsWithSchema();
             }
         }
 
         public void AddRecord(string? description, Dictionary<string, string> customFields)
         {
-            var record = new Record(IndexPrefix + "-" + _recordCounter)
+            var record = new DunamicRecord(IndexPrefix + "-" + RecordCounter)
             {
                 Description = description,
             };
-            _recordCounter++;
+            RecordCounter++;
             foreach (var field in CustomFieldNames)
             {
                 record[field] = customFields.TryGetValue(field, out var value) ? value : string.Empty;
@@ -74,7 +107,7 @@ namespace PragmaticAnalyzer.Databases
             Records.Add(record);
         }
 
-        public bool ChangeRecord(Record record)
+        public bool ChangeRecord(DunamicRecord record)
         {
             for (int i = 0; i < Records.Count; i++)
             {
@@ -89,7 +122,7 @@ namespace PragmaticAnalyzer.Databases
         }
     }
 
-    public class Record : ViewModelBase, IDatabase
+    public class DunamicRecord : ViewModelBase, IDatabase
     {
         public Guid GuidId { get; } = Guid.NewGuid();
         public string IndexValue { get => Get<string>(); internal set => Set(value); }
@@ -103,14 +136,14 @@ namespace PragmaticAnalyzer.Databases
         }
         public Dictionary<string, string> Fields { get => Get<Dictionary<string, string>>(); set => Set(value); }
 
-        public Record(string indexValue)
+        public DunamicRecord(string indexValue)
         {
             IndexValue = indexValue;
             Description = string.Empty;
             Fields = [];
         }
 
-        internal Record(Guid guidId, string indexValue)
+        internal DunamicRecord(Guid guidId, string indexValue)
         {
             GuidId = guidId;
             IndexValue = indexValue;
@@ -121,15 +154,5 @@ namespace PragmaticAnalyzer.Databases
             get => Fields.TryGetValue(fieldName, out var value) ? value : string.Empty;
             set => Fields[fieldName] = value;
         }
-
-        /*  public Dictionary<string, string> GetAllFields()
-          {
-              var result = new Dictionary<string, string>(Fields)
-              {
-                  ["GuidId"] = GuidId.ToString(),
-                  ["Description"] = Description
-              };
-              return result;
-          }*/
     }
 }

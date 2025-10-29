@@ -69,7 +69,7 @@
                  Margin="1"
                  VirtualizingStackPanel.IsVirtualizing="True"
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                 ItemsSource="{Binding Vulnerabilities, Mode=OneWay}"
+                 ItemsSource="{Binding Vulnerabilities}"
                  SelectedItem="{Binding SelectedVulnerabilitie}">
             <ListBox.ItemTemplate>
                 <DataTemplate>

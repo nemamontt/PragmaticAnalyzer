@@ -2,6 +2,7 @@
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.WorkingServer.Core;
 using PragmaticAnalyzer.WorkingServer.Matcher;
+using PragmaticAnalyzer.WorkingServer.Retrain;
 using PragmaticAnalyzer.WorkingServer.Train;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -120,6 +121,35 @@ namespace PragmaticAnalyzer.Services
             catch (Exception ex)
             {
                 return Result<ResponseTrain>.Failure($"Неизвестная ошибка: {ex.Message}");
+            }
+        }
+
+        public async Task<Result<T>> SendRequestAsync<T>(IRequest request)
+        {
+            try
+            {
+                var responseHttp = await _httpClient.PostAsync(request.Url, request.Content);
+
+                if (!responseHttp.IsSuccessStatusCode)
+                {
+                    var errorContent = await responseHttp.Content.ReadAsStringAsync();
+                    return Result<T>.Failure($"SОшибка сервера: {responseHttp.StatusCode}. Детали: {errorContent}");
+                }
+                var json = await responseHttp.Content.ReadAsStringAsync();
+                var data = await _fileService.LoadJsonAsync<T>(json);
+                return Result<T>.Success(data);
+            }
+            catch (HttpRequestException ex)
+            {
+                return Result<T>.Failure($"Сетевая ошибка: {ex.Message}");
+            }
+            catch (JsonException ex)
+            {
+                return Result<T>.Failure($"Ошибка парсинга JSON: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return Result<T>.Failure($"Неизвестная ошибка: {ex.Message}");
             }
         }
 

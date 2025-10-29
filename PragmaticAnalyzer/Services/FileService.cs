@@ -1,6 +1,7 @@
 ﻿using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.DTO;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -9,6 +10,14 @@ namespace PragmaticAnalyzer.Services
 {
     public class FileService : IFileService
     {
+        private static readonly HashSet<DataType> bannedTypes =
+        [
+            DataType.Specialist,
+            DataType.ProtectionMeasures,
+            DataType.Outcomes,
+            DataType.SchemeDatabase,
+            DataType.Ontology
+        ];
         private readonly JsonSerializerOptions saveOption;
 
         public FileService()
@@ -139,6 +148,47 @@ namespace PragmaticAnalyzer.Services
             {
                 return false;
             }
+        }
+
+        public static ObservableCollection<AvailableDatabaseConfig> GetAvailableDatabaseConfigs()
+        {
+            var configs = new ObservableCollection<AvailableDatabaseConfig>();
+
+            if (!Directory.Exists(GlobalConfig.DatabasePath))
+                return configs;
+
+            var jsonFiles = Directory.GetFiles(GlobalConfig.DatabasePath, "*.json", SearchOption.TopDirectoryOnly);
+
+            foreach (var filePath in jsonFiles)
+            {
+                try
+                {
+                    var fileInfo = new FileInfo(filePath);
+                    if (fileInfo.Length == 0)
+                        continue;
+
+                    string jsonText = File.ReadAllText(filePath);
+
+                    using var doc = JsonDocument.Parse(jsonText);
+                    var root = doc.RootElement;
+
+                    if (!root.TryGetProperty(nameof(DTO<>.DtoType), out var dtoTypeElement))
+                        continue;
+
+                    if (!dtoTypeElement.TryGetInt32(out int dtoTypeValue) || !Enum.IsDefined(typeof(DataType), dtoTypeValue))
+                        continue;
+
+                    var dtoType = (DataType)dtoTypeValue;
+                    if (bannedTypes.Contains(dtoType))
+                        continue;
+
+                    configs.Add(new AvailableDatabaseConfig(Path.GetFileNameWithoutExtension(filePath), filePath, fileInfo.Length, fileInfo.LastWriteTimeUtc, dtoType));
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+            return configs;
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace PragmaticAnalyzer.Abstractions
 {
     /// <summary>
-    /// Интерфейс для сервиса, который позволяет сохранять/загружать разные объекты.
+    /// Интерфейс для сервиса, который позволяет сохранять/загружать различные объекты.
     /// </summary>
     public interface IFileService
     {

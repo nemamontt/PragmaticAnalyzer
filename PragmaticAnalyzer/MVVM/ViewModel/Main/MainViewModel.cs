@@ -22,5 +22,10 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 CurrentView = vm;
             }
         }
+
+        public async Task OnCompletionWork()
+        {
+            await ViewModelsService.CompletionWorkAsync();
+        }
     }
 }

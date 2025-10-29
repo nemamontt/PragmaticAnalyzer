@@ -35,12 +35,12 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
         public RelayCommand UpdateCommand => GetCommand(async o =>
         {
             await UpdateVulDb();
-        }, o => _updateCancellationTokenSource is null);
+        });//, o => _updateCancellationTokenSource is null);
 
         public RelayCommand CancelUpdateCommand => GetCommand(o =>
         {
             _updateCancellationTokenSource?.Cancel();
-        }, o => _updateCancellationTokenSource is not null);
+        });//, o => _updateCancellationTokenSource is not null);
 
         public async Task UpdateVulDb()
         {

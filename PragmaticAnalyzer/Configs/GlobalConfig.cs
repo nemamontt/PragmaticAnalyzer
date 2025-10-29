@@ -14,7 +14,7 @@ namespace PragmaticAnalyzer.Configs
         public static readonly string ExploitTextPath = Path.Combine(Environment.CurrentDirectory, "ExploitText");
         public static readonly string ModelsPath = Path.Combine(Environment.CurrentDirectory, "Models");
         public static readonly string ConfigPath = Path.Combine(Environment.CurrentDirectory, "Config");
-        public static readonly string ResourcePath = Path.Combine(Environment.CurrentDirectory, "Resource");
+        public static readonly string ResourcePath = Path.Combine(Environment.CurrentDirectory, "Resource"); 
         //
         // Сводка:
         //     Пути к сторонним исполняемым файлам.
@@ -42,6 +42,7 @@ namespace PragmaticAnalyzer.Configs
         public static readonly string RefStatPath = Path.Combine(DatabasePath, "refStatusDb.json");
         public static readonly string CurStatPath = Path.Combine(DatabasePath, "curStatusDb.json");
         public static readonly string OntologyPath = Path.Combine(DatabasePath, "ontologyDb.json");
+        public static readonly string SchemeDatabasePath = Path.Combine(DatabasePath, "schemeDb.json");
         //
         // Сводка:
         //     Пути к информационным ресурсам.

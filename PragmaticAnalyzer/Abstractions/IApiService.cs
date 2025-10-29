@@ -11,5 +11,6 @@ namespace PragmaticAnalyzer.Abstractions
         Task StopServerAsync();
         Task<Result<ObservableCollection<ResponseMatcher>>> SendMatcherRequestAsync(RequestMatcher request);
         Task<Result<ResponseTrain>> SendTrainRequestAsync(RequestTrain request);
+        Task<Result<T>> SendRequestAsync<T>(IRequest request);
     }
 }

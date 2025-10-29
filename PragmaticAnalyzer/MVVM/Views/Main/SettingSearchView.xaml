@@ -205,7 +205,7 @@
                          BorderBrush="LightGray">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Content="{Binding Name}"
+                            <CheckBox Content="{Binding DisplayedName}"
                                       IsChecked="{Binding IsChecked, Mode=TwoWay}"
                                       Margin="2" />
                         </DataTemplate>

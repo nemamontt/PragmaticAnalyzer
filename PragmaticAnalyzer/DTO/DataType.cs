@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace PragmaticAnalyzer.DTO
+﻿namespace PragmaticAnalyzer.DTO
 {
     public enum  DataType
     {
@@ -23,5 +21,7 @@ namespace PragmaticAnalyzer.DTO
         FastTextConfig = 17,
         TfIdfConfig = 18,
         AvailableDatabasesConfig = 19,
+        SchemeDatabase = 20,
+        DunamicDatabase = 21,
     }
 }

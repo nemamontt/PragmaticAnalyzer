@@ -1,6 +1,5 @@
 ﻿using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
-using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
 using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.Extensions;
@@ -61,7 +60,7 @@ namespace PragmaticAnalyzer.Services
             ConnectionVm = new(this, ApiService, _availableDatabasesConfig);
             SettingVm = new(_wordTwoVecConfig, _fastTextVecConfig, ApiService);
             InformationVm = new(MainVm.OnSetCurrentView);
-            CreatorVm = new();
+            CreatorVm = new([], SaveDatabaseAsync, DeleteDatabase);
 
             SetVm.UpdateThreatDb = ThreatVm.UpdateThreatDb;
             SetVm.UpdateExploitDb = ExploitVm.UpdateExploittDb;
@@ -138,15 +137,7 @@ namespace PragmaticAnalyzer.Services
                 {
                     VulnerabilitieVm.Vulnerabilities.Add(vul);
                 }
-                _availableDatabasesConfig.Add(new()
-                {
-                    Name = DataType.Vulnerabilitie,
-                    FullName = GlobalConfig.VulnerabilitiePath,
-                    SizeBytes = new FileInfo(GlobalConfig.VulnerabilitiePath).Length,
-                    IsChecked = true,
-                    LastModified = File.GetLastWriteTime(GlobalConfig.VulnerabilitiePath)
-                });
-                SetVm.UpdateConfig?.Invoke(vulDto.DateCreation.ToString("f"), DataType.Vulnerabilitie);
+                SetVm.UpdateConfig?.Invoke(File.GetLastWriteTime(GlobalConfig.VulnerabilitiePath).ToString("f"), DataType.Vulnerabilitie); //эталон без дто
             }
             var threatDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Threat>>>(GlobalConfig.ThreatPath);
             if (threatDto != default)
@@ -155,14 +146,6 @@ namespace PragmaticAnalyzer.Services
                 {
                     ThreatVm.Threats.Add(threat);
                 }
-                _availableDatabasesConfig.Add(new()
-                {
-                    Name = DataType.Threat,
-                    FullName = GlobalConfig.ThreatConfigPath,
-                    SizeBytes = new FileInfo(GlobalConfig.ThreatConfigPath).Length,
-                    IsChecked = true,
-                    LastModified = File.GetLastWriteTime(GlobalConfig.ThreatConfigPath)
-                });
                 SetVm.UpdateConfig?.Invoke(threatDto.DateCreation.ToString("f"), DataType.Threat);
             }
             var protectionMeasureDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<ProtectionMeasure>>>(GlobalConfig.ProtectionMeasurePath);
@@ -181,14 +164,6 @@ namespace PragmaticAnalyzer.Services
                 {
                     TacticVm.Tactics.Add(techniquesTactic);
                 }
-                _availableDatabasesConfig.Add(new()
-                {
-                    Name = DataType.Tactic,
-                    FullName = GlobalConfig.TacticPath,
-                    SizeBytes = new FileInfo(GlobalConfig.TacticPath).Length,
-                    IsChecked = true,
-                    LastModified = File.GetLastWriteTime(GlobalConfig.TacticPath)
-                });
                 SetVm.UpdateConfig?.Invoke(techniquesTacticDto.DateCreation.ToString("f"), DataType.Tactic);
             }
             var exploitDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Exploit>>>(GlobalConfig.ExploitPath);
@@ -198,14 +173,6 @@ namespace PragmaticAnalyzer.Services
                 {
                     ExploitVm.Exploits.Add(exploit);
                 }
-                _availableDatabasesConfig.Add(new()
-                {
-                    Name = DataType.Exploit,
-                    FullName = GlobalConfig.ExploitPath,
-                    SizeBytes = new FileInfo(GlobalConfig.ExploitPath).Length,
-                    IsChecked = true,
-                    LastModified = File.GetLastWriteTime(GlobalConfig.ExploitPath)
-                });
                 SetVm.UpdateConfig?.Invoke(exploitDto.DateCreation.ToString("f"), DataType.Exploit);
             }
             var outcomesDto = await _fileService.LoadFileToPathAsync<DTO<Outcomes>>(GlobalConfig.OutcomesPath);
@@ -237,14 +204,6 @@ namespace PragmaticAnalyzer.Services
                 {
                     ViolatorVm.Violators.Add(violator);
                 }
-                _availableDatabasesConfig.Add(new()
-                {
-                    Name = DataType.Violator,
-                    FullName = GlobalConfig.ViolatorPath,
-                    SizeBytes = new FileInfo(GlobalConfig.ViolatorPath).Length,
-                    IsChecked = true,
-                    LastModified = File.GetLastWriteTime(GlobalConfig.ViolatorPath)
-                });
                 SetVm.UpdateConfig?.Invoke(violatorDto.DateCreation.ToString("f"), DataType.Violator);
             }
             var currentStatusDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<CurrentStatus>>>(GlobalConfig.CurStatPath);
@@ -273,10 +232,58 @@ namespace PragmaticAnalyzer.Services
                     OntologyVm.Ontologys.Add(ontology);
                 }
             }
+            var schemes = await _fileService.LoadDTOAsync<ObservableCollection<DunamicDatabase>>(GlobalConfig.SchemeDatabasePath, DataType.SchemeDatabase);
+            if (schemes != default)
+            {
+                foreach (var scheme in schemes)
+                {
+                    CreatorVm.Databases.Add(scheme);
+                    string recordsPath = Path.Combine(GlobalConfig.DatabasePath, scheme.Name + ".json");
+                    var records = await _fileService.LoadDTOAsync<ObservableCollection<DunamicRecord>>(recordsPath, DataType.DunamicDatabase);
+                    if (records != default)
+                    {
+                        CreatorVm.Databases.Last().Records.ReplaceAll(records);
+                    }
+                }
+            }
 
             SettingVm.NotifySelectedModels();
+            _availableDatabasesConfig.ReplaceAll(FileService.GetAvailableDatabaseConfigs());
+           // await ApiService.StartServerAsync();
+        }
 
-            await ApiService.StartServerAsync();
+        public async Task SaveDatabaseAsync(object database, string name, DataType dataType)
+        {
+            var filePath = Path.Combine(GlobalConfig.DatabasePath, name + ".json");
+            await _fileService.SaveDTOAsync(database, dataType, filePath);
+            var fileInfo = new FileInfo(filePath);
+            if (_availableDatabasesConfig.FirstOrDefault(config => config.FullName == filePath) is null)
+            {
+                AvailableDatabaseConfig config = new(Path.GetFileNameWithoutExtension(filePath), filePath, fileInfo.Length, fileInfo.LastWriteTimeUtc, dataType);
+                _availableDatabasesConfig.Add(config);
+            }
+        }
+
+        public void DeleteDatabase(string name)
+        {
+            var filePath = Path.Combine(GlobalConfig.DatabasePath, name + ".json");
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                _availableDatabasesConfig.Remove(_availableDatabasesConfig.First(config => config.FullName == filePath));
+            }
+        }
+
+        public async Task CompletionWorkAsync()
+        {
+            await _fileService.SaveDTOAsync(SettingVm.WordTwoVecConfigs, DataType.WordTwoVecConfig, GlobalConfig.WordTwoVecConfigPath);
+            await _fileService.SaveDTOAsync(SettingVm.FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);
+            await _fileService.SaveDTOAsync(CreatorVm.Databases, DataType.SchemeDatabase, GlobalConfig.SchemeDatabasePath);
+            foreach (var database in CreatorVm.Databases)
+            {
+                if (database.Records.Count == 0) continue;
+                await _fileService.SaveDTOAsync(database.Records, DataType.DunamicDatabase, Path.Combine(GlobalConfig.DatabasePath, $"{database.Name}.json"));
+            }
         }
     }
 }

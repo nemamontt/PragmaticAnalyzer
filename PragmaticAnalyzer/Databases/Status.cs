@@ -1,4 +1,5 @@
 ﻿using PragmaticAnalyzer.Abstractions;
+using System.Collections.ObjectModel;
 
 namespace PragmaticAnalyzer.Databases
 {
@@ -15,7 +16,7 @@ namespace PragmaticAnalyzer.Databases
         public string AtributValue { get; set; }
         public string AtributRequiredValue { get; set; }
         public string ValueTeg {  get; set; }
-        public List<Setting> Settings { get; set; }
+        public ObservableCollection<Setting> Settings { get; set; }
     }
 
     public class ReferenceStatus : IDatabase

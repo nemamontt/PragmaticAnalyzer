@@ -1,4 +1,6 @@
-﻿namespace PragmaticAnalyzer.WorkingServer.Matcher
+﻿using System.Collections.ObjectModel;
+
+namespace PragmaticAnalyzer.WorkingServer.Matcher
 {
     public class ResponseMatcher
     {
@@ -11,5 +13,16 @@
         public Guid ThreadId { get; set; }
         public Guid VulnerabilitieId { get; set; }
         public Guid ViolatorId { get; set; }
+    }
+
+    public class ResponseMatcher2
+    {
+        public class MatcherObject
+        {
+            public float Coefficient { get; }
+            public Dictionary<Guid, string> Sources { get; }
+        }
+        public ObservableCollection<MatcherObject> MatcherObjects { get; }
+  
     }
 }
