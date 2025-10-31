@@ -46,14 +46,14 @@ namespace PragmaticAnalyzer.Services
 
         public async Task StopServerAsync()
         {
-            await _httpClient.PostAsync("http://127.0.0.1:5000/Shutdown", new StringContent(""));
-            await Task.Delay(1000);
+           // await _httpClient.PostAsync("http://127.0.0.1:5000/Shutdown", new StringContent(""));
+     /*       await Task.Delay(1000);
             if (!_serverProcess.HasExited)
             {
                 _serverProcess.Kill();
             }
             await _serverProcess.WaitForExitAsync();
-            _serverProcess.Dispose();
+            _serverProcess.Dispose();*/
         }
 
         public async Task<Result<T>> SendRequestAsync<T>(IRequest request)

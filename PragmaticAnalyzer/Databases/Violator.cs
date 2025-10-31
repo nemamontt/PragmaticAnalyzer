@@ -7,7 +7,7 @@ namespace PragmaticAnalyzer.Databases
 {
     public class Violator : ViewModelBase, IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid(); //уникальный идентификатор
+        public Guid GuidId { get; set; } = Guid.NewGuid(); //уникальный идентификатор
         public int SequenceNumber { get => Get<int>(); set => Set(value); } //порядковый номер
         public ViolatorSource Source { get => Get<ViolatorSource>(); set => Set(value); } //источник угрозы
         public ViolatorPotential Potential { get => Get<ViolatorPotential>(); set => Set(value); } //потенциал

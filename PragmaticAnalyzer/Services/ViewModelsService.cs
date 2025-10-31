@@ -237,16 +237,20 @@ namespace PragmaticAnalyzer.Services
                     OntologyVm.Ontologys.Add(ontology);
                 }
             }
-            var schemes = await _fileService.LoadDTOAsync<ObservableCollection<DunamicDatabase>>(GlobalConfig.SchemeDatabasePath, DataType.SchemeDatabase);
+            var schemes = await _fileService.LoadDTOAsync<ObservableCollection<DynamicDatabase>>(GlobalConfig.SchemeDatabasePath, DataType.SchemeDatabase);
             if (schemes != default)
             {
                 foreach (var scheme in schemes)
                 {
                     CreatorVm.Databases.Add(scheme);
                     string recordsPath = Path.Combine(GlobalConfig.DatabasePath, scheme.Name + ".json");
-                    var records = await _fileService.LoadDTOAsync<ObservableCollection<DunamicRecord>>(recordsPath, DataType.DunamicDatabase);
+                    var records = await _fileService.LoadDTOAsync<ObservableCollection<DynamicRecord>>(recordsPath, DataType.DunamicDatabase);
                     if (records != default)
-                    {                   
+                    {
+                        foreach (var record in records)
+                        {
+                            record.NameDatadase = scheme.Name;
+                        }
                         CreatorVm.Databases.Last().Records.ReplaceAll(records);
                         _filePathToDatabase.Add(recordsPath, records);
                     }

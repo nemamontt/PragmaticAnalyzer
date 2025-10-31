@@ -12,7 +12,7 @@ namespace PragmaticAnalyzer.Databases
 
     public class Technology : ViewModelBase, IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string SequenceNumber { get => Get<string>(); set => Set(value); }
         public string MethodName { get => Get<string>(); set => Set(value); }
         public string Description { get => Get<string>(); set => Set(value); }

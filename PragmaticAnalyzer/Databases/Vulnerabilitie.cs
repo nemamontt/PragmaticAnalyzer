@@ -5,7 +5,7 @@ namespace PragmaticAnalyzer.Databases
 {
     public class Vulnerabilitie : ViewModelBase, IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid(); //уникальный идентификатор
+        public Guid GuidId { get; set; } = Guid.NewGuid(); //уникальный идентификатор
         public string Identifier { get => Get<string>(); set => Set(value); } //идентификатор
         public string Name { get => Get<string>(); set => Set(value); } //Наименование уязвимости
         public string Description { get => Get<string>(); set => Set(value); } //Описание уязвимости

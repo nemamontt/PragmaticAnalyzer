@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
              xmlns:vm="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+             xmlns:db="clr-namespace:PragmaticAnalyzer.Databases"
              d:DataContext="{d:DesignInstance Type=vm:ConnectionViewModel}"
              mc:Ignorable="d"
              d:Height="450"
@@ -59,6 +60,8 @@
                     Value="15" />
             <Setter Property="FontFamily"
                     Value="Consolas" />
+            <Setter Property="TextWrapping"
+                    Value="Wrap" />
         </Style>
         <DataTemplate x:Key="ParameterTemplateVulnerabilitie">
             <Border Style="{StaticResource ParameterBorderStyle}">
@@ -110,7 +113,6 @@
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
@@ -119,12 +121,12 @@
                     Margin="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    
+
                     <TextBlock Grid.Column="0"
-                        Text="Текстовое описание:"
+                               Text="Текстовое описание:"
                                FontSize="15"
                                FontFamily="Consolas"
                                FontWeight="Bold"
@@ -185,41 +187,6 @@
             </Border>
 
             <Border Grid.Row="2"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="2">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0"
-                             Margin="1"
-                             Cursor="IBeam"
-                             FontSize="15"
-                             FontFamily="Consolas"
-                             Text="" />
-
-                    <ComboBox Grid.Column="1"
-                              Margin="1"
-                              Cursor="Hand"
-                              ItemsSource="{Binding ForSelectingVulnerabilities}"
-                              SelectedItem="{Binding SelectedVulnerability, Mode=TwoWay}"
-                              DisplayMemberPath="Identifier" />
-
-                    <Button Grid.Column="2"
-                            Margin="1"
-                            Content="Сбросить поиск"
-                            FontSize="15"
-                            FontFamily="Consolas"
-                            Cursor="Hand"
-                            Command="{Binding ResetSearchCommand}" />
-                </Grid>
-            </Border>
-
-            <Border Grid.Row="3"
                     BorderBrush="Black"
                     BorderThickness="1"
                     Margin="2">
@@ -290,9 +257,10 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
 
-                    <ScrollViewer Grid.Row="1"
-                                  VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer Grid.Row="1">
                         <WrapPanel Orientation="Horizontal">
+                            
+                            <!--БД Специалист по ЗИ-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Specialist}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -369,7 +337,8 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД Специалист по ЗИ-->
+                            
+                            <!--БД Эталонные состояния ПФ СОПКА-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding ReferenceStatus}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -398,7 +367,8 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД Эталонные состояния ПФ СОПКА-->
+                            
+                            <!--БД Уязвимостей-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Vulnerabilitie}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -604,7 +574,8 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД Уязвимостей-->
+                            
+                            <!--БД угроз-->
                             <Border  Style="{StaticResource MainBorder}"
                                      DataContext="{Binding Threat}"
                                      Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -706,7 +677,8 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД угроз-->
+                            
+                            <!--БД Техник и тактик-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Tactic}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -744,7 +716,8 @@
                                     </ItemsControl>
                                 </StackPanel>
                             </Border>
-                            <!--БД Техник и тактик-->
+                            
+                            <!--БД Меры защиты-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding ProtectionMeasure}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -793,7 +766,8 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД Меры защиты-->
+                            
+                            <!--БД Технологии оценки риска-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Technology}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -905,7 +879,8 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД Технологии оценки риска-->
+                            
+                            <!--БД Негативные последствия-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Consequence}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -950,7 +925,8 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД Негативные последствия-->
+                                                   
+                            <!--БД Нарушителей-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Violator}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -1011,7 +987,8 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД Нарушителей-->
+                                                    
+                            <!--БД Эксплойтов-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Exploit}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
@@ -1089,7 +1066,71 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            <!--БД Эксплойтов-->
+                            
+                            <!--БД Динамических источников-->
+                            <ItemsControl ItemsSource="{Binding DynamicRecords}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type db:DynamicRecord}">
+                                        <Border Style="{StaticResource MainBorder}"
+                                                Margin="5"
+                                                Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding NameDatadase, StringFormat=Источник знаний: БД {0}}"
+                                                           Style="{StaticResource HeadingText}"
+                                                           FontSize="20"
+                                                           Margin="5" />
+
+                                                <WrapPanel>
+                                                    <Border Style="{StaticResource ParameterBorderStyle}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="Идентификатор"
+                                                                       Style="{StaticResource HeadingText}" />
+                                                            <TextBlock Text="{Binding IndexValue}"
+                                                                       Style="{StaticResource DynamicText}" />
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <Border Style="{StaticResource ParameterBorderStyle}">
+                                                        <StackPanel>
+                                                            <TextBlock Text="Описание"
+                                                                       Style="{StaticResource HeadingText}" />
+                                                            <TextBlock Text="{Binding Description}"
+                                                                       Style="{StaticResource DynamicText}" />
+                                                        </StackPanel>
+                                                    </Border>
+
+                                                    <ItemsControl ItemsSource="{Binding Fields}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Style="{StaticResource ParameterBorderStyle}">
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="{Binding Key}"
+                                                                                   Style="{StaticResource HeadingText}" />
+                                                                        <TextBlock Text="{Binding Value}"
+                                                                                   Style="{StaticResource DynamicText}" />
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </WrapPanel>
                     </ScrollViewer>
                 </Grid>

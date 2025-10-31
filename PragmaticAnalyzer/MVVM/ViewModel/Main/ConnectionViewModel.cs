@@ -7,10 +7,10 @@ using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.Messages;
 using PragmaticAnalyzer.MVVM.Views;
 using PragmaticAnalyzer.WorkingServer.Matcher;
+using PragmaticAnalyzer.DTO;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
-using static PragmaticAnalyzer.WorkingServer.Matcher.ResponseMatcher;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
@@ -152,13 +152,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             _settingSearchView?.Close();
         });
 
-        public RelayCommand ResetSearchCommand => GetCommand(o =>
-        {
-            RequestText = string.Empty;
-            //SelectedVulnerabilitie = null;
-        });//, o => SelectedVulnerabilitie is not null);
-
-        public ObservableCollection<Report>? GetReports(ObservableCollection<MatcherObject> responseMatchers)
+        public ObservableCollection<Report>? GetReports(ObservableCollection<ResponseMatcher.MatcherObject> responseMatchers)
         {
             if (responseMatchers is null || responseMatchers.Count is 0)
             {
@@ -167,11 +161,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
             var vulnerabilitiesDict = _viewModelsService.VulnerabilitieVm.Vulnerabilities.ToDictionary(v => v.GuidId);
             var threatsDict = _viewModelsService.ThreatVm.Threats.ToDictionary(t => t.GuidId);
-            var violatorsDict = _viewModelsService.ViolatorVm.Violators.ToDictionary(v => v.GuidId);
             var tacticsDict = _viewModelsService.TacticVm.Tactics.ToDictionary(t => t.GuidId);
-            var protectionMeasuresDict = _viewModelsService.ProtectionMeasureVm.ProtectionMeasures.ToDictionary(p => p.GuidId);
-            var consequencesDict = _viewModelsService.OutcomeVm.Outcomes.Consequences.ToDictionary(c => c.GuidId);
-            var technologysDict = _viewModelsService.OutcomeVm.Outcomes.Technologys.ToDictionary(t => t.GuidId);
             var exploitsDict = _viewModelsService.ExploitVm.Exploits.ToDictionary(e => e.GuidId);
 
             var results = new ObservableCollection<Report>();
@@ -184,7 +174,8 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                     ProtectionMeasure = SelectedProtectionMeasures,
                     Specialist = SelectedSpecialist,
                     Consequence = SelectedConsequence,
-                    Technology = SelectedTechnology
+                    Technology = SelectedTechnology,
+                    DynamicRecords = []
                 };
 
                 foreach (var source in responseMatcher.Sources)
@@ -193,26 +184,50 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                     {
                         if (item.Key == source.Value)
                         {
-
-                            continue;
+                            var config = AvailableDatabasesConfig.FirstOrDefault(path => path.FullName == item.Key);
+                            switch (config.DetectedType)
+                            {
+                                case DataType.Vulnerabilitie:
+                                    if (vulnerabilitiesDict.TryGetValue(source.Key, out var vulnerabilitie))
+                                    {
+                                        report.Vulnerabilitie = vulnerabilitie;
+                                    }
+                                    break;
+                                case DataType.Threat:
+                                    if (threatsDict.TryGetValue(source.Key, out var threat))
+                                    {
+                                        report.Threat = threat;
+                                    }
+                                    break;
+                                case DataType.Tactic:
+                                    if (tacticsDict.TryGetValue(source.Key, out var tactic))
+                                    {
+                                        report.Tactic = tactic;
+                                    }
+                                    break;
+                                case DataType.Exploit:
+                                    if (exploitsDict.TryGetValue(source.Key, out var exploit))
+                                    {
+                                        report.Exploit = exploit;
+                                    }
+                                    break;
+                                case DataType.DunamicDatabase:
+                                    var dumanicRecords = (ObservableCollection<DynamicRecord>)_filePathToDatabase.FirstOrDefault(db => db.Key == item.Key).Value;
+                                    foreach (var dunamicRecord in dumanicRecords)
+                                    {
+                                        if(dunamicRecord.GuidId == source.Key)
+                                        {
+                                            report.DynamicRecords.Add(dunamicRecord);
+                                        }
+                                    }
+                                    break;
+                            }
+                            break;
                         }
                     }
                 }
-                /*   if (vulnerabilitiesDict.TryGetValue(responseMatcher.VulnerabilitieId, out var vulnerabilitie))
-                       report.Vulnerabilitie = vulnerabilitie;
-
-                   if (threatsDict.TryGetValue(responseMatcher.ThreadId, out var threat))
-                       report.Threat = threat;
-
-                   if (tacticsDict.TryGetValue(responseMatcher.TacticId, out var tactic))
-                       report.Tactic = tactic;
-
-                   if (exploitsDict.TryGetValue(responseMatcher.ExploitId, out var exploit))
-                       report.Exploit = exploit;*/
-
                 results.Add(report);
             }
-
             return results;
         }
 
@@ -240,6 +255,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public Violator? Violator { get => Get<Violator>(); set => Set(value); }
         public ReferenceStatus? ReferenceStatus { get => Get<ReferenceStatus>(); set => Set(value); }
         public CurrentStatus? CurrentStatus { get => Get<CurrentStatus>(); set => Set(value); }
-        public ObservableCollection<DunamicRecord>? DunamicRecord { get => Get<ObservableCollection<DunamicRecord>>(); set => Set(value); }
+        public ObservableCollection<DynamicRecord>? DynamicRecords { get => Get<ObservableCollection<DynamicRecord>>(); set => Set(value); }
     }
 }

@@ -1,7 +1,10 @@
-﻿using PragmaticAnalyzer.Core;
+﻿using PragmaticAnalyzer.Abstractions;
+using PragmaticAnalyzer.Configs;
+using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
 using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.MVVM.Views.Main;
+using PragmaticAnalyzer.Services;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -9,6 +12,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
     public class CreatorViewModel : ViewModelBase
     {
+        private readonly IFileService _fileService;
         private readonly Func<object, string, DataType, Task> SaveDatabase;
         private readonly Action<string> DeleteDatabase;
         private DatabaseManagerView? _databaseManager;
@@ -21,8 +25,8 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public GridLength ColumnWidthDatabases { get => Get<GridLength>(); set => Set(value); }
         public GridLength ColumnWidthRecords { get => Get<GridLength>(); set => Set(value); }
 
-        public ObservableCollection<DunamicDatabase> Databases { get; set; }
-        public DunamicDatabase? SelectedDatabase { get => Get<DunamicDatabase>(); set => Set(value); }
+        public ObservableCollection<DynamicDatabase> Databases { get; set; }
+        public DynamicDatabase? SelectedDatabase { get => Get<DynamicDatabase>(); set => Set(value); }
         public string EnteredNameDatabase { get => Get<string>(); set => Set(value); }
         public string? EnteredNameField { get => Get<string>(); set => Set(value); }
         public string? EnteredNameIndexPrefix { get => Get<string>(); set => Set(value); }
@@ -31,14 +35,15 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public bool IsEnabledEnteredNameDatabase { get => Get<bool>(); set => Set(value); }
 
         public ObservableCollection<FieldInput>? FieldInputs { get => Get<ObservableCollection<FieldInput>>(); set => Set(value); }
-        public DunamicRecord? SelectedRecord { get => Get<DunamicRecord>(); set => Set(value); }
+        public DynamicRecord? SelectedRecord { get => Get<DynamicRecord>(); set => Set(value); }
         public string? EnteredDescriptionField { get => Get<string>(); set => Set(value); }
 
-        public CreatorViewModel(ObservableCollection<DunamicDatabase> databases, Func<object, string, DataType, Task> saveDatabase, Action<string> deleteDatabase)
+        public CreatorViewModel(ObservableCollection<DynamicDatabase> databases, Func<object, string, DataType, Task> saveDatabase, Action<string> deleteDatabase)
         {
             Databases = databases;
             SaveDatabase = saveDatabase;
             DeleteDatabase = deleteDatabase;
+            _fileService = new FileService();
             _expandedDatabases = true;
             _expandedRecords = true;
             ColumnWidthDatabases = new GridLength(250);
@@ -95,7 +100,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             EnteredFieldsDatabase?.Remove(SelectedFieldDatabase);
         }, o => SelectedFieldDatabase != null);
 
-        public RelayCommand ApplyDatabaseManagerCommand => GetCommand(o =>
+        public RelayCommand ApplyDatabaseManagerCommand => GetCommand(async o =>
         {
             if (string.IsNullOrEmpty(EnteredNameDatabase))
             {
@@ -121,6 +126,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 SelectedDatabase.ChangeScheme(EnteredNameDatabase, EnteredNameIndexPrefix, EnteredFieldsDatabase ?? []);
                 SaveDatabase?.Invoke(SelectedDatabase.Records, EnteredNameDatabase, DataType.DunamicDatabase);
             }
+            await _fileService.SaveDTOAsync(Databases, DataType.SchemeDatabase, GlobalConfig.SchemeDatabasePath);
             CompleteDatabaseManager();
         });
 
@@ -177,12 +183,13 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
               );
             if (_isAddRecord)
             {
-                SelectedDatabase.AddRecord(EnteredDescriptionField, customFields);
+                SelectedDatabase.AddRecord(SelectedDatabase.Name, EnteredDescriptionField, customFields);
             }
             else
             {
-                DunamicRecord record = new(SelectedRecord.GuidId, SelectedRecord.IndexValue)
+                DynamicRecord record = new(SelectedRecord.GuidId, SelectedRecord.IndexValue)
                 {
+                    NameDatadase = SelectedDatabase.Name,
                     Description = EnteredDescriptionField,
                     Fields = customFields
                 };

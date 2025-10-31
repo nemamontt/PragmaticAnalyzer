@@ -5,7 +5,7 @@ namespace PragmaticAnalyzer.Databases
 {
     public class CurrentStatus : IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid(); //уникальный идентификатор
+        public Guid GuidId { get; set; } = Guid.NewGuid(); //уникальный идентификатор
         public string NameSoftware { get; set; }
         public string TimeAdmission {  get; set; }
         public string Dislocation { get; set; } 
@@ -21,7 +21,7 @@ namespace PragmaticAnalyzer.Databases
 
     public class ReferenceStatus : IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid(); //уникальный идентификатор
+        public Guid GuidId { get; set; } = Guid.NewGuid(); //уникальный идентификатор
         public string NameSoftware { get; set; } //Эталонное состояние
         public DateTime ArrivalTime { get; set; } //Время поступления ПД в систему
     }

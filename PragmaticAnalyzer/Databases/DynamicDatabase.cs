@@ -6,10 +6,10 @@ using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    public class DunamicDatabase : ViewModelBase
+    public class DynamicDatabase : ViewModelBase
     {
-        public int RecordCounter { get; set; }
-        public Guid GuidId { get; } = Guid.NewGuid();
+        private int RecordCounter { get; set; }
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string Name { get => Get<string>(); private set => Set(value); }
         public string? IndexPrefix
         {
@@ -21,9 +21,9 @@ namespace PragmaticAnalyzer.Databases
         }
         public ObservableCollection<string> CustomFieldNames { get; private set; }
         [JsonIgnore]
-        public ObservableCollection<DunamicRecord> Records { get; private set; }
+        public ObservableCollection<DynamicRecord> Records { get; private set; }
 
-        public DunamicDatabase(string name, string? indexPrefix, ObservableCollection<string> customFieldNames)
+        public DynamicDatabase(string name, string? indexPrefix, ObservableCollection<string> customFieldNames)
         {
             Name = name;
             IndexPrefix = indexPrefix;
@@ -43,8 +43,11 @@ namespace PragmaticAnalyzer.Databases
                     var newIndex = i;
                     Records[i].IndexValue = $"{IndexPrefix}-{newIndex}";
                 }
-
-                RecordCounter--; 
+                RecordCounter--;
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                RecordCounter++;
             }
         }
 
@@ -93,13 +96,13 @@ namespace PragmaticAnalyzer.Databases
             }
         }
 
-        public void AddRecord(string? description, Dictionary<string, string> customFields)
+        public void AddRecord(string nameDatabase, string? description, Dictionary<string, string> customFields)
         {
-            var record = new DunamicRecord(IndexPrefix + "-" + RecordCounter)
+            var record = new DynamicRecord(IndexPrefix + "-" + RecordCounter)
             {
+                NameDatadase = nameDatabase,
                 Description = description,
             };
-            RecordCounter++;
             foreach (var field in CustomFieldNames)
             {
                 record[field] = customFields.TryGetValue(field, out var value) ? value : string.Empty;
@@ -107,7 +110,7 @@ namespace PragmaticAnalyzer.Databases
             Records.Add(record);
         }
 
-        public bool ChangeRecord(DunamicRecord record)
+        public bool ChangeRecord(DynamicRecord record)
         {
             for (int i = 0; i < Records.Count; i++)
             {
@@ -122,9 +125,11 @@ namespace PragmaticAnalyzer.Databases
         }
     }
 
-    public class DunamicRecord : ViewModelBase, IDatabase
+    public class DynamicRecord : ViewModelBase, IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid();
+        [JsonIgnore]
+        public string NameDatadase { get => Get<string>(); set => Set(value); }
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string IndexValue { get => Get<string>(); internal set => Set(value); }
         public string? Description
         {
@@ -136,14 +141,14 @@ namespace PragmaticAnalyzer.Databases
         }
         public Dictionary<string, string> Fields { get => Get<Dictionary<string, string>>(); set => Set(value); }
 
-        public DunamicRecord(string indexValue)
+        public DynamicRecord(string indexValue)
         {
             IndexValue = indexValue;
             Description = string.Empty;
             Fields = [];
         }
 
-        internal DunamicRecord(Guid guidId, string indexValue)
+        internal DynamicRecord(Guid guidId, string indexValue)
         {
             GuidId = guidId;
             IndexValue = indexValue;

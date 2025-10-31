@@ -13,7 +13,7 @@ namespace PragmaticAnalyzer.Databases
 
     public class Tactic : ViewModelBase, IEntityTIT, IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string Name { get => Get<string>(); set => Set(value); }
         public string Description { get => Get<string>(); set => Set(value); }
         public ObservableCollection<Technique> Techniques { get; set; }
@@ -23,7 +23,7 @@ namespace PragmaticAnalyzer.Databases
 
     public class Technique : ViewModelBase, IEntityTIT, IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string Name { get => Get<string>(); set => Set(value); }
         public string Description { get => Get<string>(); set => Set(value); }
         [JsonIgnore]

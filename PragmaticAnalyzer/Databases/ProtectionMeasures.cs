@@ -6,7 +6,7 @@ namespace PragmaticAnalyzer.Databases
 {
     public class ProtectionMeasure : ViewModelBase, IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string NameGroup { get => Get<string>(); set => Set(value); }
         public string Name { get => Get<string>(); set => Set(value); }
         public string Number { get => Get<string>(); set => Set(value); }

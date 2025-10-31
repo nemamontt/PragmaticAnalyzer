@@ -5,7 +5,7 @@ namespace PragmaticAnalyzer.Databases
 {
     public class Threat : ViewModelBase, IDatabase
     {
-        public Guid GuidId { get; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string Id { get => Get<string>(); set => Set(value); }
         public string Name { get => Get<string>(); set => Set(value); }
         public string Description { get => Get<string>(); set => Set(value); }

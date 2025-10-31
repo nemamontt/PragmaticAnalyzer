@@ -64,7 +64,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             }
             _manager = new(this);
             _manager.ShowDialog();
-        }, o => Ontologys.Count != 0);
+        }, o => Ontologys.Count != 0 && SelectedItem is not null);
 
         public RelayCommand DeleteCommand => GetCommand(async o =>
         {
@@ -78,7 +78,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 parent?.Entities.Remove(entitie);
             }
             await _fileService.SaveDTOAsync(Ontologys, DataType.Ontology, GlobalConfig.OntologyPath);
-        }, o => Ontologys.Count != 0);
+        }, o => Ontologys.Count != 0 && SelectedItem is not null);
 
         public RelayCommand ApplyCommand => GetCommand(async o =>
         {

@@ -11,7 +11,7 @@ namespace PragmaticAnalyzer.Databases
     }
     public class Ontology : ViewModelBase, IDatabase, IObjectOntology
     {
-        public Guid GuidId { get; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string Name { get => Get<string>(); set => Set(value); }
         public string Description { get => Get<string>(); set => Set(value); }
         public ObservableCollection<Entitie> Entities { get; set; }
@@ -19,7 +19,7 @@ namespace PragmaticAnalyzer.Databases
 
     public class Entitie : ViewModelBase, IDatabase, IObjectOntology
     {
-        public Guid GuidId { get; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid();
         public string Name { get => Get<string>(); set => Set(value); }
         public string Description { get => Get<string>(); set => Set(value); }
     }
