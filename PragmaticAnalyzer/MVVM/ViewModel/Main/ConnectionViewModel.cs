@@ -10,6 +10,7 @@ using PragmaticAnalyzer.WorkingServer.Matcher;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
+using static PragmaticAnalyzer.WorkingServer.Matcher.ResponseMatcher;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
@@ -19,7 +20,8 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
     {
         private readonly IViewModelsService _viewModelsService;
         private readonly IApiService _apiService;
-        private SettingSearchView _settingSearchView;
+        private readonly Dictionary<string, object> _filePathToDatabase;
+        private SettingSearchView? _settingSearchView;
         private string? _wordTwoVecModelPath;
         private string? _fastTextModelPath;
         public ObservableCollection<AvailableDatabaseConfig> AvailableDatabasesConfig { get; private set; }
@@ -40,13 +42,15 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public bool FilteringCvss { get => Get<bool>(); set => Set(value); }
         public Visibility ReportVisibility { get => Get<Visibility>(); set => Set(value); }
 
-        public ConnectionViewModel(IViewModelsService viewModelsService, IApiService apiService, ObservableCollection<AvailableDatabaseConfig> availableDatabasesConfig)
+        public ConnectionViewModel(IViewModelsService viewModelsService, IApiService apiService,
+                                                          ObservableCollection<AvailableDatabaseConfig> availableDatabasesConfig, Dictionary<string, object> filePathToDatabase)
         {
             WeakReferenceMessenger.Default.Register<FastTextModelSelectedMessage>(this);
             WeakReferenceMessenger.Default.Register<Word2VecModelSelectedMessage>(this);
             _viewModelsService = viewModelsService;
             _apiService = apiService;
             AvailableDatabasesConfig = availableDatabasesConfig;
+            _filePathToDatabase = filePathToDatabase;
             Reports = [];
             ProtectionMeasures = viewModelsService.ProtectionMeasureVm.ProtectionMeasures;
             Specialists = viewModelsService.SpecialistVm.Specialists;
@@ -95,9 +99,17 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                     break;
             }
 
-            RequestMatcher request = new("127.0.0.1", "5000", RequestText, SelectedAlgorithm, FilteringCvss, usedModel);
+            List<string> usedSources = [];
+            foreach (var config in AvailableDatabasesConfig)
+            {
+                if (config.IsChecked)
+                {
+                    usedSources.Add(config.FullName);
+                }
+            }
+            RequestMatcher request = new("127.0.0.1", "5000", RequestText, SelectedAlgorithm, FilteringCvss, usedModel, usedSources);
 
-            var result = await _apiService.SendMatcherRequestAsync(request);
+            var result = await _apiService.SendRequestAsync<ResponseMatcher>(request);
             if (!result.IsSuccess)
             {
                 Progress = false;
@@ -105,7 +117,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 return;
             }
 
-            var reports = GetReports(result.Value);
+            var reports = GetReports(result.Value.MatcherObjects);
             if (reports is null)
             {
                 Progress = false;
@@ -120,9 +132,10 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
             Progress = false;
             ReportVisibility = Visibility.Visible;
-        }, o => RequestText != string.Empty && RequestText is not null && SelectedSpecialist is not null);
+        }, o => RequestText != string.Empty && RequestText is not null && SelectedSpecialist is not null && SelectedProtectionMeasures is not null
+                                                                                                                                                                                              && SelectedConsequence is not null && SelectedTechnology is not null);
 
-        public RelayCommand SaveReportCommand => GetCommand(async o =>
+        public RelayCommand SaveReportCommand => GetCommand(o =>
         {
             Progress = true;
             Progress = false;
@@ -131,7 +144,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public RelayCommand SettingSearchCommand => GetCommand(o =>
         {
             _settingSearchView = new(this);
-           _settingSearchView.ShowDialog();
+            _settingSearchView.ShowDialog();
         });
 
         public RelayCommand CloseSettingSearchCommand => GetCommand(o =>
@@ -145,7 +158,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             //SelectedVulnerabilitie = null;
         });//, o => SelectedVulnerabilitie is not null);
 
-        public ObservableCollection<Report>? GetReports(ObservableCollection<ResponseMatcher> responseMatchers)
+        public ObservableCollection<Report>? GetReports(ObservableCollection<MatcherObject> responseMatchers)
         {
             if (responseMatchers is null || responseMatchers.Count is 0)
             {
@@ -174,23 +187,28 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                     Technology = SelectedTechnology
                 };
 
-                if (vulnerabilitiesDict.TryGetValue(responseMatcher.VulnerabilitieId, out var vulnerabilitie))
-                    report.Vulnerabilitie = vulnerabilitie;
+                foreach (var source in responseMatcher.Sources)
+                {
+                    foreach (var item in _filePathToDatabase)
+                    {
+                        if (item.Key == source.Value)
+                        {
 
-                if (threatsDict.TryGetValue(responseMatcher.ThreadId, out var threat))
-                    report.Threat = threat;
+                            continue;
+                        }
+                    }
+                }
+                /*   if (vulnerabilitiesDict.TryGetValue(responseMatcher.VulnerabilitieId, out var vulnerabilitie))
+                       report.Vulnerabilitie = vulnerabilitie;
 
-                if (violatorsDict.TryGetValue(responseMatcher.ViolatorId, out var violator))
-                    report.Violator = violator;
+                   if (threatsDict.TryGetValue(responseMatcher.ThreadId, out var threat))
+                       report.Threat = threat;
 
-                if (tacticsDict.TryGetValue(responseMatcher.TacticId, out var tactic))
-                    report.Tactic = tactic;
+                   if (tacticsDict.TryGetValue(responseMatcher.TacticId, out var tactic))
+                       report.Tactic = tactic;
 
-                if (protectionMeasuresDict.TryGetValue(responseMatcher.ProtectionMeasureId, out var protectionMeasure))
-                    report.ProtectionMeasure = protectionMeasure;
-
-                if (exploitsDict.TryGetValue(responseMatcher.ExploitId, out var exploit))
-                    report.Exploit = exploit;
+                   if (exploitsDict.TryGetValue(responseMatcher.ExploitId, out var exploit))
+                       report.Exploit = exploit;*/
 
                 results.Add(report);
             }
@@ -222,5 +240,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public Violator? Violator { get => Get<Violator>(); set => Set(value); }
         public ReferenceStatus? ReferenceStatus { get => Get<ReferenceStatus>(); set => Set(value); }
         public CurrentStatus? CurrentStatus { get => Get<CurrentStatus>(); set => Set(value); }
+        public ObservableCollection<DunamicRecord>? DunamicRecord { get => Get<ObservableCollection<DunamicRecord>>(); set => Set(value); }
     }
 }

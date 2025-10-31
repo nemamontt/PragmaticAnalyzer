@@ -20,6 +20,7 @@ namespace PragmaticAnalyzer.Services
         private readonly ObservableCollection<AvailableDatabaseConfig> _availableDatabasesConfig = [];
         private readonly ObservableCollection<ModelConfig> _wordTwoVecConfig = [];
         private readonly ObservableCollection<ModelConfig> _fastTextVecConfig = [];
+        private readonly Dictionary<string, object> _filePathToDatabase = [];
         public static IApiService ApiService => new ApiService();
 
         public MainViewModel MainVm { get; }
@@ -57,7 +58,7 @@ namespace PragmaticAnalyzer.Services
             CurrentStatusVm = new([], SetVm.UpdateConfig);
             OutcomeVm = new(new(), SetVm.UpdateConfig);
             ViewerVm = new(this, _lastUpdateConfig, MainVm.OnSetCurrentView);
-            ConnectionVm = new(this, ApiService, _availableDatabasesConfig);
+            ConnectionVm = new(this, ApiService, _availableDatabasesConfig, _filePathToDatabase);
             SettingVm = new(_wordTwoVecConfig, _fastTextVecConfig, ApiService);
             InformationVm = new(MainVm.OnSetCurrentView);
             CreatorVm = new([], SaveDatabaseAsync, DeleteDatabase);
@@ -137,6 +138,7 @@ namespace PragmaticAnalyzer.Services
                 {
                     VulnerabilitieVm.Vulnerabilities.Add(vul);
                 }
+                _filePathToDatabase.Add(GlobalConfig.VulnerabilitiePath, VulnerabilitieVm.Vulnerabilities);
                 SetVm.UpdateConfig?.Invoke(File.GetLastWriteTime(GlobalConfig.VulnerabilitiePath).ToString("f"), DataType.Vulnerabilitie); //эталон без дто
             }
             var threatDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Threat>>>(GlobalConfig.ThreatPath);
@@ -146,6 +148,7 @@ namespace PragmaticAnalyzer.Services
                 {
                     ThreatVm.Threats.Add(threat);
                 }
+                _filePathToDatabase.Add(GlobalConfig.ThreatPath, ThreatVm.Threats);
                 SetVm.UpdateConfig?.Invoke(threatDto.DateCreation.ToString("f"), DataType.Threat);
             }
             var protectionMeasureDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<ProtectionMeasure>>>(GlobalConfig.ProtectionMeasurePath);
@@ -164,6 +167,7 @@ namespace PragmaticAnalyzer.Services
                 {
                     TacticVm.Tactics.Add(techniquesTactic);
                 }
+                _filePathToDatabase.Add(GlobalConfig.TacticPath, TacticVm.Tactics);
                 SetVm.UpdateConfig?.Invoke(techniquesTacticDto.DateCreation.ToString("f"), DataType.Tactic);
             }
             var exploitDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Exploit>>>(GlobalConfig.ExploitPath);
@@ -173,6 +177,7 @@ namespace PragmaticAnalyzer.Services
                 {
                     ExploitVm.Exploits.Add(exploit);
                 }
+                _filePathToDatabase.Add(GlobalConfig.ExploitPath, ExploitVm.Exploits);
                 SetVm.UpdateConfig?.Invoke(exploitDto.DateCreation.ToString("f"), DataType.Exploit);
             }
             var outcomesDto = await _fileService.LoadFileToPathAsync<DTO<Outcomes>>(GlobalConfig.OutcomesPath);
@@ -241,8 +246,9 @@ namespace PragmaticAnalyzer.Services
                     string recordsPath = Path.Combine(GlobalConfig.DatabasePath, scheme.Name + ".json");
                     var records = await _fileService.LoadDTOAsync<ObservableCollection<DunamicRecord>>(recordsPath, DataType.DunamicDatabase);
                     if (records != default)
-                    {
+                    {                   
                         CreatorVm.Databases.Last().Records.ReplaceAll(records);
+                        _filePathToDatabase.Add(recordsPath, records);
                     }
                 }
             }
@@ -261,6 +267,7 @@ namespace PragmaticAnalyzer.Services
             {
                 AvailableDatabaseConfig config = new(Path.GetFileNameWithoutExtension(filePath), filePath, fileInfo.Length, fileInfo.LastWriteTimeUtc, dataType);
                 _availableDatabasesConfig.Add(config);
+                _filePathToDatabase.Add(filePath, database);
             }
         }
 
@@ -271,19 +278,14 @@ namespace PragmaticAnalyzer.Services
             {
                 File.Delete(filePath);
                 _availableDatabasesConfig.Remove(_availableDatabasesConfig.First(config => config.FullName == filePath));
+                _filePathToDatabase.Remove(filePath);
             }
         }
 
         public async Task CompletionWorkAsync()
         {
             await _fileService.SaveDTOAsync(SettingVm.WordTwoVecConfigs, DataType.WordTwoVecConfig, GlobalConfig.WordTwoVecConfigPath);
-            await _fileService.SaveDTOAsync(SettingVm.FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);
-            await _fileService.SaveDTOAsync(CreatorVm.Databases, DataType.SchemeDatabase, GlobalConfig.SchemeDatabasePath);
-            foreach (var database in CreatorVm.Databases)
-            {
-                if (database.Records.Count == 0) continue;
-                await _fileService.SaveDTOAsync(database.Records, DataType.DunamicDatabase, Path.Combine(GlobalConfig.DatabasePath, $"{database.Name}.json"));
-            }
+            await _fileService.SaveDTOAsync(SettingVm.FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);  
         }
     }
 }

@@ -16,7 +16,8 @@ namespace PragmaticAnalyzer.Services
             DataType.ProtectionMeasures,
             DataType.Outcomes,
             DataType.SchemeDatabase,
-            DataType.Ontology
+            DataType.Ontology,
+            DataType.Violator
         ];
         private readonly JsonSerializerOptions saveOption;
 

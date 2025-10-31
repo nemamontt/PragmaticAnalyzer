@@ -1,13 +1,9 @@
-﻿using Aspose.Cells;
-using PragmaticAnalyzer.Configs;
-using PragmaticAnalyzer.Core;
+﻿using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
 using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.MVVM.Views.Main;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
@@ -101,12 +97,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
         public RelayCommand ApplyDatabaseManagerCommand => GetCommand(o =>
         {
-            if (Databases.Any(item => string.Equals(item.Name, EnteredNameDatabase, StringComparison.OrdinalIgnoreCase)))
-            {
-                MessageBox.Show("База данных с таким именем уже существует");
-                return;
-            }
-            else if (string.IsNullOrEmpty(EnteredNameDatabase))
+            if (string.IsNullOrEmpty(EnteredNameDatabase))
             {
                 MessageBox.Show("Поле с названием базы данных должно быть заполнено");
                 return;
@@ -114,7 +105,12 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
             if (_isAddDatabase)
             {
-                Databases.Add(new(EnteredNameDatabase, EnteredNameIndexPrefix, EnteredFieldsDatabase ?? []));
+                if (Databases.Any(item => string.Equals(item.Name, EnteredNameDatabase, StringComparison.OrdinalIgnoreCase)))
+                {
+                    MessageBox.Show("База данных с таким именем уже существует");
+                    return;
+                }
+                Databases.Add(new(EnteredNameDatabase.Replace(" ", ""), EnteredNameIndexPrefix, EnteredFieldsDatabase ?? []));
             }
             else
             {

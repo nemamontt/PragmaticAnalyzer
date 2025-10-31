@@ -74,7 +74,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 {
                     Path = finalPath,
                     Algorithm = Algorithm.WordTwoVec,
-                    IsTrained = false,
                     IsUsed = WordTwoVecConfigs.Count is 0
                 });
                 await _fileService.SaveDTOAsync(WordTwoVecConfigs, DataType.WordTwoVecConfig, GlobalConfig.WordTwoVecConfigPath);
@@ -126,7 +125,13 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
             if (result.IsSuccess)
             {
-                SelectedWordTwoVecConfig.IsTrained = true;
+                WordTwoVecConfigs.Add(new()
+                {
+                    Path = result.Value.ModelPath,
+                    Algorithm = Algorithm.WordTwoVec,
+                    IsUsed = WordTwoVecConfigs.Count is 0
+                });
+                await _fileService.SaveDTOAsync(WordTwoVecConfigs, DataType.WordTwoVecConfig, GlobalConfig.WordTwoVecConfigPath);
             }
             else
             {
@@ -135,7 +140,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             }
 
             ProgressWordTwoVec = false;
-        }, o => SelectedWordTwoVecConfig?.IsTrained is false);
+        }, o => SelectedWordTwoVecConfig is not null);
 
         public RelayCommand TrainWordTwoVecModelCommand => GetCommand(async o =>
         {
@@ -150,7 +155,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 {
                     Path = result.Value.ModelPath,
                     Algorithm = Algorithm.WordTwoVec,
-                    IsTrained = true,
                     IsUsed = WordTwoVecConfigs.Count is 0
                 });
                 await _fileService.SaveDTOAsync(WordTwoVecConfigs, DataType.WordTwoVecConfig, GlobalConfig.WordTwoVecConfigPath);
@@ -190,7 +194,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 {
                     Path = finalPath,
                     Algorithm = Algorithm.FastText,
-                    IsTrained = false,
                     IsUsed = isUsed
                 });
                 await _fileService.SaveDTOAsync(FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);
@@ -243,7 +246,13 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
             if (result.IsSuccess)
             {
-                SelectedFastTextConfig.IsTrained = true;
+                FastTextConfigs.Add(new()
+                {
+                    Path = result.Value.ModelPath,
+                    Algorithm = Algorithm.FastText,
+                    IsUsed = FastTextConfigs.Count is 0
+                });
+                await _fileService.SaveDTOAsync(FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);
             }
             else
             {
@@ -252,28 +261,28 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             }
 
             ProgressFastText = false;
-        }, o => SelectedFastTextConfig?.IsTrained is false);
+        }, o => SelectedFastTextConfig is not null);
 
         public RelayCommand TrainFastTextModelCommand => GetCommand(async o =>
         {
             ProgressFastText = true;
 
             RequestTrain request = new("127.0.0.1", "5000", Algorithm.FastText);
-            var result = await _apiService.SendTrainRequestAsync(request);
-
+            var result = await _apiService.SendRequestAsync<ResponseTrain>(request);
+            
             if (result.IsSuccess)
             {
                 FastTextConfigs.Add(new()
                 {
                     Path = result.Value.ModelPath,
                     Algorithm = Algorithm.FastText,
-                    IsTrained = true,
                     IsUsed = FastTextConfigs.Count is 0
                 });
                 await _fileService.SaveDTOAsync(FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);
             }
             else
             {
+                ProgressFastText = false;
                 MessageBox.Show(result.ErrorMessage);
             }
 

@@ -1,5 +1,6 @@
 ﻿using PragmaticAnalyzer.MVVM.ViewModel.Main;
 using PragmaticAnalyzer.Services;
+using System.ComponentModel;
 
 namespace PragmaticAnalyzer.MVVM.Views.Main
 {
@@ -11,13 +12,23 @@ namespace PragmaticAnalyzer.MVVM.Views.Main
             InitializeComponent();
             _vm = vm;
             DataContext = _vm;
-            Closed += OnClosed;
+            Closing += OnClosing;
         }
 
-        private async void OnClosed(object sender, EventArgs e)
+        private async void OnClosing(object sender, CancelEventArgs e)
         {
-            await _vm.OnCompletionWork();
-            await ViewModelsService.ApiService.StopServerAsync();
+            e.Cancel = true;
+
+            try
+            {
+                await ViewModelsService.ApiService.StopServerAsync();
+                await _vm.OnCompletionWork();
+            }
+            finally
+            {
+                Closing -= OnClosing;
+                Close();
+            }
         }
     }
 }
