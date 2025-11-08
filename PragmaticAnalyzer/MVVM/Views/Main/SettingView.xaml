@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
+             xmlns:vm="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+             d:DataContext="{d:DesignInstance vm:SettingViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
@@ -25,12 +27,13 @@
                     BorderBrush="Black">
                 <Grid  Margin="5">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
+                        <RowDefinition Height="auto"/>
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0"
+                          Margin="5">
                         <TextBlock Text="Настройка моделей Word2Vec"
                                    VerticalAlignment="Center"
                                    FontSize="30"
@@ -64,16 +67,13 @@
                         </ComboBox>
 
                         <Button Grid.Column="1"
-                                Margin="1"
                                 Content="Загрузить модель"
-                                Cursor="Hand"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding UploadWordTwoVecModelCommand}" />
 
-
                         <Button Grid.Column="2"
-                                Margin="1"
                                 Content="Обучить модель"
-                                Cursor="Hand"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding TrainWordTwoVecModelCommand}" />
                     </Grid>
 
@@ -86,25 +86,22 @@
                         </Grid.ColumnDefinitions>
 
                         <ProgressBar Grid.Column="0"
-                                     Margin="1"
+                                     Style="{StaticResource RoundedProgressBarStyle}"
                                      IsIndeterminate="{Binding ProgressWordTwoVec}" />
 
                         <Button Grid.Column="1"
-                                Margin="1"
-                                Cursor="Hand"
                                 Content="Использовать модель"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding UseWordTwoVecModelCommand}" />
 
                         <Button Grid.Column="2"
-                                Margin="1"
                                 Content="Удалить модель"
-                                Cursor="Hand"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding DeleteWordTwoVecModelCommand}" />
 
                         <Button Grid.Column="3"
-                                Margin="1"
                                 Content="Дообучить модель"
-                                Cursor="Hand"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding RetrainWordTwoVecModelCommand}" />
                     </Grid>
                 </Grid>
@@ -117,12 +114,13 @@
                     BorderBrush="Black">
                 <Grid  Margin="5">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
+                        <RowDefinition Height="auto"/>
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0"
+                          Margin="5">
                         <TextBlock Text="Настройка моделей FastText"
                                    VerticalAlignment="Center"
                                    FontSize="30"
@@ -156,15 +154,13 @@
                         </ComboBox>
 
                         <Button Grid.Column="1"
-                                Margin="1"
                                 Content="Загрузить модель"
-                                Cursor="Hand"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding UploadFastTextModelCommand}" />
 
                         <Button Grid.Column="2"
-                                Margin="1"
                                 Content="Обучить модель"
-                                Cursor="Hand"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding TrainFastTextModelCommand}" />
                     </Grid>
 
@@ -177,25 +173,22 @@
                         </Grid.ColumnDefinitions>
 
                         <ProgressBar Grid.Column="0"
-                                     Margin="1"
+                                     Style="{StaticResource RoundedProgressBarStyle}"
                                      IsIndeterminate="{Binding ProgressFastText}" />
 
                         <Button Grid.Column="1"
-                                Margin="1"
-                                Cursor="Hand"
                                 Content="Использовать модель"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding UseFastTextModelCommand}" />
 
                         <Button Grid.Column="2"
-                                Margin="1"
                                 Content="Удалить модель"
-                                Cursor="Hand"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding DeleteFastTextModelCommand}" />
 
                         <Button Grid.Column="3"
-                                Margin="1"
                                 Content="Дообучить модель"
-                                Cursor="Hand"
+                                Style="{StaticResource OutlinedGrayButtonStyle}"
                                 Command="{Binding RetrainFastTextModelCommand}" />
                     </Grid>
                 </Grid>

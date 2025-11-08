@@ -11,8 +11,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
     public class SetViewModel : ViewModelBase
     {
-        private readonly IMessageService _messageService;
-        private readonly IDialogService _dialogService;
         private readonly IFileService _fileService;
         private readonly IViewModelsService _viewModelsService;
         public Func<Task>? UpdateThreatDb;
@@ -37,8 +35,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         {
             LastUpdateConfig = lastUpdateConfig;
             DisplayedPaths = new();
-            _messageService = new MessageService();
-            _dialogService = new DialogService();
             _fileService = new FileService();
             _viewModelsService = viewModelsService;
             UpdateConfig += OnUpdateLastUpdateConfig;
@@ -57,7 +53,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
         public RelayCommand SetCommand => GetCommand(async o =>
         {
-            var pathDto = _dialogService.OpenFileDialog(DialogService.JsonFilter);
+            var pathDto = DialogService.OpenFileDialog(DialogService.JsonFilter);
             if (pathDto is null) return;
             var rawDto = await _fileService.LoadFileToPathAsync<DTO<object>>(pathDto);
             if (rawDto is null) return;

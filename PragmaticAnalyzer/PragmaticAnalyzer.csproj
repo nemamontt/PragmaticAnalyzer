@@ -19,7 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\architectureFasttext.jpg" />
+    <None Remove="Images\attentionFasttext.jpg" />
+    <None Remove="Images\directDistributionFasttext.png" />
     <None Remove="Images\fasttext_ico.png" />
+    <None Remove="Images\ngrammsFasttext.png" />
+    <None Remove="Images\reversePropagationFasttext.png" />
     <None Remove="Images\scheme.jpg" />
     <None Remove="Images\tfIdf_ico.png" />
     <None Remove="Images\wordTwoVec_ico.png" />
@@ -30,8 +35,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\architectureFasttext.jpg" />
+    <Resource Include="Images\attentionFasttext.jpg" />
+    <Resource Include="Images\directDistributionFasttext.png" />
     <Resource Include="Images\fasttext_ico.png" />
     <Resource Include="Images\icon.ico" />
+    <Resource Include="Images\ngrammsFasttext.png" />
+    <Resource Include="Images\reversePropagationFasttext.png" />
     <Resource Include="Images\scheme.jpg" />
     <Resource Include="Images\tfIdf_ico.png" />
     <Resource Include="Images\wordTwoVec_ico.png" />
@@ -40,12 +50,9 @@
   <ItemGroup>
     <PackageReference Include="Aspose.Cells" Version="24.11.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="DocX" Version="5.0.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Styles\" />
   </ItemGroup>
 
 </Project>

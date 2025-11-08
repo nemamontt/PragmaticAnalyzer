@@ -1,6 +1,4 @@
 ﻿using PragmaticAnalyzer.Core;
-using System.Diagnostics;
-using System.IO;
 using PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.Main

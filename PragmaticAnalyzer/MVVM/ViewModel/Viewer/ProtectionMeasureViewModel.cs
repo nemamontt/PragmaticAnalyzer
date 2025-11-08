@@ -60,7 +60,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             SelectedProtectionMeasure.NameGroup = protectionMeasure.NameGroup;
             SelectedProtectionMeasure.Name = protectionMeasure.Name;
             SelectedProtectionMeasure.Number = protectionMeasure.Number;
-            SelectedProtectionMeasure.Description = protectionMeasure.Description;
+            SelectedProtectionMeasure.FullName = protectionMeasure.FullName;
             SelectedProtectionMeasure.SecurityClasses = protectionMeasure.SecurityClasses;
         }
     }

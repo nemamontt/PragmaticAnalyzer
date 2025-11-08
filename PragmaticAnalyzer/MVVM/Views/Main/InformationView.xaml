@@ -34,16 +34,11 @@
                     <Button Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Margin="10"
-                            Cursor="Hand"             
-                            Background="AliceBlue"
+                            Content="Просмотреть информацию об алгоритме Fasttext"
+                            Style="{StaticResource OutlinedGrayButtonStyle}"
                             Command="{Binding ShowInformationCommand}"
-                            CommandParameter="{Binding FasttextInformationVm}">
-                        <TextBlock Text="Просмотреть информацию об алгоритме Fasttext"
-                                   TextWrapping="Wrap"
-                                   FontFamily="Consolas"
-                                   FontSize="20" />
-                    </Button>
+                            CommandParameter="{Binding FasttextInformationVm}" />
+
 
                     <Image Grid.Row="1"
                            Grid.Column="0"
@@ -81,17 +76,11 @@
                     <Button Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Margin="10"
-                            Cursor="Hand"
-                            Background="AliceBlue"
+                            Content="Просмотреть информацию об алгоритме Word2Vec"
+                            Style="{StaticResource OutlinedGrayButtonStyle}"
                             Command="{Binding ShowInformationCommand}"
-                            CommandParameter="{Binding WordTwoVectInformationVm}">
-                        <TextBlock Text="Просмотреть информацию об алгоритме Word2Vec"
-                                   TextWrapping="Wrap"
-                                   FontFamily="Consolas"
-                                   FontSize="20" />
-                    </Button>
-
+                            CommandParameter="{Binding WordTwoVectInformationVm}" />
+                    
                     <Image Grid.Row="1"
                            Grid.Column="0"
                            Margin="10"
@@ -108,7 +97,7 @@
                 </Grid>
             </Border>
 
-            <Border BorderBrush="Yellow"
+            <Border BorderBrush="Purple"
                     BorderThickness="2"
                     CornerRadius="10"
                     Margin="10"
@@ -128,16 +117,10 @@
                     <Button Grid.Row="0"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
-                            Margin="10"
-                            Cursor="Hand"
-                            Background="AliceBlue"
+                            Content="Просмотреть информацию об алгоритме Tf-Idf"
+                            Style="{StaticResource OutlinedGrayButtonStyle}"
                             Command="{Binding ShowInformationCommand}"
-                            CommandParameter="{Binding TfIdfInformationVm}">
-                        <TextBlock Text="Просмотреть информацию об алгоритме Tf-Idf"
-                                   TextWrapping="Wrap"
-                                   FontFamily="Consolas"
-                                   FontSize="20" />
-                    </Button>
+                            CommandParameter="{Binding TfIdfInformationVm}" />
 
                     <Image Grid.Row="1"
                            Grid.Column="0"

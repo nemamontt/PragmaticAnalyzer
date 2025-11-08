@@ -6,7 +6,8 @@ namespace PragmaticAnalyzer.MVVM.Views.Main
 {
     public partial class MainView
     {
-        private MainViewModel _vm;
+        private readonly MainViewModel _vm;
+
         public MainView(MainViewModel vm)
         {
             InitializeComponent();

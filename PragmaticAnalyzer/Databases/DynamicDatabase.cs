@@ -125,7 +125,7 @@ namespace PragmaticAnalyzer.Databases
         }
     }
 
-    public class DynamicRecord : ViewModelBase, IDatabase
+    public class DynamicRecord : ViewModelBase, IDatabase, IHasDescription
     {
         [JsonIgnore]
         public string NameDatadase { get => Get<string>(); set => Set(value); }

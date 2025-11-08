@@ -14,7 +14,14 @@ namespace PragmaticAnalyzer
             var mainView = new MainView(mainVm);
             mainView.Show();
 
-            await viewModelsService.InitializeAsync();  
+            try
+            {
+                await viewModelsService.InitializeAsync();
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             base.OnStartup(e);
         }

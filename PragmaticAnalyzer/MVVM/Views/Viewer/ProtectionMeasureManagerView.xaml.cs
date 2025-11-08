@@ -35,7 +35,7 @@ namespace PragmaticAnalyzer.MVVM.Views.Viewer
                 NameGroupMeasure.Text = protectionMeasure.NameGroup;
                 NameMeasureTextBox.Text = protectionMeasure.Name;
                 NumberMeasureTextBox.Text = protectionMeasure.Number;
-                DescriptionMeasure.Text = protectionMeasure.Description;
+                DescriptionMeasure.Text = protectionMeasure.FullName;
             }
 
             DoneButton.Click += (s, e) =>
@@ -53,7 +53,7 @@ namespace PragmaticAnalyzer.MVVM.Views.Viewer
                     NameGroup = NameGroupMeasure.Text,
                     Name = NameMeasureTextBox.Text,
                     Number = NumberMeasureTextBox.Text,
-                    Description = DescriptionMeasure.Text,
+                    FullName = DescriptionMeasure.Text,
                     SecurityClasses = securityClasses,
                 };
 

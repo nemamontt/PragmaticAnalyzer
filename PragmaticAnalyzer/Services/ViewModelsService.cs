@@ -259,7 +259,7 @@ namespace PragmaticAnalyzer.Services
 
             SettingVm.NotifySelectedModels();
             _availableDatabasesConfig.ReplaceAll(FileService.GetAvailableDatabaseConfigs());
-           // await ApiService.StartServerAsync();
+            ApiService.StartServer();
         }
 
         public async Task SaveDatabaseAsync(object database, string name, DataType dataType)

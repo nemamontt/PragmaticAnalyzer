@@ -46,7 +46,7 @@ namespace PragmaticAnalyzer.Configs
         //
         // Сводка:
         //     Пути к информационным ресурсам.
-        public static readonly string LinkOne = Path.Combine(ResourcePath, "linkOne.pdf");
+        public static readonly string LinkOne = "https://fasttext.cc/";
         public static readonly string LinkTwo = Path.Combine(ResourcePath, "linkTwo.pdf");
         public static readonly string LinkThree = Path.Combine(ResourcePath, "linkThree.pdf");
         public static readonly string LinkFour = Path.Combine(ResourcePath, "linkFour.pdf");

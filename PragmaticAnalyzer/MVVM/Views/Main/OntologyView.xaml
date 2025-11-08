@@ -5,23 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
+             xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
              xmlns:vmMain="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+             xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
              d:DataContext="{d:DesignInstance Type=vmMain:OntologyViewModel}"
              mc:Ignorable="d"
-             d:DesignHeight="450"
+             d:DesignHeight="550"
              d:DesignWidth="800">
+    <UserControl.Resources>
+        <assist:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </UserControl.Resources>
+
     <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="0.12*" />
         </Grid.RowDefinitions>
 
-        <TreeView ItemsSource="{Binding Ontologys}">
+        <TreeView ItemsSource="{Binding Ontologys}"
+                  Margin="5">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
                     <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}"
@@ -38,18 +45,12 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-         
-        <Border Grid.Column="1"
-                Margin="5"
-                BorderBrush="Black"
-                BorderThickness="1">
-            <ScrollViewer Margin="2">
-                <TextBlock Text="{Binding SelectedItem.Description}"
-                           FontSize="15"
-                           TextWrapping="Wrap" 
-                           FontFamily="Consolas"/>
-            </ScrollViewer>
-        </Border>
+
+        <cc:LabeledValueBox  Grid.Column="1"
+                             Margin="5"
+                             LabelText="Описание"
+                             ValueText="{Binding SelectedItem.Description}"
+                             Visibility="{Binding SelectedItem, Converter={StaticResource NullToVisibilityConverter}}" />
 
         <Border BorderBrush="Black"
                 BorderThickness="1"
@@ -57,46 +58,26 @@
                 Grid.Column="0"
                 Grid.Row="1"
                 Grid.ColumnSpan="3"
-                Margin="4 4 2 4">
+                Margin="5">
             <StackPanel Grid.Column="0"
                         Margin="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Button Height="50"
-                        Content="Загрузить"
-                        Margin="2"
-                        Command="{Binding LoadCommand}"
-                        Cursor="Hand"
-                        Width="150"
-                        FontFamily="Consolas"
-                        FontSize="16" />
-                
-                <Button Height="50"
-                        Content="Добавить"
-                        Margin="2"
-                        Command="{Binding AddCommand}"
-                        Cursor="Hand"
-                        Width="150"
-                        FontFamily="Consolas"
-                        FontSize="16" />
-                
-                <Button Height="50"
-                        Content="Изменить"
-                        Margin="2"
-                        Command="{Binding ChangeCommand}"
-                        Cursor="Hand"
-                        Width="150"
-                        FontFamily="Consolas"
-                        FontSize="16" />
-                
-                <Button Height="50"
-                        Content="Удалить"
-                        Margin="2"
-                        Command="{Binding DeleteCommand}"
-                        Cursor="Hand"
-                        Width="150"
-                        FontFamily="Consolas"
-                        FontSize="16" />
+                <Button Content="Загрузить"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding LoadCommand}" />
+
+                <Button Content="Добавить"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding AddCommand}" />
+
+                <Button Content="Изменить"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding ChangeCommand}" />
+
+                <Button Content="Удалить"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding DeleteCommand}" />
             </StackPanel>
         </Border>
     </Grid>

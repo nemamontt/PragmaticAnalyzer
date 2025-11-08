@@ -34,26 +34,21 @@ namespace PragmaticAnalyzer.Services
             };
         }
 
-        public async Task StartServerAsync()
+        public void StartServer()
         {
-            if(!_serverProcess.HasExited)
-            {
-                return;
-            }
             _serverProcess.Start();
-            await Task.Delay(5000);
         }
 
         public async Task StopServerAsync()
         {
-           // await _httpClient.PostAsync("http://127.0.0.1:5000/Shutdown", new StringContent(""));
-     /*       await Task.Delay(1000);
-            if (!_serverProcess.HasExited)
-            {
-                _serverProcess.Kill();
-            }
-            await _serverProcess.WaitForExitAsync();
-            _serverProcess.Dispose();*/
+           await _httpClient.PostAsync("http://127.0.0.1:5000/Shutdown", new StringContent(""));
+            /*       await Task.Delay(1000);
+                   if (!_serverProcess.HasExited)
+                   {
+                       _serverProcess.Kill();
+                   }
+                   await _serverProcess.WaitForExitAsync();
+                   _serverProcess.Dispose();*/
         }
 
         public async Task<Result<T>> SendRequestAsync<T>(IRequest request)

@@ -3,14 +3,18 @@ using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
+using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.Messages;
+using PragmaticAnalyzer.MVVM.Model;
 using PragmaticAnalyzer.MVVM.Views;
+using PragmaticAnalyzer.Services;
 using PragmaticAnalyzer.WorkingServer.Matcher;
-using PragmaticAnalyzer.DTO;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
+using Xceed.Document.NET;
+using Xceed.Words.NET;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
@@ -108,6 +112,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 }
             }
             RequestMatcher request = new("127.0.0.1", "5000", RequestText, SelectedAlgorithm, FilteringCvss, usedModel, usedSources);
+            //RequestMatcher request = new("127.0.0.1", "5000", "Уязвиомсть", Algorithm.TfIdf, false, usedModel, usedSources);
 
             var result = await _apiService.SendRequestAsync<ResponseMatcher>(request);
             if (!result.IsSuccess)
@@ -133,11 +138,22 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             Progress = false;
             ReportVisibility = Visibility.Visible;
         }, o => RequestText != string.Empty && RequestText is not null && SelectedSpecialist is not null && SelectedProtectionMeasures is not null
-                                                                                                                                                                                              && SelectedConsequence is not null && SelectedTechnology is not null);
+                    && SelectedConsequence is not null && SelectedTechnology is not null);
 
-        public RelayCommand SaveReportCommand => GetCommand(o =>
+        public RelayCommand SaveReportCommand => GetCommand(async o =>
         {
+            var savePath = DialogService.SaveFileDialog($"Рапорт от {DateTime.Now:D}", DialogService.WordFilter);
             Progress = true;
+            try
+            {
+                using var doc = DocX.Create(savePath, DocumentTypes.Document);
+                await Task.Run(() => ReportWorker.CreateReport(doc, SelectedReport));
+                doc.Save();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             Progress = false;
         }, o => SelectedReport is not null);
 
@@ -215,7 +231,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                                     var dumanicRecords = (ObservableCollection<DynamicRecord>)_filePathToDatabase.FirstOrDefault(db => db.Key == item.Key).Value;
                                     foreach (var dunamicRecord in dumanicRecords)
                                     {
-                                        if(dunamicRecord.GuidId == source.Key)
+                                        if (dunamicRecord.GuidId == source.Key)
                                         {
                                             report.DynamicRecords.Add(dunamicRecord);
                                         }

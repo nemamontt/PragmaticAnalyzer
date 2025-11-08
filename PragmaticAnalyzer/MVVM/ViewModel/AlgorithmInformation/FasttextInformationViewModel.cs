@@ -8,6 +8,15 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation
     {
         public RelayCommand OpenFileCommand => GetCommand(o =>
         {
+            if(o is "https://fasttext.cc/")
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = (string)o,
+                    UseShellExecute = true
+                });
+            }
+
             if (o is string path)
             {
                 if (!File.Exists(path))
@@ -15,7 +24,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation
                     return;
                 }
 
-                if (Path.GetExtension(path).Equals(".pdf", StringComparison.OrdinalIgnoreCase)) //????
+                if (Path.GetExtension(path).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
                 {
                     try
                     {

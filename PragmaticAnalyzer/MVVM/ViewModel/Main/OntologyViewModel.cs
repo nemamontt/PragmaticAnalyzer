@@ -12,10 +12,9 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
     public class OntologyViewModel : ViewModelBase
     {
         private readonly IFileService _fileService;
-        private readonly IDialogService _dialogService;
         private OntologyManagerView? _manager;
         public ObservableCollection<Ontology> Ontologys { get; set; }
-        public IObjectOntology SelectedItem { get => Get<IObjectOntology>(); set => Set(value); }
+        public IObjectOntology? SelectedItem { get => Get<IObjectOntology>(); set => Set(value); }
         public string EnteredName { get => Get<string>(); set => Set(value); }
         public string EnteredDescription { get => Get<string>(); set => Set(value); }
         public bool IsAdd { get => Get<bool>(); set => Set(value); }
@@ -26,13 +25,12 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         {  
             Ontologys = ontologys;
             _fileService = new FileService();
-            _dialogService = new DialogService();
             IsEnabledCheckBox = true;
         }
 
         public RelayCommand LoadCommand => GetCommand(async o =>
         {
-            var path = _dialogService.OpenFileDialog(DialogService.JsonFilter);
+            var path = DialogService.OpenFileDialog(DialogService.JsonFilter);
             if (path is null) return;
             var ontology = await _fileService.LoadDTOAsync<Ontology>(path, DataType.Ontology);
             if (ontology is null) return;
@@ -78,6 +76,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 parent?.Entities.Remove(entitie);
             }
             await _fileService.SaveDTOAsync(Ontologys, DataType.Ontology, GlobalConfig.OntologyPath);
+            SelectedItem = null;
         }, o => Ontologys.Count != 0 && SelectedItem is not null);
 
         public RelayCommand ApplyCommand => GetCommand(async o =>
@@ -110,12 +109,14 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             ResetUIManager();
             _manager?.Close();
             await _fileService.SaveDTOAsync(Ontologys, DataType.Ontology, GlobalConfig.OntologyPath);
+            SelectedItem = null;
         });
 
         public RelayCommand BackCommand => GetCommand(o =>
         {
             ResetUIManager();
             _manager?.Close();
+            SelectedItem = null;
         });
 
         public RelayCommand SelectedItemChangedCommand => GetCommand(selectedItem =>
@@ -127,7 +128,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         {
             EnteredName = string.Empty;
             EnteredDescription = string.Empty;
-            AddNewEntity = false;   
+            AddNewEntity = false; 
         }
     }
 }

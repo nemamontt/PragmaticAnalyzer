@@ -106,15 +106,8 @@
                            Style="{StaticResource Description}" />
                 <TextBlock Text="Связанные угрозы:"
                            Style="{StaticResource Heading}" />
-                <ListBox ItemsSource="{Binding SelectedItemConsequence.NameThreats}"
-                         Margin="1">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"
-                                       Style="{StaticResource Description}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <TextBlock Text="{Binding SelectedItemConsequence.NameThreatsToString}"
+                           Style="{StaticResource Description}" />
             </StackPanel>
         </Grid>
         

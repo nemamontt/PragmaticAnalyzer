@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="PragmaticAnalyzer.CastomControls.LabeledValueBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:PragmaticAnalyzer.CastomControls"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="ParameterBorderStyle"
+               TargetType="Border">
+            <Setter Property="BorderBrush"
+                    Value="Black" />
+            <Setter Property="BorderThickness"
+                    Value="2" />
+            <Setter Property="Padding"
+                    Value="10" />
+            <Setter Property="Margin"
+                    Value="5" />
+            <Setter Property="Background"
+                    Value="White" />
+            <Setter Property="CornerRadius"
+                    Value="5" />
+        </Style>
+        <Style x:Key="HeadingText"
+               TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="15" />
+            <Setter Property="FontFamily"
+                    Value="Consolas" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="Margin"
+                    Value=" 0,0,0,5" />
+        </Style>
+        <Style x:Key="DynamicText"
+               TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="15" />
+            <Setter Property="FontFamily"
+                    Value="Consolas" />
+            <Setter Property="TextWrapping"
+                    Value="Wrap" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border Style="{StaticResource ParameterBorderStyle}">
+        <StackPanel>
+            <TextBlock Text="{Binding LabelText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                       Style="{StaticResource HeadingText}" />
+
+            <TextBlock Text="{Binding ValueText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                       Style="{StaticResource DynamicText}" />
+        </StackPanel>
+    </Border>
+</UserControl>

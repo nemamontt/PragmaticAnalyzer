@@ -7,10 +7,10 @@
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
              xmlns:vm="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
              xmlns:db="clr-namespace:PragmaticAnalyzer.Databases"
-             d:DataContext="{d:DesignInstance Type=vm:ConnectionViewModel}"
+             d:DataContext="{d:DesignInstance vm:ConnectionViewModel}"
              mc:Ignorable="d"
-             d:Height="450"
-             d:Width="800">
+             d:Height="800"
+             d:Width="1200">
     <UserControl.Resources>
         <assist:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
         <assist:ListToStringConverter x:Key="ListToStringConverter" />
@@ -115,84 +115,58 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="2">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0"
-                               Text="Текстовое описание:"
-                               FontSize="15"
-                               FontFamily="Consolas"
-                               FontWeight="Bold"
-                               Margin="1"
-                               TextWrapping="Wrap" />
+                <TextBlock Grid.Column="0"
+                           Text="Текстовое описание:"
+                           FontSize="15"
+                           FontFamily="Consolas"
+                           FontWeight="Bold"
+                           Margin="5"
+                           TextWrapping="Wrap" />
 
-                    <Border Grid.Column="1"
-                            BorderBrush="Black"
-                            BorderThickness="1"
-                            Margin="1">
-                        <TextBox FontSize="15"
-                                 FontFamily="Consolas"
-                                 Cursor="IBeam"
-                                 Text="{Binding RequestText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 TextWrapping="Wrap" />
-                    </Border>
-                </Grid>
-            </Border>
+                <TextBox Grid.Column="1"
+                         FontSize="15"
+                         Margin="2"
+                         FontFamily="Consolas"
+                         Cursor="IBeam"
+                         Text="{Binding RequestText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="Wrap"
+                         BorderThickness="1"
+                         BorderBrush="Black" />
 
-            <Border Grid.Row="1"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="2">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+            </Grid>
 
-                    <Button Grid.Column="0"
-                            Margin="1"
-                            Cursor="Hand"
-                            Command="{Binding GenerateCommand}">
-                        <TextBlock Text="Сформировать отчет"
-                                   FontSize="15"
-                                   FontFamily="Consolas" />
-                    </Button>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1"
-                            Margin="1"
-                            Cursor="Hand"
-                            Command="{Binding SaveReportCommand}">
-                        <TextBlock Text="Сохранить отчет"
-                                   FontSize="15"
-                                   FontFamily="Consolas" />
-                    </Button>
+                <Button Grid.Column="0"
+                        Content="Сформировать отчет"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding GenerateCommand}" />
 
-                    <Button Grid.Column="2"
-                            Margin="1"
-                            Cursor="Hand"
-                            Command="{Binding SettingSearchCommand}">
-                        <TextBlock Text="Настройки поиска"
-                                   FontSize="15"
-                                   FontFamily="Consolas" />
-                    </Button>
-                </Grid>
-            </Border>
+                <Button Grid.Column="1"
+                        Content="Сохранить отчет"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding SaveReportCommand}" />
 
-            <Border Grid.Row="2"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="2">
-                <ProgressBar Margin="1"
-                             IsIndeterminate="{Binding Progress}" />
-            </Border>
+                <Button Grid.Column="2"
+                        Content="Настройки поиска"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding SettingSearchCommand}" />
+            </Grid>
+
+            <ProgressBar Grid.Row="2"
+                         Style="{StaticResource RoundedProgressBarStyle}"
+                         IsIndeterminate="{Binding Progress}" />
         </Grid>
 
         <Grid Grid.Row="1"
@@ -214,25 +188,22 @@
                            Text="Коэффициент близости:"
                            FontSize="15"
                            FontWeight="Bold"
-                           Margin="1"
+                           Margin="5,5,5,0"
                            Width="110"
                            TextWrapping="Wrap" />
 
-                <Border Grid.Row="1"
-                        BorderThickness="1"
-                        BorderBrush="Black"
-                        CornerRadius="5"
-                        Padding="2">
-                    <ListBox ItemsSource="{Binding Reports}"
-                             SelectedItem="{Binding SelectedReport}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Coefficient}"
-                                           Style="{StaticResource DynamicText}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Border>
+                <ListBox Grid.Row="1"
+                         BorderThickness="2"
+                         Margin="5,0,5,5"
+                         ItemsSource="{Binding Reports}"
+                         SelectedItem="{Binding SelectedReport}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Coefficient}"
+                                       Style="{StaticResource DynamicText}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
 
             <Border Grid.Row="0"
@@ -240,7 +211,7 @@
                     BorderBrush="Black"
                     BorderThickness="1"
                     CornerRadius="5"
-                    Padding="2"
+                    Margin="5"
                     DataContext="{Binding SelectedReport}"
                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
                 <Grid>
@@ -259,7 +230,7 @@
 
                     <ScrollViewer Grid.Row="1">
                         <WrapPanel Orientation="Horizontal">
-                            
+
                             <!--БД Специалист по ЗИ-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Specialist}"
@@ -269,6 +240,7 @@
                                                Style="{StaticResource HeadingText}"
                                                FontSize="20"
                                                Margin="5" />
+
                                     <WrapPanel>
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
@@ -278,6 +250,7 @@
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
+
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="Наименование вышестоящего ОВУ "
@@ -286,6 +259,7 @@
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
+
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="Наименование подчиненного ОВУ  "
@@ -294,6 +268,7 @@
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
+
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="Наименование взаимодействующих ОВУ "
@@ -302,6 +277,7 @@
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
+
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="Статус по выявленной уязвимости"
@@ -310,6 +286,7 @@
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
+
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="Предпринятые действия"
@@ -318,6 +295,7 @@
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
+
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="Наименование СС СОПКА"
@@ -326,6 +304,7 @@
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
+
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
                                                 <TextBlock Text="Cписок принятых мер защиты"
@@ -337,37 +316,381 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            
-                            <!--БД Эталонные состояния ПФ СОПКА-->
+
+                            <!--БД Негативные последствия-->
                             <Border Style="{StaticResource MainBorder}"
-                                    DataContext="{Binding ReferenceStatus}"
+                                    DataContext="{Binding Consequence}"
                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
                                 <StackPanel>
-                                    <TextBlock Text="Источник знаний: БД Эталонные состояния ПФ СОПКА"
+                                    <TextBlock Text="Источник знаний: БД Негативные последствия"
                                                Style="{StaticResource HeadingText}"
                                                FontSize="20"
                                                Margin="5" />
                                     <WrapPanel>
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
-                                                <TextBlock Text="Эталонное состояние"
+                                                <TextBlock Text="Порядковый номер"
                                                            Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding NameSoftware}"
+                                                <TextBlock Text="{Binding Number}"
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
                                         <Border Style="{StaticResource ParameterBorderStyle}">
                                             <StackPanel>
-                                                <TextBlock Text="Время поступления ПД в систему"
+                                                <TextBlock Text="Наименование"
                                                            Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding ArrivalTime, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}"
+                                                <TextBlock Text="{Binding Name}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Ущерб"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Damage}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Угрозы"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding NameThreats, Converter={StaticResource ListToStringConverter}}"
                                                            Style="{StaticResource DynamicText}" />
                                             </StackPanel>
                                         </Border>
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            
+
+                            <!--БД Технологии оценки риска-->
+                            <Border Style="{StaticResource MainBorder}"
+                                    DataContext="{Binding Technology}"
+                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="Источник знаний: БД Технологии оценки риска"
+                                               Style="{StaticResource HeadingText}"
+                                               FontSize="20"
+                                               Margin="5" />
+                                    <WrapPanel>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Порядковый номер"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding SequenceNumber}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Метод"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding MethodName}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Описание"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Description}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Применение"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Usage}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Масштаб"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Scale}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Временной горизонт"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Horizont}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Уровень принятия решений"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Level}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Необходимость информации"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Necessity}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Опыт специалиста"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Experience}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Качество/количество"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Сharacteristic}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Применение усилий"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Effort}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--БД Нарушителей-->
+                            <Border Style="{StaticResource MainBorder}"
+                                    DataContext="{Binding Violator}"
+                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="Источник знаний: БД Нарушителей"
+                                               Style="{StaticResource HeadingText}"
+                                               FontSize="20"
+                                               Margin="5" />
+                                    <WrapPanel>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Идентификатор"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding DisplayedId}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Источник угрозы"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Source, Converter={StaticResource EnumDescriptionConverter}}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Потенциал"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Potential, Converter={StaticResource EnumDescriptionConverter}}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Цель атаки"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Target}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Используемые инструменты"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding UsingTools}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Данные о предыдущих атаках"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding PreviousAttacks}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--БД Меры защиты-->
+                            <Border Style="{StaticResource MainBorder}"
+                                    DataContext="{Binding ProtectionMeasure}"
+                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="Источник знаний: БД Меры защиты"
+                                               Style="{StaticResource HeadingText}"
+                                               FontSize="20"
+                                               Margin="5" />
+                                    <WrapPanel>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Название группы мер защиты"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding NameGroup}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Название"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Name}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Описание"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Description}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Классы защищенности"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding SecurityClasses}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--БД угроз-->
+                            <Border  Style="{StaticResource MainBorder}"
+                                     DataContext="{Binding Threat}"
+                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="Источник знаний: БД Угроз"
+                                               Style="{StaticResource HeadingText}"
+                                               FontSize="20"
+                                               Margin="5" />
+                                    <WrapPanel>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Идентификатор угрозы"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Id}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Название"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Name}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Описание"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Description}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Источник"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Source}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Объект воздействия"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding ObjectInfluence}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Нарушение конфиденциальности"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding PrivacyViolation}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Нарушение целостности"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding IntegrityViolation}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Нарушение доступности"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding AccessibilityViolation}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Дата обнаружения"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding DateInclusion}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Дата изменения"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding DateChange}"
+                                                           Style="{StaticResource DynamicText}"
+                                                           TextWrapping="Wrap" />
+                                            </StackPanel>
+                                        </Border>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
                             <!--БД Уязвимостей-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Vulnerabilitie}"
@@ -574,420 +897,7 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            
-                            <!--БД угроз-->
-                            <Border  Style="{StaticResource MainBorder}"
-                                     DataContext="{Binding Threat}"
-                                     Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
-                                <StackPanel>
-                                    <TextBlock Text="Источник знаний: БД Угроз"
-                                               Style="{StaticResource HeadingText}"
-                                               FontSize="20"
-                                               Margin="5" />
-                                    <WrapPanel>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Идентификатор угрозы"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Id}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Название"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Name}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Описание"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Description}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Источник"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Source}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Объект воздействия"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding ObjectInfluence}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Нарушение конфиденциальности"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding PrivacyViolation}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Нарушение целостности"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding IntegrityViolation}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Нарушение доступности"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding AccessibilityViolation}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Дата обнаружения"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding DateInclusion}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Дата изменения"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding DateChange}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                    </WrapPanel>
-                                </StackPanel>
-                            </Border>
-                            
-                            <!--БД Техник и тактик-->
-                            <Border Style="{StaticResource MainBorder}"
-                                    DataContext="{Binding Tactic}"
-                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
-                                <StackPanel>
-                                    <TextBlock Text="Источник знаний: БД Техник и тактик"
-                                               Style="{StaticResource HeadingText}"
-                                               FontSize="20"
-                                               Margin="5" />
-                                    <Border Style="{StaticResource ParameterBorderStyle}">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <StackPanel Grid.Row="0"
-                                                        Orientation="Horizontal">
-                                                <TextBlock Text="Тактика:"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Name}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                            <TextBlock Grid.Row="1"
-                                                       Text="{Binding Description}"
-                                                       Style="{StaticResource DynamicText}"
-                                                       TextWrapping="Wrap" />
-                                        </Grid>
-                                    </Border>
-                                    <ItemsControl ItemsSource="{Binding Techniques}"
-                                                  ItemTemplate="{StaticResource ParameterTemplateTechniquesTactics}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </StackPanel>
-                            </Border>
-                            
-                            <!--БД Меры защиты-->
-                            <Border Style="{StaticResource MainBorder}"
-                                    DataContext="{Binding ProtectionMeasure}"
-                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
-                                <StackPanel>
-                                    <TextBlock Text="Источник знаний: БД Меры защиты"
-                                               Style="{StaticResource HeadingText}"
-                                               FontSize="20"
-                                               Margin="5" />
-                                    <WrapPanel>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Название группы мер защиты"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding NameGroup}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Название"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Name}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Описание"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Description}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Классы защищенности"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding SecurityClasses}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                    </WrapPanel>
-                                </StackPanel>
-                            </Border>
-                            
-                            <!--БД Технологии оценки риска-->
-                            <Border Style="{StaticResource MainBorder}"
-                                    DataContext="{Binding Technology}"
-                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
-                                <StackPanel>
-                                    <TextBlock Text="Источник знаний: БД Технологии оценки риска"
-                                               Style="{StaticResource HeadingText}"
-                                               FontSize="20"
-                                               Margin="5" />
-                                    <WrapPanel>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Порядковый номер"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding SequenceNumber}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Метод"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding MethodName}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Описание"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Description}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Применение"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Usage}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Масштаб"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Scale}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Временной горизонт"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Horizont}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Уровень принятия решений"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Level}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Необходимость информации"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Necessity}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Опыт специалиста"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Experience}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Качество/количество"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Сharacteristic}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Применение усилий"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Effort}"
-                                                           Style="{StaticResource DynamicText}"
-                                                           TextWrapping="Wrap" />
-                                            </StackPanel>
-                                        </Border>
-                                    </WrapPanel>
-                                </StackPanel>
-                            </Border>
-                            
-                            <!--БД Негативные последствия-->
-                            <Border Style="{StaticResource MainBorder}"
-                                    DataContext="{Binding Consequence}"
-                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
-                                <StackPanel>
-                                    <TextBlock Text="Источник знаний: БД Негативные последствия"
-                                               Style="{StaticResource HeadingText}"
-                                               FontSize="20"
-                                               Margin="5" />
-                                    <WrapPanel>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Порядковый номер"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Number}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Наименование"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Name}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Ущерб"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Damage}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Угрозы"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding NameThreats, Converter={StaticResource ListToStringConverter}}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                    </WrapPanel>
-                                </StackPanel>
-                            </Border>
-                                                   
-                            <!--БД Нарушителей-->
-                            <Border Style="{StaticResource MainBorder}"
-                                    DataContext="{Binding Violator}"
-                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
-                                <StackPanel>
-                                    <TextBlock Text="Источник знаний: БД Нарушителей"
-                                               Style="{StaticResource HeadingText}"
-                                               FontSize="20"
-                                               Margin="5" />
-                                    <WrapPanel>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Идентификатор"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding DisplayedId}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Источник угрозы"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Source, Converter={StaticResource EnumDescriptionConverter}}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Потенциал"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Potential, Converter={StaticResource EnumDescriptionConverter}}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Цель атаки"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding Target}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Используемые инструменты"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding UsingTools}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource ParameterBorderStyle}">
-                                            <StackPanel>
-                                                <TextBlock Text="Данные о предыдущих атаках"
-                                                           Style="{StaticResource HeadingText}" />
-                                                <TextBlock Text="{Binding PreviousAttacks}"
-                                                           Style="{StaticResource DynamicText}" />
-                                            </StackPanel>
-                                        </Border>
-                                    </WrapPanel>
-                                </StackPanel>
-                            </Border>
-                                                    
+
                             <!--БД Эксплойтов-->
                             <Border Style="{StaticResource MainBorder}"
                                     DataContext="{Binding Exploit}"
@@ -1066,7 +976,46 @@
                                     </WrapPanel>
                                 </StackPanel>
                             </Border>
-                            
+
+                            <!--БД Техник и тактик-->
+                            <Border Style="{StaticResource MainBorder}"
+                                    DataContext="{Binding Tactic}"
+                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="Источник знаний: БД Техник и тактик"
+                                               Style="{StaticResource HeadingText}"
+                                               FontSize="20"
+                                               Margin="5" />
+                                    <Border Style="{StaticResource ParameterBorderStyle}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Grid.Row="0"
+                                                        Orientation="Horizontal">
+                                                <TextBlock Text="Тактика:"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding Name}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="1"
+                                                       Text="{Binding Description}"
+                                                       Style="{StaticResource DynamicText}"
+                                                       TextWrapping="Wrap" />
+                                        </Grid>
+                                    </Border>
+                                    <ItemsControl ItemsSource="{Binding Techniques}"
+                                                  ItemTemplate="{StaticResource ParameterTemplateTechniquesTactics}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+
                             <!--БД Динамических источников-->
                             <ItemsControl ItemsSource="{Binding DynamicRecords}">
                                 <ItemsControl.ItemsPanel>
@@ -1131,6 +1080,36 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+
+                            <!--БД Эталонные состояния ПФ СОПКА-->
+                            <Border Style="{StaticResource MainBorder}"
+                                    DataContext="{Binding ReferenceStatus}"
+                                    Visibility="{Binding ., Converter={StaticResource NullToVisibilityConverter}}">
+                                <StackPanel>
+                                    <TextBlock Text="Источник знаний: БД Эталонные состояния ПФ СОПКА"
+                                               Style="{StaticResource HeadingText}"
+                                               FontSize="20"
+                                               Margin="5" />
+                                    <WrapPanel>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Эталонное состояние"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding NameSoftware}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{StaticResource ParameterBorderStyle}">
+                                            <StackPanel>
+                                                <TextBlock Text="Время поступления ПД в систему"
+                                                           Style="{StaticResource HeadingText}" />
+                                                <TextBlock Text="{Binding ArrivalTime, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}"
+                                                           Style="{StaticResource DynamicText}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
                         </WrapPanel>
                     </ScrollViewer>
                 </Grid>

@@ -1,6 +1,7 @@
 ﻿using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Core;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
@@ -11,22 +12,33 @@ namespace PragmaticAnalyzer.Databases
         string Description { get; set; }
     }
 
-    public class Tactic : ViewModelBase, IEntityTIT, IDatabase
+    public class Tactic : ViewModelBase, IEntityTIT, IDatabase, IHasDescription
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
+
         public string Name { get => Get<string>(); set => Set(value); }
+
+        [Description("Описание")]
         public string Description { get => Get<string>(); set => Set(value); }
+
         public ObservableCollection<Technique> Techniques { get; set; }
+
         [JsonIgnore]
+        [Description("Наименование")]
         public string DisplayName => $"Тактика: {Name}";
     }
 
     public class Technique : ViewModelBase, IEntityTIT, IDatabase
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
+
         public string Name { get => Get<string>(); set => Set(value); }
+
+        [Description("Описание")]
         public string Description { get => Get<string>(); set => Set(value); }
+
         [JsonIgnore]
+        [Description("Наименование")]
         public string DisplayName => $"Техника: {Name}";
     }
 }

@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+             d:DataContext="{d:DesignInstance vm:ViewerViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="640"
              d:DesignWidth="1200">
@@ -164,125 +166,94 @@
                 </Grid>
 
                 <Button Content="Специалист по ЗИ"
-                        Cursor="Hand"
-                        FontSize="17"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.SpecialistVm}"
-                        Canvas.Left="1"
-                        RenderTransformOrigin="0.5,0.5"
                         Height="47"
-                        Width="210"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Canvas.Top="5">
-                    <Button.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <SkewTransform />
-                            <RotateTransform Angle="0.211" />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </Button.RenderTransform>
-                </Button>
+                        Width="217"
+                        Canvas.Left="-5" />
 
                 <Button Content="Меры защиты"
-                        Cursor="Hand"
-                        FontSize="17"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.ProtectionMeasureVm}"
-                        Canvas.Left="189"
-                        Canvas.Top="79"
+                        Canvas.Left="187"
+                        Canvas.Top="75"
                         Height="46"
-                        Width="210"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top" />
+                        Width="220" />
 
                 <Button Content="Уязвимости"
-                        Cursor="Hand"
-                        FontSize="17"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.VulnerabilitieVm}"
-                        Canvas.Left="421"
-                        Canvas.Top="153"
+                        Canvas.Left="419"
+                        Canvas.Top="149"
                         Height="46"
                         Width="210" />
 
                 <Button Content="Нарушитель"
-                        Cursor="Hand"
-                        FontSize="17"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.ViolatorVm}"
-                        Canvas.Top="342"
-                        Height="48"
-                        Width="212" />
+                        Canvas.Top="336"
+                        Height="50"
+                        Width="213"
+                        Canvas.Left="-5" />
 
                 <Button Content="Угрозы"
-                        Cursor="Hand"
-                        FontSize="17"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.ThreatVm}"
-                        Canvas.Left="189"
-                        Canvas.Top="419"
+                        Canvas.Left="185"
+                        Canvas.Top="414"
                         Height="45"
                         Width="210" />
 
                 <Button  Content="Техники и тактики"
-                         Cursor="Hand"
-                         FontSize="17"
+                         Style="{StaticResource OutlinedGrayButtonStyle}"
                          Command="{Binding SetCurrentViewCommand}"
                          CommandParameter="{Binding ViewModelsService.TacticVm}"
-                         Canvas.Left="420"
-                         Canvas.Top="490"
+                         Canvas.Left="416"
+                         Canvas.Top="485"
                          Height="46"
-                         Width="208"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Center" />
+                         Width="208" />
 
                 <Button Content="Риски ИБ"
-                        Cursor="Hand"
-                        FontSize="17"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.OutcomeVm}"
-                        Canvas.Left="695"
-                        Canvas.Top="230"
-                        Height="47"
+                        Canvas.Left="691"
+                        Canvas.Top="225"
+                        Height="45"
                         Width="209" />
 
                 <Button Content="Эксплойты"
-                        Cursor="Hand"
-                        FontSize="17"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.ExploitVm}"
-                        Canvas.Left="676"
-                        Canvas.Top="553"
+                        Canvas.Left="670"
+                        Canvas.Top="550"
                         Height="47"
-                        Width="209"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top" />
+                        Width="209" />
 
                 <Button  Content="Данные о текущем состоянии ПФ СОПКА"
-                         Cursor="Hand"
-                         FontSize="12"
+                         Style="{StaticResource OutlinedGrayButtonStyle}"
                          Command="{Binding SetCurrentViewCommand}"
                          CommandParameter="{Binding ViewModelsService.CurrentStatusVm}"
-                         Canvas.Left="923"
-                         Canvas.Top="405"
+                         Canvas.Left="874"
+                         Canvas.Top="402"
                          Height="46"
-                         Width="277"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Top" />
+                         Width="320" />
 
                 <Button Content="Данные об эталонном состоянии ПФ СОПКА"
-                        Cursor="Hand"
-                        FontSize="10"
+                        FontSize="8"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.ReferenceStatusVm}"
-                        Canvas.Left="991"
-                        Canvas.Top="159"
-                        Height="50"
-                        Width="209"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top" />
+                        Canvas.Left="983"
+                        Canvas.Top="156"
+                        Height="47"
+                        Width="211" />
             </Canvas>
         </Viewbox>
     </Grid>

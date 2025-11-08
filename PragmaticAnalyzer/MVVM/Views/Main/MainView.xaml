@@ -14,174 +14,161 @@
         MinHeight="850"
         MinWidth="1500"
         WindowStartupLocation="CenterScreen"
-        Title="Модуль работы с источниками знаний ИБ v1.0.4">
+        Title="Модуль работы с источниками знаний ИБ v1.0.5">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="75" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Border BorderBrush="Black"
+        <Border Grid.Row="0"
+                BorderBrush="Black"
                 BorderThickness="1"
-                Grid.Row="0"
-                Margin="2">
+                CornerRadius="5"
+                Margin="5">
             <StackPanel Grid.Column="0"
                         Margin="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Button Height="50"
-                        Content="Загрузить БД"
-                        Margin="2"
+                <Button Content="Загрузить БД"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
-                        CommandParameter="{Binding ViewModelsService.SetVm}"
-                        Cursor="Hand"
-                        Width="150"
-                        FontFamily="Consolas"
-                        FontSize="16" />
-                
-                <Button Height="50"
-                        Content="Работа с БД"
-                        Margin="2"
-                        Command="{Binding SetCurrentViewCommand}"
-                        CommandParameter="{Binding ViewModelsService.ViewerVm}"
-                        Cursor="Hand"
-                        Width="150"
-                        FontFamily="Consolas"
-                        FontSize="16" />
-                
-                <Button Height="50"
-                        Content="Работа с онтологиями"
-                        Margin="2"
-                        Command="{Binding SetCurrentViewCommand}"
-                        CommandParameter="{Binding ViewModelsService.OntologyVm}"
-                        Cursor="Hand"
-                        Width="200"
-                        FontFamily="Consolas"
-                        FontSize="16" />
-                
-                <Button Height="50"
-                        Content="Работа с моделями"
-                        Margin="2"
-                        Command="{Binding SetCurrentViewCommand}"
-                        CommandParameter="{Binding ViewModelsService.SettingVm}"
-                        Cursor="Hand"
-                        Width="200"
-                        FontFamily="Consolas"
-                        FontSize="16" />
+                        CommandParameter="{Binding ViewModelsService.SetVm}" />
 
-                <Button Height="50"
-                        Content="Работа с ИЗ"
-                        Margin="2"
+                <Button Content="Работа с БД"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
-                        CommandParameter="{Binding ViewModelsService.CreatorVm}"
-                        Cursor="Hand"
-                        Width="200"
-                        FontFamily="Consolas"
-                        FontSize="16" />
+                        CommandParameter="{Binding ViewModelsService.ViewerVm}" />
 
-                <Button Height="50"
-                        Content="Сформировать отчет"
-                        Margin="2"
+                <Button Content="Работа с онтологиями"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
-                        CommandParameter="{Binding ViewModelsService.ConnectionVm}"
-                        Cursor="Hand"
-                        Width="200"
-                        FontFamily="Consolas"
-                        FontSize="16" />
-                
-                <Button Height="50"
-                        Content="Информация"
-                        Margin="2"
+                        CommandParameter="{Binding ViewModelsService.OntologyVm}" />
+
+                <Button Content="Работа с моделями"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
-                        CommandParameter="{Binding ViewModelsService.InformationVm}"
-                        Cursor="Hand"
-                        Width="150"
-                        FontFamily="Consolas"
-                        FontSize="16" />
+                        CommandParameter="{Binding ViewModelsService.SettingVm}" />
+
+                <Button Content="Работа с ИЗ"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.CreatorVm}" />
+
+                <Button Content="Сформировать отчет"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.ConnectionVm}" />
+
+                <Button Content="Информация"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.InformationVm}" />
             </StackPanel>
         </Border>
 
-        <Border BorderBrush="Black"
+        <Border Grid.Row="1"
+                BorderBrush="Black"
                 BorderThickness="1"
-                Grid.Row="1"
-                Margin="2">
-            <ContentControl Content="{Binding CurrentView}">
+                CornerRadius="5"
+                Margin="5">
+            <ContentControl Content="{Binding CurrentView}"
+                            Margin="5">
                 <FrameworkElement.Resources>
                     <DataTemplate DataType="{x:Type vmMain:SetViewModel}">
                         <viewMain:SetView />
-                    </DataTemplate> <!--Загрузить БД-->
-                    
+                    </DataTemplate>
+                    <!--Загрузить БД-->
+
                     <DataTemplate DataType="{x:Type vmMain:ViewerViewModel}">
                         <viewMain:ViewerView />
-                    </DataTemplate> <!--Работа с БД-->
+                    </DataTemplate>
+                    <!--Работа с БД-->
 
                     <DataTemplate DataType="{x:Type vmMain:OntologyViewModel}">
                         <viewMain:OntologyView />
-                    </DataTemplate> <!--Работа с онтологиями-->
-                   
+                    </DataTemplate>
+                    <!--Работа с онтологиями-->
+
                     <DataTemplate DataType="{x:Type vmMain:SettingViewModel}">
                         <viewMain:SettingView />
-                    </DataTemplate> <!--Работа с моделями-->
+                    </DataTemplate>
+                    <!--Работа с моделями-->
 
                     <DataTemplate DataType="{x:Type vmMain:CreatorViewModel}">
                         <viewMain:CreatorView />
-                    </DataTemplate> <!--Работа с ИЗ-->
+                    </DataTemplate>
+                    <!--Работа с ИЗ-->
 
                     <DataTemplate DataType="{x:Type vmMain:ConnectionViewModel}">
                         <viewMain:ConnectionView />
-                    </DataTemplate> <!--Сформировать отчет-->
-                    
+                    </DataTemplate>
+                    <!--Сформировать отчет-->
+
                     <DataTemplate DataType="{x:Type vmMain:InformationViewModel}">
                         <viewMain:InformationView />
-                    </DataTemplate><!--Информация-->
-                                           
+                    </DataTemplate>
+                    <!--Информация-->
+
                     <DataTemplate DataType="{x:Type vmViewer:VulnerabilitieViewModel}">
                         <viewViewer:VulnerabilitieView />
-                    </DataTemplate><!--Уязвимости-->
-                    
+                    </DataTemplate>
+                    <!--Уязвимости-->
+
                     <DataTemplate DataType="{x:Type vmViewer:ThreatViewModel}">
                         <viewViewer:ThreatView />
-                    </DataTemplate><!--Угрозы-->
-                                           
+                    </DataTemplate>
+                    <!--Угрозы-->
+
                     <DataTemplate DataType="{x:Type vmViewer:TacticViewModel}">
                         <viewViewer:TacticView />
-                    </DataTemplate><!--Техники и тактики-->
-                    
+                    </DataTemplate>
+                    <!--Техники и тактики-->
+
                     <DataTemplate DataType="{x:Type vmViewer:OutcomesViewModel}">
                         <viewViewer:OutcomesView />
-                    </DataTemplate><!--Риски (Исходы)-->
-                    
+                    </DataTemplate>
+                    <!--Риски (Исходы)-->
+
                     <DataTemplate DataType="{x:Type vmViewer:ProtectionMeasureViewModel}">
                         <viewViewer:ProtectionMeasureView />
-                    </DataTemplate><!--Меры защиты-->
-                    
+                    </DataTemplate>
+                    <!--Меры защиты-->
+
                     <DataTemplate DataType="{x:Type vmViewer:ExploitViewModel}">
                         <viewViewer:ExploitView />
-                    </DataTemplate><!--Эксплойты-->
-                    
+                    </DataTemplate>
+                    <!--Эксплойты-->
+
                     <DataTemplate DataType="{x:Type vmViewer:ViolatorViewModel}">
                         <viewViewer:ViolatorView />
-                    </DataTemplate><!--Нарушители-->
+                    </DataTemplate>
+                    <!--Нарушители-->
 
                     <DataTemplate DataType="{x:Type vmViewer:SpecialistViewModel}">
                         <viewViewer:SpecialistView />
-                    </DataTemplate><!--Специалист-->
+                    </DataTemplate>
+                    <!--Специалист-->
 
                     <DataTemplate DataType="{x:Type vmViewer:ReferenceStatusViewModel}">
                         <viewViewer:ReferenceStatusView />
-                    </DataTemplate><!--Эталонное состояние-->
+                    </DataTemplate>
+                    <!--Эталонное состояние-->
 
                     <DataTemplate DataType="{x:Type vmAlg:FasttextInformationViewModel}">
                         <viewAlg:FasttextInformationView />
-                    </DataTemplate><!--Алгоритм Fasttext-->
+                    </DataTemplate>
+                    <!--Алгоритм Fasttext-->
 
                     <DataTemplate DataType="{x:Type vmAlg:WordTwoVectInformationViewModel}">
                         <viewAlg:WordTwoVectInformationView />
-                    </DataTemplate> <!--Алгоритм Word2Vec-->
+                    </DataTemplate>
+                    <!--Алгоритм Word2Vec-->
 
                     <DataTemplate DataType="{x:Type vmAlg:TfIdfInformationViewModel}">
                         <viewAlg:TfIdfInformationView />
-                    </DataTemplate> <!--Алгоритм Tf-Idf-->              
+                    </DataTemplate>
+                    <!--Алгоритм Tf-Idf-->
                 </FrameworkElement.Resources>
             </ContentControl>
         </Border>

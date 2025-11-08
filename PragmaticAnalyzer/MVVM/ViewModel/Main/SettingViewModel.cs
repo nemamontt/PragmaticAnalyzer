@@ -20,7 +20,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
     {
         private readonly IApiService _apiService;
         private readonly IFileService _fileService;
-        private readonly IDialogService _dialogService;
         public ObservableCollection<ModelConfig> WordTwoVecConfigs { get; set; }
         public ObservableCollection<ModelConfig> FastTextConfigs { get; set; }
         public ModelConfig? SelectedWordTwoVecConfig { get => Get<ModelConfig>(); set => Set(value); }
@@ -34,7 +33,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             FastTextConfigs = fastTextVecConfig;
             _apiService = apiService;
             _fileService = new FileService();
-            _dialogService = new DialogService();
             ProgressWordTwoVec = false;
             ProgressFastText = false;
 
@@ -52,7 +50,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
         public RelayCommand UploadWordTwoVecModelCommand => GetCommand(async o =>
         {
-            var currentPath = _dialogService.OpenFileDialog(DialogService.ModelFilter);
+            var currentPath = DialogService.OpenFileDialog(DialogService.ModelFilter);
             if (currentPath is null)
             {
                 return;
@@ -170,7 +168,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
         public RelayCommand UploadFastTextModelCommand => GetCommand(async o =>
         {
-            var currentPath = _dialogService.OpenFileDialog(DialogService.ModelFilter);
+            var currentPath = DialogService.OpenFileDialog(DialogService.ModelFilter);
             if (currentPath is null)
             {
                 return;

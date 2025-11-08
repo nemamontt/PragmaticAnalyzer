@@ -4,7 +4,7 @@ namespace PragmaticAnalyzer.Abstractions
 {
     public interface IApiService
     {
-        Task StartServerAsync();
+        void StartServer();
         Task StopServerAsync();
         Task<Result<T>> SendRequestAsync<T>(IRequest request);
     }
