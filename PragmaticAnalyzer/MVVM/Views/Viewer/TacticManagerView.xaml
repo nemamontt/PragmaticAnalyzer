@@ -11,28 +11,21 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
             <RowDefinition Height="45" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Text="Номер"
-                   FontFamily="Consolas"
-                   FontSize="20"
-                   Margin="10 0 0 0" />
-
-        <StackPanel Grid.Row="1"
-                    Margin="10"
+        <StackPanel Grid.Row="0"
+                    Margin="5"
                     Orientation="Horizontal">
             <TextBlock Text="Т"
-                       FontSize="20"
+                       FontSize="30"
                        FontFamily="Consolas"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
-            
+
             <Border Margin="10 0 10 0"
                     BorderBrush="Black"
                     BorderThickness="0.5">
@@ -41,11 +34,12 @@
                            Name="NumberTextBlock"
                            TextAlignment="Center" />
             </Border>
-            
+
             <TextBlock Text="."
                        FontFamily="Consolas"
+                       VerticalAlignment="Bottom"
                        FontSize="20" />
-            
+
             <Border Margin="10 0 0 0"
                     BorderBrush="Black"
                     BorderThickness="0.5">
@@ -56,71 +50,61 @@
             </Border>
         </StackPanel>
 
-        <TextBlock Grid.Row="2"
+        <TextBlock Grid.Row="1"
                    Text="Описание"
-                   FontFamily="Consolas"
-                   FontSize="20"
-                   Margin="10 0 0 0" />
+                   Style="{StaticResource MainTextBlockStyle}"
+                   FontWeight="Bold" />
+
+        <TextBox Grid.Row="2"
+                 Name="DescriptionTextBox"
+                 Style="{StaticResource RoundedTextBoxStyle}" />
 
         <Grid Grid.Row="3"
-              Margin="10">
-            <Border BorderBrush="Black"
-                    BorderThickness="1">
-                <ScrollViewer>
-                    <TextBox Name="DescriptionTextBox"
-                             TextWrapping="Wrap"
-                             FontSize="20"
-                             AcceptsReturn="True" />
-                </ScrollViewer>
-            </Border>
-        </Grid>
-
-        <Grid Grid.Row="4"
-              Margin="10">
+              Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition  Width="0,2*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Техника:"
-                       FontFamily="Consolas"
-                       FontSize="20" />
-
-            <Button Grid.Row="0"
-                    Grid.Column="2"
-                    Grid.RowSpan="2"
-                    Content="Готово"
-                    Margin="5 0 0 0"
-                    FontSize="20"
-                    FontFamily="Consolas"
-                    Name="DoneButton" />
+            <TextBlock Grid.Row="0"
+                       Text="Техника:"        
+                       Style="{StaticResource MainTextBlockStyle}" />
 
             <CheckBox Grid.Row="0"
                       Grid.Column="1"
                       Name="OptionCheckBox"
+                      VerticalAlignment="Center"
                       IsChecked="False"
                       Margin="5 0 0 0"
                       Checked="OptionCheckBoxChecked"
                       Unchecked="OptionCheckBoxUnchecked">
             </CheckBox>
 
-            <TextBlock Text="Добавить технику в:"
-                       FontFamily="Consolas"
-                       Grid.Row="1"
-                       Grid.Column="0"
-                       FontSize="20" />
+            <Button Grid.Row="0"
+                    Grid.Column="2"
+                    Grid.RowSpan="2"
+                    Content="Готово"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Name="DoneButton" />
+          
+            <TextBlock  Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Добавить технику в:"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource MainTextBlockStyle}" />
 
             <ComboBox Grid.Row="1"
-                      Grid.Column="1"                
+                      Grid.Column="1"
                       Name="ListTechniqueComboBox"
                       ItemsSource="{Binding Tactics}"
                       SelectionChanged="ListTechniqueComboBoxSelectionChanged"
-                      Margin="5 0 0 0"
+                      Style="{StaticResource RoundedComboBoxStyle}"
                       IsEnabled="False">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

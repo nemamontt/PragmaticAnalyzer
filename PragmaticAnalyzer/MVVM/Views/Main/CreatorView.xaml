@@ -6,13 +6,15 @@
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
              xmlns:vmMain="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+             xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
              d:DataContext="{d:DesignInstance Type=vmMain:CreatorViewModel}"
              mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="800">
+             d:DesignHeight="600"
+             d:DesignWidth="1000">
     <UserControl.Resources>
         <assist:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -21,184 +23,106 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10*" />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*" />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{Binding ColumnWidthDatabases}" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
+            <ListBox Grid.Row="0"
+                     Width="200"
+                     Style="{StaticResource RoundedListBoxStyle}"
+                     ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
+                     ItemsSource="{Binding Databases}"
+                     SelectedItem="{Binding SelectedDatabase}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"
+                                   TextWrapping="Wrap"
+                                   Foreground="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-                <ListBox Grid.Row="0"
-                         ItemsSource="{Binding Databases}"
-                         SelectedItem="{Binding SelectedDatabase}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+            <Button Grid.Row="1"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Content="Создать БД"
+                    Command="{Binding AddDatabaseCommand}" />
 
-                <Button Grid.Row="1"
-                        Margin="2"
-                        Cursor="Hand"
-                        Command="{Binding AddDatabaseCommand}">
-                    <TextBlock Text="Создать БД"
-                               FontSize="20"
-                               FontFamily="Consolas" />
-                </Button>
+            <Button Grid.Row="2"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding ChangeDatabaseCommand}"
+                    Content="Редактировать БД" />
 
-                <Button Grid.Row="2"
-                        Margin="2"
-                        Cursor="Hand"
-                        Command="{Binding ChangeDatabaseCommand}"
-                        CommandParameter="">
-                    <TextBlock Text="Редактировать БД"
-                               FontSize="20"
-                               FontFamily="Consolas" />
-                </Button>
+            <Button Grid.Row="3"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding DeleteDatabaseCommand}"
+                    Content="Удалить БД" />
+        </Grid>
 
-                <Button Grid.Row="3"
-                        Margin="2"
-                        Cursor="Hand"
-                        Command="{Binding DeleteDatabaseCommand}">
-                    <TextBlock Text="Удалить БД"
-                               FontSize="20"
-                               FontFamily="Consolas" />
-                </Button>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="94*" />
+                <RowDefinition Height="137*" />
+                <RowDefinition Height="23*" />
+                <RowDefinition Height="23*" />
+                <RowDefinition Height="23*" />
+            </Grid.RowDefinitions>
 
-                <Button Grid.Column="1"
-                        Grid.RowSpan="4"
-                        Content=">"
-                        Background="Transparent"
-                        Cursor="Hand"
-                        Command="{Binding ZoomCommand}"
-                        CommandParameter="True" />
-            </Grid>
+            <ListBox Grid.Row="0"
+                     Width="200"
+                     Style="{StaticResource RoundedListBoxStyle}"
+                     ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
+                     ItemsSource="{Binding SelectedDatabase.Records}"
+                     SelectedItem="{Binding SelectedRecord}"
+                     Margin="5,5,5,5"
+                     Grid.RowSpan="2">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding IndexValue}"
+                                   TextWrapping="Wrap"
+                                   Foreground="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-        </Border>
+            <Button Grid.Row="2"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding AddRecordCommand}"
+                    Content="Добавить запись"
+                    Margin="5,5,5,5" />
 
-        <Border Grid.Column="1"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10*" />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+            <Button Grid.Row="3"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding ChangeRecordCommand}"
+                    Content="Редактировать запись"
+                    Margin="5,5,5,5" />
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{Binding ColumnWidthRecords}" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-
-                <ListBox Grid.Row="0"
-                         ItemsSource="{Binding SelectedDatabase.Records}"
-                         SelectedItem="{Binding SelectedRecord}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding IndexValue}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-                <Button Grid.Row="1"
-                        Margin="2"
-                        Cursor="Hand"
-                        Command="{Binding AddRecordCommand}"
-                        CommandParameter="">
-                    <TextBlock Text="Добавить запись"
-                               FontSize="20"
-                               FontFamily="Consolas" />
-                </Button>
-
-                <Button Grid.Row="2"
-                        Margin="2"
-                        Cursor="Hand"
-                        Command="{Binding ChangeRecordCommand}"
-                        CommandParameter="">
-                    <TextBlock Text="Редактировать запись"
-                               FontSize="20"
-                               FontFamily="Consolas" />
-                </Button>
-
-                <Button Grid.Row="3"
-                        Margin="2"
-                        Cursor="Hand"
-                        Command="{Binding DeleteRecordCommand}">
-                    <TextBlock Text="Удалить запись"
-                               FontSize="20"
-                               FontFamily="Consolas" />
-                </Button>
-
-                <Button Grid.Column="1"
-                        Grid.RowSpan="4"
-                        Content=">"
-                        Background="Transparent"
-                        Cursor="Hand"
-                        Command="{Binding ZoomCommand}"
-                        CommandParameter="False" />
-            </Grid>
-
-        </Border>
+            <Button Grid.Row="4"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding DeleteRecordCommand}"
+                    Content="Удалить запись"
+                    Margin="5,5,5,5" />
+        </Grid>
 
         <ScrollViewer Grid.Column="3">
             <WrapPanel Visibility="{Binding SelectedRecord, Converter={StaticResource NullToVisibilityConverter}}">
-                <Border BorderBrush="Black"
-                        BorderThickness="1"
-                        CornerRadius="5"
-                        Padding="10"
-                        Margin="5"
-                        Width="400">
-                    <StackPanel>
-                        <TextBlock Text="Описание"
-                                   FontWeight="Bold"
-                                   FontSize="20"
-                                   Margin="5" />
-                        <TextBlock Text="{Binding SelectedRecord.Description}"
-                                   Margin="5"
-                                   FontSize="15"
-                                   TextWrapping="Wrap" />
-                    </StackPanel>
-                </Border>
+                <cc:LabeledValueBox LabelText="Описание"
+                                    ValueText="{Binding SelectedRecord.Description}" />
 
                 <ItemsControl ItemsSource="{Binding SelectedRecord.Fields}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel/>
+                            <WrapPanel />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="Black"
-                                    BorderThickness="1"
-                                    CornerRadius="5"
-                                    Padding="10"
-                                    Width="400"
-                                    Margin="5">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Key}"
-                                               FontWeight="Bold"
-                                               FontSize="20"
-                                               Margin="5" />
-                                    <TextBlock Text="{Binding Value}"
-                                               Margin="5"
-                                               FontSize="15" 
-                                               TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </Border>
+                            <cc:LabeledValueBox LabelText="{Binding Key}"
+                                                ValueText="{Binding Value}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

@@ -26,5 +26,13 @@ namespace PragmaticAnalyzer.CastomControls
         {
             InitializeComponent();
         }
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(ValueText))
+            {
+                Clipboard.SetText(ValueText);
+            }
+        }
     }
 }

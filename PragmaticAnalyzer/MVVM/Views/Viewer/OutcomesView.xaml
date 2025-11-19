@@ -4,45 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
+             xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
+             xmlns:vmViewer="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Viewer"
+             d:DataContext="{d:DesignInstance Type=vmViewer:OutcomesViewModel}"
              mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="800">
+             d:DesignHeight="800"
+             d:DesignWidth="1500">
     <UserControl.Resources>
         <assist:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-        <Style x:Key="Heading"
-               TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontWeight"
-                    Value="Bold" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-        </Style>
-        <Style x:Key="Description"
-               TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-            <Setter Property="TextWrapping"
-                    Value="Wrap" />
-        </Style>
-        <Style x:Key="StaticButton"
-               TargetType="Button">
-            <Setter Property="Width"
-                    Value="100" />
-            <Setter Property="Margin"
-                    Value="5" />
-            <Setter Property="Cursor"
-                    Value="Hand" />
-            <Setter Property="FontSize"
-                    Value="12" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-            <Setter Property="FontSize"
-                    Value="15" />
-        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -50,7 +20,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -58,126 +28,171 @@
 
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
-                   HorizontalAlignment="Center"
                    Text="Негативные последствия"
                    FontSize="20"
-                   FontFamily="Consolas" />
-        
+                   HorizontalAlignment="Center"
+                   Style="{StaticResource MainTextBlockStyle}" />
+
         <TextBlock Grid.Row="0"
                    Grid.Column="1"
-                   HorizontalAlignment="Center"
                    Text="Технологии оценки риска"
                    FontSize="20"
-                   FontFamily="Consolas" />
-        
+                   HorizontalAlignment="Center"
+                   Style="{StaticResource MainTextBlockStyle}" />
+
         <Grid Grid.Row="1"
-            Grid.Column="0">
+              Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.1*" />
+                <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
             <ListBox Grid.Column="0"
                      ItemsSource="{Binding Outcomes.Consequences}"
                      SelectedItem="{Binding SelectedItemConsequence}"
-                     Margin="1"
-                     FontSize="15"
-                     FontFamily="Concolas"
-                     Name="MainList"
+                     Style="{StaticResource RoundedListBoxStyle}"
+                     ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                      VirtualizingStackPanel.IsVirtualizing="True"
                      VirtualizingStackPanel.VirtualizationMode="Recycling">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Number}" />
+                        <TextBlock Text="{Binding Number}"
+                                   Style="{StaticResource MainTextBlockStyle}"
+                                   Margin="1" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            
-            <StackPanel Grid.Column="1"
-                        Margin="5"
-                        Visibility="{Binding SelectedItemConsequence, Converter={StaticResource NullToVisibilityConverter}}">
-                <TextBlock Text="Наименование последствия:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemConsequence.Name}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Ущерб последствия:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemConsequence.Damage}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Связанные угрозы:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemConsequence.NameThreatsToString}"
-                           Style="{StaticResource Description}" />
+
+            <Border Grid.Column="1"
+                    Margin="5"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="6">
+                <ScrollViewer Margin="5">
+                    <WrapPanel Visibility="{Binding SelectedItemConsequence, Converter={StaticResource NullToVisibilityConverter}}">
+                        <cc:LabeledValueBox LabelText="Наименование последствия"
+                                            ValueText="{Binding  SelectedItemConsequence.Name}" />
+
+                        <cc:LabeledValueBox LabelText="Ущерб последствия"
+                                            ValueText="{Binding  SelectedItemConsequence.Damage}" />
+
+                        <cc:LabeledValueBox LabelText="Связанные угрозы"
+                                            ValueText="{Binding  SelectedItemConsequence.NameThreatsToString}" />
+                    </WrapPanel>
+                </ScrollViewer>
+
+            </Border>
+
+            <StackPanel Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                        Content="Добавить"
+                        Command="{Binding }" />
+
+                <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                        Content="Удалить"
+                        IsEnabled="{Binding}"
+                        Command="{Binding }" />
+
+                <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                        Content="Изменить"
+                        IsEnabled="{Binding}"
+                        Command="{Binding }" />
             </StackPanel>
         </Grid>
-        
+
         <Grid Grid.Row="1"
-            Grid.Column="1">
+              Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.1*" />
+                <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
             <ListBox Grid.Column="0"
                      ItemsSource="{Binding Outcomes.Technologys}"
                      SelectedItem="{Binding SelectedItemTechnology}"
-                     Margin="2"
-                     FontSize="15"
-                     FontFamily="Concolas"
-                     Name="MainList2"
+                     Style="{StaticResource RoundedListBoxStyle}"
+                     ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                      VirtualizingStackPanel.IsVirtualizing="True"
                      VirtualizingStackPanel.VirtualizationMode="Recycling">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding SequenceNumber}" />
+                        <TextBlock Text="{Binding SequenceNumber}"
+                                   Style="{StaticResource MainTextBlockStyle}"
+                                   Margin="1" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            
-            <StackPanel Grid.Column="1"
-                        Margin="5"
-                        Visibility="{Binding SelectedItemTechnology, 
-                                            Converter={StaticResource NullToVisibilityConverter}}">
-                <TextBlock Text="Метод:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.MethodName}"
-                           Style="{StaticResource Description}"/>
-                <TextBlock Text="Описание:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Description}"
-                           Style="{StaticResource Description}"/>
-                <TextBlock Text="Применение:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Usage}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Масштаб:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Scale}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Временной горизонт:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Horizont}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Уровень принятия решения:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Level}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Необходимость информации/данных:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Necessity}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Опыт специалиста:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Experience}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Качеств/колличеств:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Сharacteristic}"
-                           Style="{StaticResource Description}" />
-                <TextBlock Text="Применение усилий:"
-                           Style="{StaticResource Heading}" />
-                <TextBlock Text="{Binding SelectedItemTechnology.Effort}"
-                           Style="{StaticResource Description}" />
+
+            <Border Grid.Column="1"
+                    Margin="5"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    CornerRadius="6">
+                <ScrollViewer Margin="5">
+                    <WrapPanel  Visibility="{Binding SelectedItemTechnology,  Converter={StaticResource NullToVisibilityConverter}}">
+                        <cc:LabeledValueBox LabelText="Метод"
+                                            ValueText="{Binding  SelectedItemTechnology.MethodName}" />
+
+                        <cc:LabeledValueBox LabelText="Описание"
+                                            ValueText="{Binding  SelectedItemTechnology.Description}" />
+
+                        <cc:LabeledValueBox LabelText="Применение"
+                                            ValueText="{Binding  SelectedItemTechnology.Usage}" />
+
+                        <cc:LabeledValueBox LabelText="Масштаб"
+                                            ValueText="{Binding  SelectedItemTechnology.Scale}" />
+
+                        <cc:LabeledValueBox LabelText="Временной горизонт"
+                                            ValueText="{Binding  SelectedItemTechnology.Horizont}" />
+
+                        <cc:LabeledValueBox LabelText="Уровень принятия решения"
+                                            ValueText="{Binding  SelectedItemTechnology.Level}" />
+
+                        <cc:LabeledValueBox LabelText="Необходимость информации/данных"
+                                            ValueText="{Binding  SelectedItemTechnology.Necessity}" />
+
+                        <cc:LabeledValueBox LabelText="Опыт специалиста"
+                                            ValueText="{Binding  SelectedItemTechnology.Experience}" />
+
+                        <cc:LabeledValueBox LabelText="Качеств/колличеств"
+                                            ValueText="{Binding  SelectedItemTechnology.Сharacteristic}" />
+
+                        <cc:LabeledValueBox LabelText="Применение усилий"
+                                            ValueText="{Binding  SelectedItemTechnology.Effort}" />
+                    </WrapPanel>
+                </ScrollViewer>
+            </Border>
+
+            <StackPanel Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                        Content="Добавить"
+                        Command="{Binding }" />
+
+                <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                        Content="Удалить"
+                        IsEnabled="{Binding}"
+                        Command="{Binding }" />
+
+                <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                        Content="Изменить"
+                        IsEnabled="{Binding}"
+                        Command="{Binding }" />
             </StackPanel>
         </Grid>
     </Grid>

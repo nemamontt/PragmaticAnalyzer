@@ -17,13 +17,8 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         private readonly Action<string> DeleteDatabase;
         private DatabaseManagerView? _databaseManager;
         private RecordManagerView? _recordManager;
-        private bool _expandedDatabases;
-        private bool _expandedRecords;
         private bool _isAddDatabase;
         private bool _isAddRecord;
-
-        public GridLength ColumnWidthDatabases { get => Get<GridLength>(); set => Set(value); }
-        public GridLength ColumnWidthRecords { get => Get<GridLength>(); set => Set(value); }
 
         public ObservableCollection<DynamicDatabase> Databases { get; set; }
         public DynamicDatabase? SelectedDatabase { get => Get<DynamicDatabase>(); set => Set(value); }
@@ -44,10 +39,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             SaveDatabase = saveDatabase;
             DeleteDatabase = deleteDatabase;
             _fileService = new FileService();
-            _expandedDatabases = true;
-            _expandedRecords = true;
-            ColumnWidthDatabases = new GridLength(250);
-            ColumnWidthRecords = new GridLength(250);
             IsEnabledEnteredNameDatabase = true;
         }
 
@@ -71,10 +62,11 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             _databaseManager.ShowDialog();
         }, o => SelectedDatabase is not null);
 
-        public RelayCommand DeleteDatabaseCommand => GetCommand(o =>
+        public RelayCommand DeleteDatabaseCommand => GetCommand(async o =>
         {
             DeleteDatabase?.Invoke(SelectedDatabase.Name);
             Databases.Remove(SelectedDatabase);
+            await _fileService.SaveDTOAsync(Databases, DataType.SchemeDatabase, GlobalConfig.SchemeDatabasePath);
         }, o => SelectedDatabase is not null);
 
         public RelayCommand AddFieldInDatabaseCommand => GetCommand(o =>
@@ -203,37 +195,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public RelayCommand CloseRecordManagerCommand => GetCommand(o =>
         {
             CompleteRecordManager();
-        });
-
-        public RelayCommand ZoomCommand => GetCommand(isSizeBd =>
-        {
-            bool flag = isSizeBd?.ToString().Equals("True", StringComparison.OrdinalIgnoreCase) == true;
-            if (flag)
-            {
-                if (_expandedDatabases)
-                {
-                    ColumnWidthDatabases = new GridLength(0);
-                    _expandedDatabases = false;
-                }
-                else
-                {
-                    ColumnWidthDatabases = new GridLength(250);
-                    _expandedDatabases = true;
-                }
-            }
-            else
-            {
-                if (_expandedRecords)
-                {
-                    ColumnWidthRecords = new GridLength(0);
-                    _expandedRecords = false;
-                }
-                else
-                {
-                    ColumnWidthRecords = new GridLength(250);
-                    _expandedRecords = true;
-                }
-            }
         });
 
         public void CompleteDatabaseManager()

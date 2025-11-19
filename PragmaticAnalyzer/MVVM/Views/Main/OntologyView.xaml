@@ -24,11 +24,12 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.12*" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
         <TreeView ItemsSource="{Binding Ontologys}"
-                  Margin="5">
+                  Style="{StaticResource RoundedTreeViewStyle}"
+                  ItemContainerStyle="{StaticResource RoundedTreeViewItemStyle}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
                     <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}"
@@ -38,16 +39,14 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Entities}">
                     <TextBlock Text="{Binding Name}"
-                               FontSize="15"
-                               FontFamily="Consolas"
-                               TextWrapping="Wrap"
+                               Style="{StaticResource MainTextBlockStyle}"
+                               Margin="1"
                                Width="600" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
 
         <cc:LabeledValueBox  Grid.Column="1"
-                             Margin="5"
                              LabelText="Описание"
                              ValueText="{Binding SelectedItem.Description}"
                              Visibility="{Binding SelectedItem, Converter={StaticResource NullToVisibilityConverter}}" />

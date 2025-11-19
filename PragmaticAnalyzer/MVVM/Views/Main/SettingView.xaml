@@ -22,7 +22,7 @@
 
             <Border Grid.Row="0"
                     Margin="5"
-                    CornerRadius="10"
+                    CornerRadius="6"
                     BorderThickness="1"
                     BorderBrush="Black">
                 <Grid  Margin="5">
@@ -48,9 +48,7 @@
                         </Grid.ColumnDefinitions>
 
                         <ComboBox Grid.Column="0"
-                                  Margin="1"
-                                  Cursor="Hand"
-                                  FontSize="20"
+                                  Style="{StaticResource RoundedComboBoxStyle}"
                                   ItemsSource="{Binding WordTwoVecConfigs}"
                                   SelectedItem="{Binding SelectedWordTwoVecConfig}">
                             <ComboBox.ItemTemplate>
@@ -109,7 +107,7 @@
 
             <Border Grid.Row="1"
                     Margin="5"
-                    CornerRadius="10"
+                    CornerRadius="6"
                     BorderThickness="1"
                     BorderBrush="Black">
                 <Grid  Margin="5">
@@ -135,9 +133,7 @@
                         </Grid.ColumnDefinitions>
 
                         <ComboBox Grid.Column="0"
-                                  Margin="1"
-                                  Cursor="Hand"
-                                  FontSize="20"
+                                  Style="{StaticResource RoundedComboBoxStyle}"
                                   ItemsSource="{Binding FastTextConfigs}"
                                   SelectedItem="{Binding SelectedFastTextConfig, UpdateSourceTrigger=PropertyChanged}">
                             <ComboBox.ItemTemplate>

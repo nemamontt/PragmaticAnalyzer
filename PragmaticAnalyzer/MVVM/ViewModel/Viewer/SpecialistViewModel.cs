@@ -94,7 +94,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             }
         });
 
-        public RelayCommand DoneManageCommandr => GetCommand(o =>
+        public RelayCommand DoneManagerCommand => GetCommand(o =>
         {
             if (_isAdd)
             {

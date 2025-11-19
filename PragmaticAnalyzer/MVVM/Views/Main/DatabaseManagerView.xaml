@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Title="Работа с БД"
-        Height="450"
+        Height="500"
         Width="400">
     <Grid>
         <Grid.RowDefinitions>
@@ -24,7 +24,8 @@
         <Border Grid.Row="0"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -33,21 +34,24 @@
 
                 <TextBlock Grid.Column="0"
                            Text="Название БД:"
+                           VerticalAlignment="Center"
                            FontSize="15"
-                           FontFamily="Consolas" />
+                           FontFamily="Consolas"
+                           Margin="5" />
 
                 <TextBox Grid.Column="1"
-                         Width="300"
-                         Cursor="IBeam"
+                         Margin="1"
+                         Style="{StaticResource RoundedTextBoxStyle}"
                          IsEnabled="{Binding IsEnabledEnteredNameDatabase}"
-                         Text="{Binding EnteredNameDatabase}"/>
+                         Text="{Binding EnteredNameDatabase}" />
             </Grid>
         </Border>
 
         <Border Grid.Row="1"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -56,12 +60,14 @@
 
                 <TextBlock Grid.Column="0"
                            Text="Название индексатора:"
+                           VerticalAlignment="Center"
                            FontSize="15"
-                           FontFamily="Consolas" />
+                           FontFamily="Consolas"
+                           Margin="5" />
 
                 <TextBox Grid.Column="1"
-                         Width="300"
-                         Cursor="IBeam"
+                         Margin="1"
+                         Style="{StaticResource RoundedTextBoxStyle}"
                          Text="{Binding EnteredNameIndexPrefix}" />
             </Grid>
         </Border>
@@ -69,6 +75,7 @@
         <Border Grid.Row="2"
                 BorderBrush="Black"
                 BorderThickness="1"
+                CornerRadius="6"
                 Margin="2">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -78,73 +85,61 @@
                     <ColumnDefinition Width="0.3*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0"
-                         Text="Название поля:"
-                         FontSize="15"
-                         FontFamily="Consolas" />
+                <TextBlock Grid.Column="0"
+                           Text="Название поля:"
+                           FontSize="15"
+                           VerticalAlignment="Center"
+                           FontFamily="Consolas"
+                           Margin="5" />
 
                 <TextBox Grid.Column="1"
-                         Cursor="IBeam"
-                         TextWrapping="Wrap"
+                         Margin="1"
+                         Style="{StaticResource RoundedTextBoxStyle}"
                          Text="{Binding EnteredNameField, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Button Grid.Column="2"
                         Content="➕"
-                        Margin="5"
-                        Cursor="Hand"
+                        FontSize="7"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding AddFieldInDatabaseCommand}" />
 
                 <Button Grid.Column="3"
                         Content="➖"
-                        Margin="5"
-                        Cursor="Hand"
+                        FontSize="7"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding RemoveFieldInDatabaseCommand}" />
             </Grid>
         </Border>
 
-        <Border Grid.Row="3"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="2">
-            <ListBox ItemsSource="{Binding EnteredFieldsDatabase}"
-                     SelectedItem="{Binding SelectedFieldDatabase}"
-                     BorderBrush="LightGray">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding .}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Border>
+        <ListBox Grid.Row="3"
+                 Style="{StaticResource RoundedListBoxStyle}"
+                 ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
+                 ItemsSource="{Binding EnteredFieldsDatabase}"
+                 SelectedItem="{Binding SelectedFieldDatabase}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding .}"
+                               TextWrapping="Wrap"
+                               Foreground="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-        <Border Grid.Row="4"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
-                        Margin="5"
-                        Cursor="Hand"
-                        Command="{Binding ApplyDatabaseManagerCommand}">
-                    <TextBlock Text="Применить"
-                               FontSize="15"
-                               FontFamily="Consolas" />
-                </Button>
+            <Button Grid.Column="0"
+                    Content="Применить"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding ApplyDatabaseManagerCommand}" />
 
-                <Button Grid.Column="1"
-                        Margin="5"
-                        Cursor="Hand"
-                        Command="{Binding CloseDatabaseManagerCommand}">
-                    <TextBlock Text="Назад"
-                               FontSize="15"
-                               FontFamily="Consolas" />
-                </Button>
-            </Grid>
-        </Border>
+            <Button Grid.Column="1"
+                    Content="Назад"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding CloseDatabaseManagerCommand}" />
+        </Grid>
     </Grid>
 </Window>

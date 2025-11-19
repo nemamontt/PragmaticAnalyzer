@@ -91,7 +91,7 @@ namespace PragmaticAnalyzer.MVVM.Model
 
                 NotifyRequested?.Invoke($" Обработка полученной информации от {_vulConfig.UrlFstec}");
                 // for (int rowIterator = 3; rowIterator < numberRows; rowIterator++)
-                for (int rowIterator = 3; rowIterator < 3000; rowIterator++)
+                for (int rowIterator = 3; rowIterator < 1000; rowIterator++)
                 {
                     Vulnerabilitie vulnerability = new()
                     {

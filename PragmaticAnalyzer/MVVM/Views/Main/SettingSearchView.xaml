@@ -32,7 +32,8 @@
         <Border Grid.Row="0"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -47,10 +48,9 @@
                            FontWeight="Bold" />
 
                 <ComboBox Grid.Column="1"
-                          FontSize="15"
-                          FontFamily="Consolas"
-                          Cursor="Hand"
+                          Margin="0"
                           DisplayMemberPath="DispayedName"
+                          Style="{StaticResource RoundedComboBoxStyle}"            
                           ItemsSource="{Binding ProtectionMeasures}"
                           SelectedItem="{Binding SelectedProtectionMeasures}" />
             </Grid>
@@ -59,7 +59,8 @@
         <Border Grid.Row="1"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -74,10 +75,9 @@
                            FontWeight="Bold" />
 
                 <ComboBox Grid.Column="1"
-                          FontSize="15"
-                          FontFamily="Consolas"
-                          Cursor="Hand"
                           DisplayMemberPath="NameOrgan"
+                          Margin="0"
+                          Style="{StaticResource RoundedComboBoxStyle}"                    
                           ItemsSource="{Binding Specialists}"
                           SelectedItem="{Binding SelectedSpecialist}" />
             </Grid>
@@ -86,7 +86,8 @@
         <Border Grid.Row="2"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -101,9 +102,8 @@
                            FontWeight="Bold" />
 
                 <ComboBox Grid.Column="1"
-                          FontSize="15"
-                          FontFamily="Consolas"
-                          Cursor="Hand"
+                          Margin="0"
+                          Style="{StaticResource RoundedComboBoxStyle}"
                           ItemsSource="{Binding Consequences}"
                           SelectedItem="{Binding SelectedConsequence}">
                     <ComboBox.ItemTemplate>
@@ -120,7 +120,8 @@
         <Border Grid.Row="3"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -135,16 +136,15 @@
                            FontWeight="Bold" />
 
                 <ComboBox Grid.Column="1"
-                          FontSize="15"
-                          FontFamily="Consolas"
-                          Cursor="Hand"
+                          Margin="0"
+                          Style="{StaticResource RoundedComboBoxStyle}"
                           ItemsSource="{Binding Technologys}"
                           SelectedItem="{Binding SelectedTechnology}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding  MethodName}"
                                        Width="500"
-                                       TextWrapping="Wrap"/>
+                                       TextWrapping="Wrap" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -154,7 +154,8 @@
         <Border Grid.Row="4"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -169,9 +170,8 @@
                            FontWeight="Bold" />
 
                 <ComboBox Grid.Column="1"
-                          FontSize="15"
-                          FontFamily="Consolas"
-                          Cursor="Hand"
+                          Margin="0"
+                          Style="{StaticResource RoundedComboBoxStyle}"
                           ItemsSource="{Binding Algorithms}"
                           SelectedItem="{Binding SelectedAlgorithm}">
                     <ComboBox.ItemTemplate>
@@ -186,7 +186,8 @@
         <Border Grid.Row="5"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -201,6 +202,7 @@
 
                 <ListBox Grid.Column="1"
                          ItemsSource="{Binding AvailableDatabasesConfig}"
+                         Margin="2"
                          SelectionMode="Multiple"
                          BorderBrush="LightGray">
                     <ListBox.ItemTemplate>
@@ -217,6 +219,7 @@
         <Border Grid.Row="6"
                 BorderBrush="Black"
                 BorderThickness="1"
+                CornerRadius="6"
                 Margin="2">
             <Grid Margin="2">
                 <Grid.ColumnDefinitions>
@@ -238,20 +241,11 @@
                           IsChecked="{Binding FilteringCvss}" />
             </Grid>
         </Border>
-
-        <Border Grid.Row="7"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="2">
-
-            <Button Grid.Column="1"
-                    Margin="2"
-                    Cursor="Hand"
-                    Command="{Binding CloseSettingSearchCommand}">
-                <TextBlock Text="Назад"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </Button>
-        </Border>
+        
+        <Button Grid.Row="7"
+                Content="Назад"
+                Margin="2"
+                Style="{StaticResource OutlinedGrayButtonStyle}"
+                Command="{Binding CloseSettingSearchCommand}" />
     </Grid>
 </Window>

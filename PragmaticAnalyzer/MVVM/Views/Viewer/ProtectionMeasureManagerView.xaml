@@ -25,20 +25,18 @@
         <TextBlock Grid.Row="0"
                    Text="Наименование группы мер защиты"
                    HorizontalAlignment="Center"
-                   FontFamily="Consolas"
-                   FontSize="15" />
+                   Style="{StaticResource MainTextBlockStyle}"
+                   FontWeight="Bold" />
 
         <TextBox Grid.Row="1"
                  Name="NameGroupMeasure"
-                 Cursor="IBeam"
-                 TextWrapping="Wrap"
-                 FontSize="20" />
+                 Style="{StaticResource RoundedTextBoxStyle}" />
 
         <TextBlock Grid.Row="2"
                    Text="Условное обозначение и номер меры защиты"
                    HorizontalAlignment="Center"
-                   FontFamily="Consolas"
-                   FontSize="15" />
+                   Style="{StaticResource MainTextBlockStyle}"
+                   FontWeight="Bold" />
 
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
@@ -47,16 +45,11 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="5">
-                <TextBox Name="NameMeasureTextBox"
-                         TextAlignment="Center"
-                         FontFamily="Consolas"
-                         FontSize="20"
-                         PreviewKeyDown="NameMeasureTextBoxPreviewKeyDown" />
-            </Border>
+            <TextBox Grid.Column="0"
+                     Name="NameMeasureTextBox"
+                     TextAlignment="Center"
+                     Style="{StaticResource RoundedTextBoxStyle}"
+                     PreviewKeyDown="NameMeasureTextBoxPreviewKeyDown" />
 
             <TextBlock Grid.Column="1"
                        Text="."
@@ -66,36 +59,29 @@
                        FontSize="25"
                        Margin="5" />
 
-            <Border Grid.Column="2"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="5">
-                <TextBox Name="NumberMeasureTextBox"
-                         TextAlignment="Center"
-                         FontFamily="Consolas"
-                         FontSize="20"
-                         PreviewKeyDown="NumberMeasureTextBoxPreviewKeyDown" />
-            </Border>
+            <TextBox Grid.Column="2"
+                     Name="NumberMeasureTextBox"
+                     TextAlignment="Center"
+                     Style="{StaticResource RoundedTextBoxStyle}"
+                     PreviewKeyDown="NumberMeasureTextBoxPreviewKeyDown" />
+
         </Grid>
 
         <TextBlock Grid.Row="4"
                    Text="Полное наименование меры защиты"
                    HorizontalAlignment="Center"
-                   FontFamily="Consolas"
-                   FontSize="15" />
+                   Style="{StaticResource MainTextBlockStyle}"
+                   FontWeight="Bold" />
 
         <TextBox Grid.Row="5"
                  Name="DescriptionMeasure"
-                 FontFamily="Consolas"
-                 Cursor="IBeam"
-                 TextWrapping="Wrap"
-                 FontSize="20" />
+                 Style="{StaticResource RoundedTextBoxStyle}" />
 
         <TextBlock Grid.Row="6"
+                   Style="{StaticResource MainTextBlockStyle}"
                    Text="Классы защищенности автоматизированной системы управления"
-                   FontFamily="Consolas"
                    HorizontalAlignment="Center"
-                   FontSize="15" />
+                   FontWeight="Bold" />
 
         <Grid Grid.Row="7">
             <Grid.ColumnDefinitions>
@@ -156,19 +142,11 @@
                     Orientation="Vertical">
             <Button Content="Готово"
                     Name="DoneButton"
-                    Height="50"
-                    Cursor="Hand"
-                    FontFamily="Consolas"
-                    FontSize="20"
-                    Margin="5" />
+                    Style="{StaticResource OutlinedGrayButtonStyle}" />
+
             <Button Content="Отмена"
                     Name="CancelButton"
-                    Height="50"
-                    Cursor="Hand"
-                    FontFamily="Consolas"
-                    FontSize="20"
-                    Margin="5" />
+                    Style="{StaticResource OutlinedGrayButtonStyle}" />
         </StackPanel>
-
     </Grid>
 </Window>

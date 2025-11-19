@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
+             xmlns:vmViewer="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Viewer"
+             xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
+             d:DataContext="{d:DesignInstance Type=vmViewer:VulnerabilitieViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="1000">
@@ -51,24 +54,21 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.1*" />
-            <RowDefinition Height="0.1*" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
                    Text="Идентификатор:"
-                   Margin="5"
-                   TextWrapping="Wrap"
-                   FontSize="15"
-                   FontFamily="Consolas" />
+                   Style="{StaticResource MainTextBlockStyle}" />
 
         <ListBox Grid.Row="1"
                  Grid.Column="0"
-                 FontSize="15"
-                 Margin="1"
                  VirtualizingStackPanel.IsVirtualizing="True"
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                 Style="{StaticResource RoundedListBoxStyle}"
+                 ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                  ItemsSource="{Binding Vulnerabilities}"
                  SelectedItem="{Binding SelectedVulnerabilitie}">
             <ListBox.ItemTemplate>
@@ -188,35 +188,29 @@
 
         <ProgressBar Grid.Row="2"
                      Grid.Column="0"
-                     Margin="3"
+                     Style="{StaticResource RoundedProgressBarStyle}"
                      IsIndeterminate="{Binding Progress}" />
 
         <Button Grid.Row="3"
                 Grid.Column="0"
-                Style="{StaticResource Button}"
                 Content="Обновить"
+                Style="{StaticResource  OutlinedGrayButtonStyle}"
                 Command="{Binding UpdateCommand}" />
 
         <TextBlock Grid.Row="0"
                    Grid.Column="2"
                    Text="Ход выполнения:"
-                   Margin="5"
-                   FontSize="15"
-                   FontFamily="Consolas" />
+                   Style="{StaticResource MainTextBlockStyle}" />
 
-        <ScrollViewer Grid.Row="1"
-                      Grid.Column="2"
-                      Grid.RowSpan="2"
-                      Margin="3">
-            <TextBlock Text="{Binding Status}"
-                       TextWrapping="Wrap"
-                       FontSize="12" />
-        </ScrollViewer>
-
+        <cc:FramedTextBlock Grid.Row="1"
+                            Grid.Column="2"
+                            Grid.RowSpan="2"
+                            Text="{Binding Status}" />
+        
         <Button Grid.Row="3"
                 Grid.Column="2"
-                Style="{StaticResource Button}"
                 Content="Остановить"
+                Style="{StaticResource OutlinedGrayButtonStyle}"
                 Command="{Binding CancelUpdateCommand}" />
     </Grid>
 </UserControl>

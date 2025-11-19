@@ -36,12 +36,12 @@ namespace PragmaticAnalyzer.Services
 
         public void StartServer()
         {
-            _serverProcess.Start();
+          //  _serverProcess.Start();
         }
 
         public async Task StopServerAsync()
         {
-           await _httpClient.PostAsync("http://127.0.0.1:5000/Shutdown", new StringContent(""));
+         //  await _httpClient.PostAsync("http://127.0.0.1:5000/Shutdown", new StringContent(""));
             /*       await Task.Delay(1000);
                    if (!_serverProcess.HasExited)
                    {

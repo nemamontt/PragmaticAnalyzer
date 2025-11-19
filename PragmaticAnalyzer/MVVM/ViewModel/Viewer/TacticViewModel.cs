@@ -33,7 +33,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             if (SelectedItem is null) return;
             TacticManagerView view = new(Add, Change, false, this);
             view.ShowDialog();
-        });
+        }, o => SelectedItem is not null);
 
         public RelayCommand DeleteCommand => GetCommand(o =>
         {
@@ -46,7 +46,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
                 var tactic = Tactics.FirstOrDefault(t => t.Techniques.Contains(selectedTechnique));
                 tactic?.Techniques.Remove(selectedTechnique);
             }
-        });
+        }, o => SelectedItem is not null);
 
         public void OnAdd(IEntityTIT newElement, string name)
         {

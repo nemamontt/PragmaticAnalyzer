@@ -4,169 +4,84 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
+             xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
-             xmlns:vm="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Viewer"
-             d:DataContext="{d:DesignInstance vm:ProtectionMeasureViewModel}"
+             xmlns:vmViewer="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Viewer"
+             d:DataContext="{d:DesignInstance vmViewer:ProtectionMeasureViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="500"
              d:DesignWidth="800">
     <UserControl.Resources>
         <assist:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-        <Style x:Key="HeadingTextBlock"
-               TargetType="TextBlock">
-            <Setter Property="TextWrapping"
-                    Value="Wrap" />
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontWeight"
-                    Value="Bold" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-        </Style>
-        <Style x:Key="DynamicTextBlock"
-               TargetType="TextBlock">
-            <Setter Property="TextWrapping"
-                    Value="Wrap" />
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-        </Style>
-        <Style x:Key="Button"
-               TargetType="Button">
-            <Setter Property="Width"
-                    Value="100" />
-            <Setter Property="Margin"
-                    Value="2" />
-            <Setter Property="Cursor"
-                    Value="Hand" />
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-        </Style>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.15*" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
                    Text="Условное обозначение:"
-                   Margin="5"
-                   TextWrapping="Wrap"
-                   FontSize="15"
-                   FontFamily="Consolas"/>
-        
+                   Style="{StaticResource MainTextBlockStyle}" />
+
+        <ListBox Grid.Row="1"
+                 Grid.Column="0"
+                 ItemsSource="{Binding ProtectionMeasures}"
+                 SelectedItem="{Binding SelectedProtectionMeasure}"
+                 Style="{StaticResource RoundedListBoxStyle}"
+                 ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
+                 VirtualizingStackPanel.IsVirtualizing="True"
+                 VirtualizingStackPanel.VirtualizationMode="Recycling">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DispayedName}"
+                               Style="{StaticResource MainTextBlockStyle}"
+                               Margin="1" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
         <Border Grid.Row="1"
-                Grid.Column="0"
+                Grid.Column="1"
+                Margin="5"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="5">
-            <ListBox ItemsSource="{Binding ProtectionMeasures}"
-                     VirtualizingStackPanel.IsVirtualizing="True"
-                     VirtualizingStackPanel.VirtualizationMode="Recycling"
-                     SelectedItem="{Binding SelectedProtectionMeasure}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding DispayedName}" 
-                                   FontSize="15"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                CornerRadius="6">
+            <WrapPanel Visibility="{Binding SelectedProtectionMeasure, Converter={StaticResource NullToVisibilityConverter}}">
+                <cc:LabeledValueBox LabelText="Наименование группы мер защиты"
+                                    ValueText="{Binding SelectedProtectionMeasure.NameGroup}" />
+
+                <cc:LabeledValueBox LabelText="Наименование меры защиты"
+                                    ValueText="{Binding SelectedProtectionMeasure.FullName}" />
+
+                <cc:LabeledValueBox LabelText="Классы защищенности АСУ"
+                                    ValueText="{Binding SelectedProtectionMeasure.SecurityClasses}" />
+            </WrapPanel>
         </Border>
         
-        <Border Grid.Row="0"
-                Grid.Column="1"
-                Grid.RowSpan="2"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="5">
-            <Grid Margin="3"
-                  Visibility="{Binding SelectedProtectionMeasure, Converter={StaticResource NullToVisibilityConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
+        <StackPanel  Grid.Row="2"
+                     Grid.ColumnSpan="2"
+                     Orientation="Horizontal"
+                     HorizontalAlignment="Center">
+            <Button Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Content="Добавить"
+                    Command="{Binding AddCommand}" />
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Content="Удалить"
+                    Command="{Binding DeleteCommand}" />
 
-                <TextBlock Grid.Row="0"
-                           Grid.Column="0"
-                           Text="Наименование группы мер защиты:"
-                           Style="{StaticResource HeadingTextBlock}"
-                           Margin="5" />
-                
-                <TextBlock Grid.Row="1"
-                           Grid.Column="0"
-                           Text="Наименование меры защиты:"
-                           Style="{StaticResource HeadingTextBlock}"
-                           Margin="5" />
-                
-                <TextBlock Grid.Row="2"
-                           Grid.Column="0"
-                           Text="Классы защищенности автоматизированной системы управления:"
-                           Style="{StaticResource HeadingTextBlock}"
-                           Margin="5" />
-
-                <TextBlock Grid.Row="0"
-                           Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Text="{Binding SelectedProtectionMeasure.NameGroup}"
-                           Style="{StaticResource DynamicTextBlock}" />
-                
-                <TextBlock Grid.Row="1"
-                           Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Text="{Binding SelectedProtectionMeasure.FullName}"
-                           Style="{StaticResource DynamicTextBlock}" />
-                
-                <TextBlock Grid.Row="2"
-                           Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Text="{Binding SelectedProtectionMeasure.SecurityClasses}"
-                           Style="{StaticResource DynamicTextBlock}" />
-            </Grid>
-        </Border>
-
-        <Border Grid.Row="2"
-                Grid.ColumnSpan="2"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Padding="2"       
-                Margin="5">
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center">
-                <Button Style="{StaticResource Button}"
-                        Height="50"
-                        Content="Добавить"
-                        Command="{Binding AddCommand}"/>
-
-                <Button Style="{StaticResource Button}"
-                        Content="Удалить"
-                        Height="50"
-                        IsEnabled="{Binding}"
-                        Command="{Binding DeleteCommand}"/>
-
-                <Button Style="{StaticResource Button}"
-                        Content="Изменить"
-                        Height="50"
-                        IsEnabled="{Binding}"
-                        Command="{Binding ChangeCommand}"/>
-            </StackPanel>
-        </Border>
+            <Button Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Content="Изменить"
+                    Command="{Binding ChangeCommand}" />
+        </StackPanel>
     </Grid>
 </UserControl>

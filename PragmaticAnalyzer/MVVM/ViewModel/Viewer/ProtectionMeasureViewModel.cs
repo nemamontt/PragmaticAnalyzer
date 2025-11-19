@@ -41,14 +41,14 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
                     break;
                 }
             }
-        });
+        }, o => SelectedProtectionMeasure is not null);
 
         public RelayCommand ChangeCommand => GetCommand(o =>
         {
             if (SelectedProtectionMeasure is null) return;
             ProtectionMeasureManagerView view = new(OnAdd, OnChange, false, SelectedProtectionMeasure);
             view.ShowDialog();
-        });
+        }, o => SelectedProtectionMeasure is not null);
 
         public void OnAdd(ProtectionMeasure protectionMeasure)
         {

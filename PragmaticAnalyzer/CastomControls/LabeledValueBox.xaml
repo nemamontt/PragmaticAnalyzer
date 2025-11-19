@@ -7,51 +7,32 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
-    <UserControl.Resources>
-        <Style x:Key="ParameterBorderStyle"
-               TargetType="Border">
-            <Setter Property="BorderBrush"
-                    Value="Black" />
-            <Setter Property="BorderThickness"
-                    Value="2" />
-            <Setter Property="Padding"
-                    Value="10" />
-            <Setter Property="Margin"
-                    Value="5" />
-            <Setter Property="Background"
-                    Value="White" />
-            <Setter Property="CornerRadius"
-                    Value="5" />
-        </Style>
-        <Style x:Key="HeadingText"
-               TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-            <Setter Property="FontWeight"
-                    Value="Bold" />
-            <Setter Property="Margin"
-                    Value=" 0,0,0,5" />
-        </Style>
-        <Style x:Key="DynamicText"
-               TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-            <Setter Property="TextWrapping"
-                    Value="Wrap" />
-        </Style>
-    </UserControl.Resources>
-
-    <Border Style="{StaticResource ParameterBorderStyle}">
+    <Border BorderBrush="Black"
+            Background="White"
+            CornerRadius="6"
+            BorderThickness="2"
+            Padding="10"
+            Margin="5">
         <StackPanel>
-            <TextBlock Text="{Binding LabelText, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                       Style="{StaticResource HeadingText}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding LabelText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           FontSize="18"
+                           FontFamily="Consolas"
+                           FontWeight="Bold"
+                           Margin="0 0 5 5"
+                           VerticalAlignment="Center"/>
 
+                <Button Content="📎"
+                        Click="CopyButton_Click"
+                        FontWeight="Normal"
+                        ToolTip="Копировать"
+                        Style="{StaticResource OutlinedGrayButtonStyle}" />
+            </StackPanel>
+          
             <TextBlock Text="{Binding ValueText, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                       Style="{StaticResource DynamicText}" />
+                       FontSize="15"
+                       FontFamily="Consolas"
+                       TextWrapping="Wrap"/>
         </StackPanel>
     </Border>
 </UserControl>

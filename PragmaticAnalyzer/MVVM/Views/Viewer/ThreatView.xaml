@@ -4,44 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
+             xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
+             xmlns:vmViewer="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Viewer"
+             d:DataContext="{d:DesignInstance Type=vmViewer:ThreatViewModel}"
              mc:Ignorable="d"
-             d:DesignHeight="450"
+             d:DesignHeight="600"
              d:DesignWidth="1000">
     <UserControl.Resources>
         <assist:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-        
-        <Style x:Key="Button"
-               TargetType="Button">
-            <Setter Property="Margin"
-                    Value="3" />
-            <Setter Property="FontSize"
-                    Value="20" />
-            <Setter Property="Cursor"
-                    Value="Hand" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-        </Style>
-        
-        <Style x:Key="HeadingTextBlock"
-               TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontWeight"
-                    Value="Bold" />
-            <Setter Property="TextWrapping"
-                    Value="Wrap" />
-            <Setter Property="MinWidth"
-                    Value="1000" />
-        </Style>
-        
-        <Style x:Key="DynamicTextBlock"
-               TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="TextWrapping"
-                    Value="Wrap" />
-        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -61,21 +32,26 @@
         <TextBlock Grid.Row="0"
                    Grid.Column="0"
                    Text="Идентификатор угрозы:"
-                   Margin="5"
-                   FontSize="15"
-                   FontFamily="Consolas" />
-        
+                   Style="{StaticResource MainTextBlockStyle}" />
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="2"
+                   Text="Ход выполнения:"
+                   Style="{StaticResource MainTextBlockStyle}" />
+
         <ListBox  Grid.Row="1"
                   Grid.Column="0"
                   ItemsSource="{Binding Threats, Mode=OneWay}"
-                  FontSize="15"
-                  Margin="3"
+                  Style="{StaticResource RoundedListBoxStyle}"
+                  ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
+                  SelectedItem="{Binding SelectedThreat}"
                   VirtualizingStackPanel.IsVirtualizing="True"
-                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                  SelectedItem="{Binding SelectedThreat}">
+                  VirtualizingStackPanel.VirtualizationMode="Recycling">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Id}" />
+                    <TextBlock Text="{Binding Id}"
+                               Style="{StaticResource MainTextBlockStyle}"
+                               Margin="1" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -83,82 +59,60 @@
         <Border Grid.Row="1"
                 Grid.Column="1"
                 Grid.RowSpan="3"
-                Margin="3"
+                Margin="5"
                 BorderBrush="Black"
-                BorderThickness="1">
-            <ScrollViewer Visibility="{Binding SelectedThreat, Converter={StaticResource NullToVisibilityConverter}}">
-                <StackPanel Margin="5">
-                    <TextBlock Text="Наименование УБИ"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.Name}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Описание"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.Description}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Источник угрозы (характеристика и потенциал нарушителя)"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.Source}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Объект воздействия"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.ObjectInfluence}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Нарушение конфиденциальности"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.PrivacyViolation}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Нарушение целостности"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.IntegrityViolation}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Нарушение доступности"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.AccessibilityViolation}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Дата включения угрозы в БнД УБИ"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.DateInclusion}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Дата последнего изменения данных"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedThreat.DateChange}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                </StackPanel>
-            </ScrollViewer>
+                BorderThickness="1"
+                CornerRadius="6">
+            <WrapPanel Visibility="{Binding SelectedThreat, Converter={StaticResource NullToVisibilityConverter}}">
+                <cc:LabeledValueBox LabelText="Наименование УБИ"
+                                    ValueText="{Binding SelectedThreat.Name}" />
+
+                <cc:LabeledValueBox LabelText="Описание"
+                                    ValueText="{Binding SelectedThreat.Description}" />
+
+                <cc:LabeledValueBox LabelText="Источник угрозы (характеристика и потенциал нарушителя)"
+                                    ValueText="{Binding SelectedThreat.Source}" />
+
+                <cc:LabeledValueBox LabelText="Объект воздействия"
+                                    ValueText="{Binding SelectedThreat.ObjectInfluence}" />
+
+                <cc:LabeledValueBox LabelText="Нарушение конфиденциальности"
+                                    ValueText="{Binding SelectedThreat.PrivacyViolation}" />
+
+                <cc:LabeledValueBox LabelText="Нарушение целостности"
+                                    ValueText="{Binding SelectedThreat.IntegrityViolation}" />
+
+                <cc:LabeledValueBox LabelText="Нарушение доступности"
+                                    ValueText="{Binding SelectedThreat.AccessibilityViolation}" />
+
+                <cc:LabeledValueBox LabelText="Дата включения угрозы в БнД УБИ"
+                                    ValueText="{Binding SelectedThreat.DateInclusion}" />
+
+                <cc:LabeledValueBox LabelText="Дата последнего изменения данных"
+                                    ValueText="{Binding SelectedThreat.DateChange}" />
+            </WrapPanel>
         </Border>
-        
+
+        <cc:FramedTextBlock Grid.Row="1"
+                            Grid.Column="2"
+                            Grid.RowSpan="2"
+                            Text="{Binding Status}" />
+
         <ProgressBar Grid.Row="2"
                      Grid.Column="0"
-                     Margin="3"
+                     Style="{StaticResource RoundedProgressBarStyle}"
                      IsIndeterminate="{Binding Progress}"/>
-        
+
         <Button Grid.Row="3"
                 Grid.Column="0"
-                Style="{StaticResource Button}"
                 Content="Обновить"
-                Command="{Binding UpdateCommand}"/>
-
-        <TextBlock Grid.Row="0"
-                   Grid.Column="2"
-                   Text="Ход выполнения:"
-                   Margin="5"
-                   FontSize="15"
-                   FontFamily="Consolas" />
-
-        <ScrollViewer Grid.Row="1"
-                      Grid.Column="2"
-                      Grid.RowSpan="2"
-                      Margin="3">
-            <TextBlock Text="{Binding Status}"
-                       TextWrapping="Wrap"
-                       FontSize="12" />
-        </ScrollViewer>
+                Style="{StaticResource OutlinedGrayButtonStyle}"    
+                Command="{Binding UpdateCommand}" />
 
         <Button Grid.Row="3"
                 Grid.Column="2"
-                Style="{StaticResource Button}"
                 Content="Остановить"
+                Style="{StaticResource OutlinedGrayButtonStyle}" 
                 Command="{Binding CancelUpdateCommand}" />
     </Grid>
 </UserControl>

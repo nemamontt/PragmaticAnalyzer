@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views.Main"
         xmlns:vmMain="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+        xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
         d:DataContext="{d:DesignInstance Type=vmMain:CreatorViewModel}"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -21,11 +22,13 @@
         <Border Grid.Row="0"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="5"
+                CornerRadius="6">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="0.2*" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition  Height="1*" />
                 </Grid.RowDefinitions>
 
@@ -38,10 +41,15 @@
 
                 <TextBox Grid.Row="1"
                          Text="{Binding EnteredDescriptionField}"
-                         TextWrapping="Wrap"
+                         Style="{StaticResource RoundedTextBoxStyle}"
                          Margin=" 5 0 5 5" />
 
-                <ScrollViewer Grid.Row="2"
+                <Border Grid.Row="2" 
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Height="1"/>
+
+                <ScrollViewer Grid.Row="3"
                               Margin="5">
                     <ItemsControl ItemsSource="{Binding FieldInputs}">
                         <ItemsControl.ItemTemplate>
@@ -51,6 +59,7 @@
                                         CornerRadius="5"
                                         Padding="5"
                                         Margin="5">
+                                    
                                     <Grid Height="200">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
@@ -67,10 +76,7 @@
 
                                         <TextBox Grid.Row="1"
                                                  Text="{Binding Value}"
-                                                 FontSize="20"
-                                                 FontFamily="Consolas"
-                                                 TextWrapping="Wrap"
-                                                 Margin="5"/>
+                                                 Style="{StaticResource RoundedTextBoxStyle}"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
@@ -80,34 +86,21 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="1"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
-                        Margin="5"
-                        Cursor="Hand"
-                        Command="{Binding ApplyRecordManagerCommand}">
-                    <TextBlock Text="Применить"
-                               FontSize="20"
-                               FontFamily="Consolas" />
-                </Button>
+            <Button Grid.Column="0"
+                    Content="Применить"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding ApplyRecordManagerCommand}" />
 
-                <Button Grid.Column="1"
-                        Margin="5"
-                        Cursor="Hand"
-                        Command="{Binding CloseRecordManagerCommand}">
-                    <TextBlock Text="Назад"
-                               FontSize="20"
-                               FontFamily="Consolas" />
-                </Button>
-            </Grid>
-        </Border>
+            <Button Grid.Column="1"
+                    Content="Назад"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding CloseRecordManagerCommand}" />
+        </Grid>
     </Grid>
 </Window>

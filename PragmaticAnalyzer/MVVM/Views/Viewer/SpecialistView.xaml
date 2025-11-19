@@ -4,7 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
+             xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
+             xmlns:vmViewer="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Viewer"
+             d:DataContext="{d:DesignInstance Type=vmViewer:SpecialistViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="500"
              d:DesignWidth="800">
@@ -48,126 +51,75 @@
             <ColumnDefinition Width="0.2*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.15*" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
         <TextBlock Text="Наименование ОВУ:"
-                   Style="{StaticResource HeadingTextBlock}"
-                   FontWeight="Normal" 
-                   Margin="5"/>
-        
+                   Style="{StaticResource MainTextBlockStyle}" />
+
         <ListBox Grid.Row="1"
                  Grid.Column="0"
+                 Style="{StaticResource RoundedListBoxStyle}"
+                 ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
                  ItemsSource="{Binding Specialists}"
-                 SelectedItem="{Binding SelectedSpecialist}"
-                 Margin="5"
-                 FontSize="15"
-                 FontFamily="Concolas"
-                 Name="MainList"
-                 VirtualizingStackPanel.IsVirtualizing="True"
-                 VirtualizingStackPanel.VirtualizationMode="Recycling">
+                 SelectedItem="{Binding SelectedSpecialist}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding NameOrgan}" />
+                    <TextBlock Text="{Binding NameOrgan}"
+                               Style="{StaticResource MainTextBlockStyle}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
+
         <Border Grid.Row="0"
                 Grid.Column="1"
                 Grid.RowSpan="2"
                 Margin="5"
                 BorderBrush="Black"
-                BorderThickness="1">
-            <StackPanel Margin="1"
-                Visibility="{Binding SelectedSpecialist, Converter={StaticResource NullToVisibilityConverter}}">
-                <TextBlock Text="Наименование вышестоящего ОВУ"
-                           Style="{StaticResource HeadingTextBlock}" />
-                
-                <TextBlock Text="{Binding SelectedSpecialist.NameHighestOrgan}"
-                           Style="{StaticResource DynamicTextBlock}" />
-                
-                <TextBlock Text="Наименование подчиненного ОВУ"
-                           Style="{StaticResource HeadingTextBlock}" />
-                
-                <TextBlock Text="{Binding SelectedSpecialist.NameSubordinateOrgan}"
-                           Style="{StaticResource DynamicTextBlock}" />
-                
-                <TextBlock Text="Статус по выявленной уязвимости"
-                           Style="{StaticResource HeadingTextBlock}" />
-                
-                <TextBlock Text="{Binding SelectedSpecialist.StatusVulnerability}"
-                           Style="{StaticResource DynamicTextBlock}" />
-
-                <TextBlock Text="Предпринятые действия"
-                           Style="{StaticResource HeadingTextBlock}" />
-
-                <TextBlock Text="{Binding SelectedSpecialist.ActionsTaken}"
-                           Style="{StaticResource DynamicTextBlock}" />
-
-                <TextBlock Text="Наименование СС СОПКА"
-                           Style="{StaticResource HeadingTextBlock}" />
-                
-                <TextBlock Text="{Binding SelectedSpecialist.NameSoftware}"
-                           Style="{StaticResource DynamicTextBlock}" />
-                
-                <TextBlock Text="Список принятых мер защиты"
-                           Style="{StaticResource HeadingTextBlock}" />
-
-                <ListBox ItemsSource="{Binding SelectedSpecialist.UsingMeasures}"
-                         Margin="1">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"
-                                       Style="{StaticResource DynamicTextBlock}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                
-                <TextBlock Text="Наименования взаимодействующих ОВУ"
-                           Style="{StaticResource HeadingTextBlock}" />
-                
-                <ListBox ItemsSource="{Binding SelectedSpecialist.NameInteractingOrgans}"
-                         Margin="1">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"
-                                       Style="{StaticResource DynamicTextBlock}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
-        </Border>
-
-        <Border Grid.Row="2"
-                Grid.ColumnSpan="2"
-                BorderBrush="Black"
                 BorderThickness="1"
-                Padding="2"
-                Margin="5">
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center">
-                <Button Style="{StaticResource Button}"
-                        Height="50"
-                        Content="Добавить"
-                        Command="{Binding AddCommand}" />
+                CornerRadius="6">
+            <WrapPanel  Visibility="{Binding SelectedSpecialist, Converter={StaticResource NullToVisibilityConverter}}">
+                <cc:LabeledValueBox LabelText="Наименование вышестоящего ОВУ"
+                                    ValueText="{Binding  SelectedSpecialist.NameHighestOrgan}" />
 
-                <Button Style="{StaticResource Button}"
-                        Content="Удалить"
-                        Height="50"
-                        IsEnabled="{Binding}"
-                        Command="{Binding DeleteCommand}" />
+                <cc:LabeledValueBox LabelText="Наименование подчиненного ОВУ"
+                                    ValueText="{Binding  SelectedSpecialist.NameSubordinateOrgan}" />
 
-                <Button Style="{StaticResource Button}"
-                        Content="Изменить"
-                        Height="50"
-                        IsEnabled="{Binding}"
-                        Command="{Binding ChangeCommand}" />
-            </StackPanel>
+                <cc:LabeledValueBox LabelText="Статус по выявленной уязвимости"
+                                    ValueText="{Binding  SelectedSpecialist.StatusVulnerability}" />
+
+                <cc:LabeledValueBox LabelText="Предпринятые действия"
+                                    ValueText="{Binding  SelectedSpecialist.ActionsTaken}" />
+
+                <cc:LabeledValueBox LabelText="Список принятых мер защиты"
+                                    ValueText="{Binding  SelectedSpecialist.UsingMeasuresToString}" />
+
+                <cc:LabeledValueBox LabelText="Наименования взаимодействующих ОВУ"
+                                    ValueText="{Binding  SelectedSpecialist.NameInteractingOrgansToString}" />
+            </WrapPanel>
         </Border>
+
+        <StackPanel Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                    Content="Добавить"
+                    Command="{Binding AddCommand}" />
+
+            <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                    Content="Удалить"
+                    IsEnabled="{Binding}"
+                    Command="{Binding DeleteCommand}" />
+
+            <Button Style="{StaticResource  OutlinedGrayButtonStyle}"
+                    Content="Изменить"
+                    IsEnabled="{Binding}"
+                    Command="{Binding ChangeCommand}" />
+        </StackPanel>
     </Grid>
 </UserControl>

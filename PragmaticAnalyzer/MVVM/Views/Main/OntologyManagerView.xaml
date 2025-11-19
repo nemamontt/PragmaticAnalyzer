@@ -22,7 +22,8 @@
         <Border Grid.Row="0"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid Margin="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -35,23 +36,18 @@
                            FontFamily="Consolas"
                            Margin="0 5 5 5" />
 
-                <Border Grid.Row="1"
-                        BorderBrush="Black"
-                        BorderThickness="1">
-                    <ScrollViewer>
-                        <TextBox TextWrapping="Wrap"
-                                 FontSize="20"
-                                 AcceptsReturn="True"
-                                 Text="{Binding EnteredName}"/>
-                    </ScrollViewer>
-                </Border>
+                <TextBox Grid.Row="1"
+                         Height="100"
+                         Style="{StaticResource RoundedTextBoxStyle}"       
+                         Text="{Binding EnteredName}" />
             </Grid>
         </Border>
 
         <Border Grid.Row="1"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                Margin="2"
+                CornerRadius="6">
             <Grid Margin="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -64,23 +60,17 @@
                            FontFamily="Consolas"
                            Margin="0 5 5 5" />
 
-                <Border Grid.Row="1"
-                        BorderBrush="Black"
-                        BorderThickness="1">
-                    <ScrollViewer>
-                        <TextBox TextWrapping="Wrap"
-                                 FontSize="20"
-                                 AcceptsReturn="True"
-                                 Text="{Binding EnteredDescription}" />
-                    </ScrollViewer>
-                </Border>
+                <TextBox Grid.Row="1"
+                         Style="{StaticResource RoundedTextBoxStyle}"
+                         Text="{Binding EnteredDescription}" />
             </Grid>
         </Border>
 
         <Border Grid.Row="2"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Margin="2">
+                CornerRadius="6"
+                Margin="5">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -92,7 +82,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0"
-                           Grid.Column="0"                       
+                           Grid.Column="0"
                            Text="Добавить сущность в выбранную онтологию:"
                            FontSize="15"
                            FontFamily="Consolas" />
@@ -106,34 +96,21 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="3"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
-                        Margin="5"
-                        Cursor="Hand"
-                        Command="{Binding ApplyCommand}">
-                    <TextBlock Text="Применить"
-                               FontSize="15"
-                               FontFamily="Consolas" />
-                </Button>
+            <Button Grid.Column="0"
+                    Content="Применить"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding ApplyCommand}" />
 
-                <Button Grid.Column="1"
-                        Margin="5"
-                        Cursor="Hand"
-                        Command="{Binding BackCommand}">
-                    <TextBlock Text="Назад"
-                               FontSize="15"
-                               FontFamily="Consolas" />
-                </Button>
-            </Grid>
-        </Border>
+            <Button Grid.Column="1"
+                    Content="Назад"
+                    Style="{StaticResource OutlinedGrayButtonStyle}"
+                    Command="{Binding BackCommand}" />
+        </Grid>
     </Grid>
 </Window>

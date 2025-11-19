@@ -70,7 +70,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Violator);
         });
 
-        public RelayCommand DoneManager => GetCommand(o =>
+        public RelayCommand DoneManagerCommand => GetCommand(o =>
         {
             if (_isAdd)
             {
@@ -79,7 +79,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             _manager?.Close();
         });
 
-        public RelayCommand CancelManager => GetCommand(o =>
+        public RelayCommand CancelManagerCommand => GetCommand(o =>
         {
             _manager?.Close();
         });

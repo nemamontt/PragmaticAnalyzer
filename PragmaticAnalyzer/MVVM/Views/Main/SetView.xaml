@@ -4,469 +4,112 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
+             xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
+             xmlns:vm="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Main"
+             d:DataContext="{d:DesignInstance vm:SetViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Grid.Column="0"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных уязвимостей"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.Vulnerabilitie}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
+        <cc:ExtendedDownloadTab  Grid.Row="0"
+                                 Title="Уязвимостей"
+                                 RefreshCommandParameter="ProtectionMeasure"
+                                 Time="{Binding LastUpdateConfig.Vulnerabilitie}"
+                                 Text="{Binding DisplayedPaths.VulnerabilitiePath}"
+                                 RefreshUpdateCommand="{Binding UpdateVulDbCommand}"
+                                 RefreshLoadCommand="{Binding SetCommand}"
+                                 ButtonBackground="{Binding VulnerabilitieButtonBackground}" />
 
-        </StackPanel>
-        <Border Grid.Row="1"
-                Grid.Column="0"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.VulnerabilitiePath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Grid Grid.Row="1"
-              Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Button Grid.Row="0"
-                    Content="..."
-                    Cursor="Hand"
-                    Command="{Binding SetCommand}"
-                    Background="{Binding VulnerabilitieButtonBackground}"
-                    CommandParameter="Vulnerabilitie" />
-            <Button Grid.Row="1"
-                    Content="⟳"
-                    FontSize="20"
-                    Cursor="Hand"
-                    Command="{Binding UpdateVulDbCommand}" />
-        </Grid>
+        <cc:ExtendedDownloadTab  Grid.Row="1"
+                                 Title="Угроз"
+                                 RefreshCommandParameter="ProtectionMeasure"
+                                 Time="{Binding LastUpdateConfig.Threat}"
+                                 Text="{Binding DisplayedPaths.ThreatPath}"
+                                 RefreshUpdateCommand="{Binding UpdateThreatDbCommand}"
+                                 RefreshLoadCommand="{Binding SetCommand}"
+                                 ButtonBackground="{Binding ThreatButtonBackground}" />
 
-        <StackPanel Grid.Row="2"
-                    Grid.Column="0"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных угроз"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.Threat}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border Grid.Row="3"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Grid.Column="0"
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.ThreatPath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Grid Grid.Row="3"
-              Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Button Grid.Row="0"
-                    Content="..."
-                    Cursor="Hand"
-                    Command="{Binding SetCommand}"
-                    Background="{Binding ThreatButtonBackground}"
-                    CommandParameter="Threat" />
-            <Button Grid.Row="1"
-                    Content="⟳"
-                    FontSize="20"
-                    Cursor="Hand"
-                    Command="{Binding UpdateThreatDbCommand}" />
-        </Grid>
+        <cc:ExtendedDownloadTab  Grid.Row="2"
+                                 Title="Эксплойтов"
+                                 RefreshCommandParameter="ProtectionMeasure"
+                                 Time="{Binding LastUpdateConfig.Exploit}"
+                                 Text="{Binding DisplayedPaths.ExploitPath}"
+                                 RefreshUpdateCommand="{Binding UpdateExploitDbCommand}"
+                                 RefreshLoadCommand="{Binding SetCommand}"
+                                 ButtonBackground="{Binding ExploitButtonBackground}" />
 
-        <StackPanel Grid.Row="4"
-                    Grid.Column="0"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных эксплойтов"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.Exploit}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border Grid.Row="5"
-                Grid.Column="0"
-                BorderBrush="Black"
-                BorderThickness="1"          
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.ExploitPath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Grid Grid.Row="5"
-              Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Button Grid.Row="0"
-                    Content="..."
-                    Cursor="Hand"
-                    Command="{Binding SetCommand}"
-                    Background="{Binding ExploitButtonBackground}"
-                    CommandParameter="Exploit" />
-            <Button Grid.Row="1"
-                    Content="⟳"
-                    FontSize="20"
-                    Cursor="Hand"
-                    Command="{Binding UpdateExploitDbCommand}" />
-        </Grid>
+        <cc:DownloadTab Grid.Row="3"
+                        Title="Мер защиты"
+                        RefreshCommandParameter="ProtectionMeasure"
+                        Time="{Binding LastUpdateConfig.ProtectionMeasure}"
+                        Text="{Binding DisplayedPaths.ProtectionMeasurePath}"
+                        RefreshCommand="{Binding SetCommand}"
+                        ButtonBackground="{Binding ProtectionMeasureButtonBackground}" />
 
-        <StackPanel Grid.Row="6"
-                    Grid.Column="0"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных мер защиты"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.ProtectionMeasure}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border Grid.Row="7"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Grid.Column="0"
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.ProtectionMeasurePath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Button Grid.Row="7"
-                Grid.Column="1"
-                Content="..."
-                Width="50"
-                Cursor="Hand"
-                Command="{Binding SetCommand}"
-                Background="{Binding ProtectionMeasureButtonBackground}"
-                CommandParameter="ProtectionMeasure" />
+        <cc:DownloadTab Grid.Row="4"
+                        Title="Рисков"
+                        RefreshCommandParameter="Outcomes"
+                        Time="{Binding LastUpdateConfig.Outcomes}"
+                        Text="{Binding DisplayedPaths.OutcomesPath}"
+                        RefreshCommand="{Binding SetCommand}"
+                        ButtonBackground="{Binding OutcomesButtonBackground}" />
 
-        <StackPanel Grid.Row="8"
-                    Grid.Column="0"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных рисков"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.Outcomes}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border Grid.Row="9"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Grid.Column="0"
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.OutcomesPath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Button Grid.Row="9"
-                Grid.Column="1"
-                Content="..."
-                Width="50"
-                Cursor="Hand"
-                Command="{Binding SetCommand}"
-                Background="{Binding OutcomesButtonBackground}"
-                CommandParameter="Outcomes" />
+        <cc:DownloadTab Grid.Column="1"
+                        Grid.Row="0"
+                        Title="Техник и тактик"
+                        RefreshCommandParameter="Tactic"
+                        Time="{Binding LastUpdateConfig.Tactic}"
+                        Text="{Binding DisplayedPaths.TacticPath}"
+                        RefreshCommand="{Binding SetCommand}"
+                        ButtonBackground="{Binding TacticButtonBackground}" />
 
-        <StackPanel Grid.Row="0"
-                    Grid.Column="2"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных техник и тактик"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.Tactic}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border Grid.Row="1"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Grid.Column="2"
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.TacticPath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Button Grid.Row="1"
-                Grid.Column="3"
-                Content="..."
-                Width="50"
-                Cursor="Hand"
-                Command="{Binding SetCommand}"
-                Background="{Binding TacticButtonBackground}"
-                CommandParameter="Tactic" />
-        
-        <StackPanel Grid.Row="2"
-                    Grid.Column="2"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных нарушителей"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.Violator}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border Grid.Row="3"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Grid.Column="2"
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.ViolatorPath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Button Grid.Row="3"
-                Grid.Column="3"
-                Content="..."
-                Width="50"
-                Cursor="Hand"
-                Command="{Binding SetCommand}"
-                Background="{Binding ViolatorButtonBackground}"
-                CommandParameter="Violator" />
+        <cc:DownloadTab Grid.Column="1"
+                        Grid.Row="1"
+                        Title="Нарушителей"
+                        RefreshCommandParameter="Violator"
+                        Time="{Binding LastUpdateConfig.Violator}"
+                        Text="{Binding DisplayedPaths.ViolatorPath}"
+                        RefreshCommand="{Binding SetCommand}"
+                        ButtonBackground="{Binding ViolatorButtonBackground}" />
 
-        <StackPanel Grid.Row="4"
-                    Grid.Column="2"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных спициалиста по ЗИ"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.Specialist}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border Grid.Row="5"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Grid.Column="2"
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.SpecialistPath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Button Grid.Row="5"
-                Grid.Column="3"
-                Content="..."
-                Width="50"
-                Cursor="Hand"
-                Command="{Binding SetCommand}"
-                Background="{Binding SpecialistButtonBackground}"
-                CommandParameter="Specialist" />
+        <cc:DownloadTab Grid.Column="1"
+                        Grid.Row="2"
+                        Title="Спициалиста по ЗИ"
+                        RefreshCommandParameter="Specialist"
+                        Time="{Binding LastUpdateConfig.Specialist}"
+                        Text="{Binding DisplayedPaths.SpecialistPath}"
+                        RefreshCommand="{Binding SetCommand}"
+                        ButtonBackground="{Binding SpecialistButtonBackground}" />
 
-        <StackPanel Grid.Row="6"
-                    Grid.Column="2"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных о текущем состоянии ПФ СОПКА"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.CurStatus}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border  Grid.Row="7"
-                 BorderBrush="Black"
-                 BorderThickness="1"
-                 Grid.Column="2"
-                 Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.CurStatusPath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Button Grid.Row="7"
-                Grid.Column="3"
-                Content="..."
-                Width="50"
-                Cursor="Hand"
-                Command="{Binding SetCommand}"
-                Background="{Binding CurrentStatusButtonBackground}"
-                CommandParameter="CurrentStatus" />
+        <cc:DownloadTab Grid.Column="1"
+                        Grid.Row="3"
+                        Title="Текущих состояний ПФ СОПКА"
+                        RefreshCommandParameter="CurrentStatus"
+                        Time="{Binding LastUpdateConfig.CurStatus}"
+                        Text="{Binding DisplayedPaths.CurStatusPath}"
+                        RefreshCommand="{Binding SetCommand}"
+                        ButtonBackground="{Binding CurrentStatusButtonBackground}" />
 
-        <StackPanel Grid.Row="8"
-                    Grid.Column="2"
-                    Orientation="Horizontal">
-            <TextBlock Text="База данных об эталонном состоянии ПФ СОПКА"
-                       FontSize="15"
-                       FontFamily="Consolas"
-                       FontWeight="Bold" />
-            <StackPanel  Orientation="Horizontal"
-                         Margin="5 0 0 0">
-                <TextBlock Text="("
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="Дата изменения:"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text="{Binding LastUpdateConfig.RefStatus}"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-                <TextBlock Text=")"
-                           FontSize="15"
-                           FontFamily="Consolas" />
-            </StackPanel>
-        </StackPanel>
-        <Border Grid.Row="9"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Grid.Column="2"
-                Margin="1">
-            <TextBlock Text="{Binding DisplayedPaths.RefStatusPath}"
-                       FontSize="20"
-                       TextWrapping="Wrap" />
-        </Border>
-        <Button Grid.Row="9"
-                Grid.Column="3"
-                Content="..."
-                Width="50"
-                Cursor="Hand"
-                Command="{Binding SetCommand}"
-                Background="{Binding ReferenceStatusButtonBackground}"
-                CommandParameter="ReferenceStatus" />
+        <cc:DownloadTab Grid.Column="1"
+                        Grid.Row="4"
+                        Title="Эталонных состояний ПФ СОПКА"
+                        RefreshCommandParameter="ReferenceStatus"
+                        Time="{Binding LastUpdateConfig.RefStatus}"
+                        Text="{Binding DisplayedPaths.RefStatusPath}"
+                        RefreshCommand="{Binding SetCommand}"
+                        ButtonBackground="{Binding ReferenceStatusButtonBackground}" />
     </Grid>
 </UserControl>
