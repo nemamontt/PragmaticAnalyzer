@@ -36,11 +36,13 @@
                     HorizontalAlignment="Center">
             <TextBlock Text="Идентификатор:"
                        FontWeight="Bold"
+                       VerticalAlignment="Center"
                        Style="{StaticResource MainTextBlockStyle}"
                        Margin="0 0 5 0" />
 
             <TextBlock Style="{StaticResource MainTextBlockStyle}"
-                       Text="{Binding ManagerViolator.SequenceNumber}" />
+                       Text="{Binding ManagerViolator.SequenceNumber}"
+                       VerticalAlignment="Center"/>
         </StackPanel>
 
         <TextBlock Grid.Row="1"

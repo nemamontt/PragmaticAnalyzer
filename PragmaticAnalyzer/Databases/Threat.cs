@@ -7,7 +7,7 @@ namespace PragmaticAnalyzer.Databases
     /// <summary>
     /// База данных "Угроз"
     /// </summary>
-    public class Threat : ViewModelBase, IDatabase, IHasDescription
+    public class Threat : ViewModelBase, IHasId, IHasDescription
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
 

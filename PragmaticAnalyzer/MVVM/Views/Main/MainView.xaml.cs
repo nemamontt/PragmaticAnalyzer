@@ -22,7 +22,7 @@ namespace PragmaticAnalyzer.MVVM.Views.Main
 
             try
             {
-                await ViewModelsService.ApiService.StopServerAsync();
+                ViewModelsService.ApiService.StopServer();
                 await _vm.OnCompletionWork();
             }
             finally

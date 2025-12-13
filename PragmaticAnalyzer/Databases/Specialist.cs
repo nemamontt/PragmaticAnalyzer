@@ -9,7 +9,7 @@ namespace PragmaticAnalyzer.Databases
     /// <summary>
     /// База данных "Специалист по ЗИ"
     /// </summary>
-    public class Specialist : ViewModelBase, IDatabase
+    public class Specialist : ViewModelBase, IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
 

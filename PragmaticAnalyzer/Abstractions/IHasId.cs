@@ -1,6 +1,6 @@
 ﻿namespace PragmaticAnalyzer.Abstractions
 {
-    public interface IDatabase
+    public interface IHasId
     {
         Guid GuidId { get; }
     }

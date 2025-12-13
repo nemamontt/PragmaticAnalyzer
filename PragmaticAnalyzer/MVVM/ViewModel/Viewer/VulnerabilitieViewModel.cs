@@ -12,54 +12,159 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
 {
     public class VulnerabilitieViewModel : ViewModelBase
     {
-        private readonly VulnerabilitieModel _model;
+        private readonly IApiService _apiService;
         private readonly IFileService _fileService;
+        private readonly VulnerabilitieModel _model;
         private readonly Func<string, DataType, Task> UpdateConfig;
+        private VulnerabilitieFstecViewModel _fstecVm = new();
+        private VulnerabilitieNvdViewModel _nvdVm = new();
+        private VulnerabilitieJvnViewModel _jvnVm = new();
         private CancellationTokenSource? _updateCancellationTokenSource;
-        public ObservableCollection<Vulnerabilitie> Vulnerabilities { get; }
-        public Vulnerabilitie? SelectedVulnerabilitie { get => Get<Vulnerabilitie?>(); set => Set(value); }
+        private VulConfig _config;
+        public object? CurrentView { get => Get<object>(); private set => Set(value); }
+        public ObservableCollection<object> DisplayedVulnerabilities { get; private set; } = [];
+        public ObservableCollection<VulnerabilitieFstec> VulnerabilitiesFstec { get; } = [];
+        public ObservableCollection<VulnerabilitieNvd> VulnerabilitiesNvd { get; } = [];
+        public ObservableCollection<VulnerabilitieJvn> VulnerabilitiesJvn { get; } = [];
+        // public ObservableCollection<> ExtendedtVulnerabilities { get; }
+        public object? SelectedVulnerabilitie
+        {
+            get => Get<object?>();
+            set
+            {
+                Set(value);
+                switch (SelectedDatabase)
+                {
+                    case DataType.VulnerabilitiesFstec:
+                        _fstecVm.SelectedVulnerabilitie = value;
+                        break;
+                    case DataType.VulnerabilitiesNvd:
+                        _nvdVm.SelectedVulnerabilitie = value;
+                        break;
+                    case DataType.VulnerabilitiesJvn:
+                        _jvnVm.SelectedVulnerabilitie = value;
+                        break;
+                }
+
+            }
+        }
+        public ObservableCollection<DataType> NamesDatabases { get; }
+        public DataType SelectedDatabase
+        {
+            get => Get<DataType>();
+            set
+            {
+                Set(value);
+                switch (value)
+                {
+                    case DataType.VulnerabilitiesFstec:
+                        DisplayedVulnerabilities.Clear();
+                        foreach (var vul in VulnerabilitiesFstec)
+                        {
+                            DisplayedVulnerabilities.Add(vul);
+                        }
+                        CurrentView = _fstecVm;
+                        break;
+                    case DataType.VulnerabilitiesNvd:
+                        DisplayedVulnerabilities.Clear();
+                        foreach (var vul in VulnerabilitiesNvd)
+                        {
+                            DisplayedVulnerabilities.Add(vul);
+                        }
+                        CurrentView = _nvdVm;
+                        break;
+                    case DataType.VulnerabilitiesJvn:
+                        DisplayedVulnerabilities.Clear();
+                        foreach (var vul in VulnerabilitiesJvn)
+                        {
+                            DisplayedVulnerabilities.Add(vul);
+                        }
+                        CurrentView = _jvnVm;
+                        break;
+                }
+            }
+        }
         public string? Status { get => Get<string>(); set => Set(value); }
         public bool Progress { get => Get<bool>(); set => Set(value); }
 
-        public VulnerabilitieViewModel(ObservableCollection<Vulnerabilitie> vulnerabilities, Func<string, DataType, Task> updateConfig, VulConfig vulConfig)
+        public VulnerabilitieViewModel(Func<string, DataType, Task> updateConfig, VulConfig vulConfig)
         {
+            _apiService = new ApiService();
             _fileService = new FileService();
-            _model = new(vulConfig);
-            _model.NotifyRequested += (msg) => Status += "\n" + msg;
-
-            Vulnerabilities = vulnerabilities;
+            _config = vulConfig;
+            _model = new(_config);
+            _model.NotifyRequested += (msg) => Status += "\n\n" + msg;
+            CurrentView = _fstecVm;
             UpdateConfig = updateConfig;
             Progress = false;
+            NamesDatabases =
+            [
+                DataType.VulnerabilitiesFstec,
+                DataType.VulnerabilitiesNvd,
+                DataType.VulnerabilitiesJvn,
+                //DataType.VulnerabilitiesExtended
+            ];
         }
 
         public RelayCommand UpdateCommand => GetCommand(async o =>
         {
+            /*         RequestTranslate request = new("127.0.0.1", "5001", "Hello World");
+                     var result = await _apiService.SendRequestAsync<ResponseTranslate>(request);
+
+                     if (result.IsSuccess)
+                     {
+                         var a = result.Value.Results[0].Text;
+                     }*/
             await UpdateVulDb();
-        });//, o => _updateCancellationTokenSource is null);
+        }, o => _updateCancellationTokenSource is null);
 
         public RelayCommand CancelUpdateCommand => GetCommand(o =>
         {
             _updateCancellationTokenSource?.Cancel();
-        });//, o => _updateCancellationTokenSource is not null);
+        }, o => _updateCancellationTokenSource is not null);
 
         public async Task UpdateVulDb()
         {
-            Progress = true;
-            _updateCancellationTokenSource = new();
             try
             {
-                Dictionary<string, string> forSelectingVulnerabilities = [];
-                var newVulnerabilities = await _model.GetDatabase(_updateCancellationTokenSource.Token);
-                if (newVulnerabilities is null) return;
-                Vulnerabilities.Clear();
-                foreach (var value in newVulnerabilities)
+                Progress = true;
+                _updateCancellationTokenSource = new();
+
+                switch (SelectedDatabase)
                 {
-                    Vulnerabilities.Add(value);
-                    forSelectingVulnerabilities.Add(value.Identifier, value.Description);
+                    case DataType.VulnerabilitiesFstec:
+                        var newVulnerabilitiesFstec = await _model.GetByLink(_updateCancellationTokenSource.Token);
+                        if (newVulnerabilitiesFstec is null) return;
+                        VulnerabilitiesFstec.Clear();
+                        foreach (var value in newVulnerabilitiesFstec)
+                        {
+                            VulnerabilitiesFstec.Add(value);
+                        }
+                        await _fileService.SaveDTOAsync(VulnerabilitiesFstec, DataType.VulnerabilitiesFstec, GlobalConfig.VulnerabilitieFstecPath);
+                        break;
+                    case DataType.VulnerabilitiesNvd:
+                        var newVulnerabilitiesNvd = await _model.GetByApiRequest(_updateCancellationTokenSource.Token);
+                        if (newVulnerabilitiesNvd is null) return;
+                        foreach (var value in newVulnerabilitiesNvd)
+                        {
+                            VulnerabilitiesNvd.Add(value);
+                        }
+                        await _fileService.SaveDTOAsync(VulnerabilitiesNvd, DataType.VulnerabilitiesNvd, GlobalConfig.VulnerabilitieNvdPath);
+                        break;
+                    case DataType.VulnerabilitiesJvn:
+                        var newVulnerabilitiesJvn = await _model.GetByPageParsing(_updateCancellationTokenSource.Token);
+                        if (newVulnerabilitiesJvn is null) return;
+                        VulnerabilitiesJvn.Clear();
+                        foreach (var value in newVulnerabilitiesJvn)
+                        {
+                            VulnerabilitiesJvn.Add(value);
+                        }
+                        await _fileService.SaveDTOAsync(VulnerabilitiesJvn, DataType.VulnerabilitiesJvn, GlobalConfig.VulnerabilitieJvnPath);
+                        break;
                 }
 
-                await _fileService.SaveDTOAsync(Vulnerabilities, DataType.Vulnerabilitie, GlobalConfig.VulnerabilitiePath);
-                UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Vulnerabilitie);
+                await _fileService.SaveDTOAsync(_config, DataType.VulConfig, GlobalConfig.VulConfigPath);
+                UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.VulnerabilitiesFstec);
             }
             catch (HttpRequestException httpEx)
             {

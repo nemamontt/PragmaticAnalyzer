@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    public class Violator : ViewModelBase, IDatabase
+    public class Violator : ViewModelBase, IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid(); //уникальный идентификатор
         public int SequenceNumber { get => Get<int>(); set => Set(value); } //порядковый номер

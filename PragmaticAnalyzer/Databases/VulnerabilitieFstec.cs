@@ -7,7 +7,7 @@ namespace PragmaticAnalyzer.Databases
     /// <summary>
     /// База данных "Уязвимостей ФСТЭК"
     /// </summary>
-    public class Vulnerabilitie : ViewModelBase, IDatabase, IHasDescription
+    public class VulnerabilitieFstec : ViewModelBase, IHasId, IHasDescription
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
 

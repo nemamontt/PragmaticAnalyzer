@@ -15,7 +15,8 @@
             Margin="5">
         <ScrollViewer Padding="6,4"
                       HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto">
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="5">
             <TextBlock x:Name="InnerTextBlock"
                        FontFamily="Consolas"
                        FontSize="14"

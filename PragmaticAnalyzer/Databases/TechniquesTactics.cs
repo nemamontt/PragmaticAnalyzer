@@ -12,7 +12,7 @@ namespace PragmaticAnalyzer.Databases
         string Description { get; set; }
     }
 
-    public class Tactic : ViewModelBase, IEntityTIT, IDatabase, IHasDescription
+    public class Tactic : ViewModelBase, IEntityTIT, IHasId, IHasDescription
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
 
@@ -28,7 +28,7 @@ namespace PragmaticAnalyzer.Databases
         public string DisplayName => $"Тактика: {Name}";
     }
 
-    public class Technique : ViewModelBase, IEntityTIT, IDatabase
+    public class Technique : ViewModelBase, IEntityTIT, IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
 

@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    public class ProtectionMeasure : ViewModelBase, IDatabase
+    public class ProtectionMeasure : ViewModelBase, IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
 

@@ -95,32 +95,32 @@ namespace PragmaticAnalyzer.MVVM.Model
             if (report.Vulnerabilitie is not null)
             {
                 Dictionary<string, string> fields = [];
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Identifier)), report.Vulnerabilitie.Identifier);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Name)), report.Vulnerabilitie.Name);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Description)), report.Vulnerabilitie.Description);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Vendor)), report.Vulnerabilitie.Vendor);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.NameSoftware)), report.Vulnerabilitie.NameSoftware);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Version)), report.Vulnerabilitie.Version);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Type)), report.Vulnerabilitie.Type);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.NameOperatingSystem)), report.Vulnerabilitie.NameOperatingSystem);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Class)), report.Vulnerabilitie.Class);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Date)), report.Vulnerabilitie.Date);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.CvssTwo)), report.Vulnerabilitie.CvssTwo);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.CvssThree)), report.Vulnerabilitie.CvssThree);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.DangerLevel)), report.Vulnerabilitie.DangerLevel);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Measure)), report.Vulnerabilitie.Measure);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Exploit)), report.Vulnerabilitie.Exploit);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Information)), report.Vulnerabilitie.Information);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Links)), report.Vulnerabilitie.Links);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.OtherIdentifier)), report.Vulnerabilitie.OtherIdentifier);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.OtherInformation)), report.Vulnerabilitie.OtherInformation);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Incident)), report.Vulnerabilitie.Incident);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.OperatingMethod)), report.Vulnerabilitie.OperatingMethod);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.EliminationMethod)), report.Vulnerabilitie.EliminationMethod);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.DescriptionCwe)), report.Vulnerabilitie.DescriptionCwe);
-                fields.Add(GetDescription<Vulnerabilitie>(nameof(report.Vulnerabilitie.Cwe)), report.Vulnerabilitie.Cwe);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Identifier)), report.Vulnerabilitie.Identifier);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Name)), report.Vulnerabilitie.Name);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Description)), report.Vulnerabilitie.Description);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Vendor)), report.Vulnerabilitie.Vendor);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.NameSoftware)), report.Vulnerabilitie.NameSoftware);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Version)), report.Vulnerabilitie.Version);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Type)), report.Vulnerabilitie.Type);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.NameOperatingSystem)), report.Vulnerabilitie.NameOperatingSystem);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Class)), report.Vulnerabilitie.Class);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Date)), report.Vulnerabilitie.Date);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.CvssTwo)), report.Vulnerabilitie.CvssTwo);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.CvssThree)), report.Vulnerabilitie.CvssThree);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.DangerLevel)), report.Vulnerabilitie.DangerLevel);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Measure)), report.Vulnerabilitie.Measure);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Exploit)), report.Vulnerabilitie.Exploit);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Information)), report.Vulnerabilitie.Information);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Links)), report.Vulnerabilitie.Links);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.OtherIdentifier)), report.Vulnerabilitie.OtherIdentifier);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.OtherInformation)), report.Vulnerabilitie.OtherInformation);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Incident)), report.Vulnerabilitie.Incident);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.OperatingMethod)), report.Vulnerabilitie.OperatingMethod);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.EliminationMethod)), report.Vulnerabilitie.EliminationMethod);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.DescriptionCwe)), report.Vulnerabilitie.DescriptionCwe);
+                fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Cwe)), report.Vulnerabilitie.Cwe);
 
-                fields.Add(GetDescription<Vulnerabilitie>(report.Vulnerabilitie.Identifier), report.Vulnerabilitie.Identifier);
+                fields.Add(GetDescription<VulnerabilitieFstec>(report.Vulnerabilitie.Identifier), report.Vulnerabilitie.Identifier);
                 AddTable(doc, fields, "Уязвимостей");
             }
             if (report.Exploit is not null)

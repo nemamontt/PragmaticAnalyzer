@@ -14,11 +14,16 @@ namespace PragmaticAnalyzer.Configs
         public static readonly string ExploitTextPath = Path.Combine(Environment.CurrentDirectory, "ExploitText");
         public static readonly string ModelsPath = Path.Combine(Environment.CurrentDirectory, "Models");
         public static readonly string ConfigPath = Path.Combine(Environment.CurrentDirectory, "Config");
-        public static readonly string ResourcePath = Path.Combine(Environment.CurrentDirectory, "Resource"); 
+        public static readonly string ResourcePath = Path.Combine(Environment.CurrentDirectory, "Resource");
         //
         // Сводка:
         //     Пути к сторонним исполняемым файлам.
-        public static readonly string MatcherPath = Path.Combine(Environment.CurrentDirectory,"matcher.exe");
+        public static readonly string MatcherPath = Path.Combine(Environment.CurrentDirectory, "matcher.exe");
+        public static readonly string TranslatorPath = Path.Combine(Environment.CurrentDirectory, "Translator", "koboldcpp.exe");
+        //
+        // Сводка:
+        //     Пути к моделям переводчика.
+        public static readonly string TranslatorYandexModelPath = Path.Combine(Environment.CurrentDirectory, "Translator", "yandexgpt-5-lite-8b-instruct-q5_k_m.gguf");
         //
         // Сводка:
         //     Пути к конфигурационным файлам.
@@ -31,7 +36,9 @@ namespace PragmaticAnalyzer.Configs
         //
         // Сводка:
         //     Пути к базам данных.
-        public static readonly string VulnerabilitiePath = Path.Combine(DatabasePath, "vulnerabilitieDb.json");
+        public static readonly string VulnerabilitieFstecPath = Path.Combine(DatabasePath, "vulnerabilitieFstecDb.json");
+        public static readonly string VulnerabilitieNvdPath = Path.Combine(DatabasePath, "vulnerabilitieNvdDb.json");
+        public static readonly string VulnerabilitieJvnPath = Path.Combine(DatabasePath, "vulnerabilitieJvnDb.json");
         public static readonly string ThreatPath = Path.Combine(DatabasePath, "threatDb.json");
         public static readonly string TacticPath = Path.Combine(DatabasePath, "tacticDb.json");
         public static readonly string ProtectionMeasurePath = Path.Combine(DatabasePath, "protectionMeasureDb.json");

@@ -1,4 +1,6 @@
-﻿namespace PragmaticAnalyzer.DTO
+﻿using System.ComponentModel;
+
+namespace PragmaticAnalyzer.DTO
 {
     public enum  DataType
     {
@@ -7,7 +9,10 @@
         ThreatConfig = 3,
         ExploitConfig = 4,
         Threat = 5,
-        Vulnerabilitie = 6,
+
+        [Description("ФСТЭК")]
+        VulnerabilitiesFstec = 6,
+
         Violator = 7,
         Tactic = 8,
         CurrentStatus = 9,
@@ -23,5 +28,14 @@
         AvailableDatabasesConfig = 19,
         SchemeDatabase = 20,
         DunamicDatabase = 21,
+
+        [Description("NVD")]
+        VulnerabilitiesNvd = 22,
+
+        [Description("JVN")]
+        VulnerabilitiesJvn = 23,
+
+        [Description("Расширенная")]
+        VulnerabilitiesExtended = 24,
     }
 }

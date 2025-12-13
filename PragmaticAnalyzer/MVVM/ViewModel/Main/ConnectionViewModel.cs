@@ -175,7 +175,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 return null;
             }
 
-            var vulnerabilitiesDict = _viewModelsService.VulnerabilitieVm.Vulnerabilities.ToDictionary(v => v.GuidId);
+            var vulnerabilitiesDict = _viewModelsService.VulnerabilitieVm.VulnerabilitiesFstec.ToDictionary(v => v.GuidId);
             var threatsDict = _viewModelsService.ThreatVm.Threats.ToDictionary(t => t.GuidId);
             var tacticsDict = _viewModelsService.TacticVm.Tactics.ToDictionary(t => t.GuidId);
             var exploitsDict = _viewModelsService.ExploitVm.Exploits.ToDictionary(e => e.GuidId);
@@ -203,7 +203,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                             var config = AvailableDatabasesConfig.FirstOrDefault(path => path.FullName == item.Key);
                             switch (config.DetectedType)
                             {
-                                case DataType.Vulnerabilitie:
+                                case DataType.VulnerabilitiesFstec:
                                     if (vulnerabilitiesDict.TryGetValue(source.Key, out var vulnerabilitie))
                                     {
                                         report.Vulnerabilitie = vulnerabilitie;
@@ -260,7 +260,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
     public class Report : ViewModelBase
     {
         public float Coefficient { get => Get<float>(); set => Set(value); }
-        public Vulnerabilitie? Vulnerabilitie { get => Get<Vulnerabilitie>(); set => Set(value); }
+        public VulnerabilitieFstec? Vulnerabilitie { get => Get<VulnerabilitieFstec>(); set => Set(value); }
         public Threat? Threat { get => Get<Threat>(); set => Set(value); }
         public Tactic? Tactic { get => Get<Tactic>(); set => Set(value); }
         public ProtectionMeasure? ProtectionMeasure { get => Get<ProtectionMeasure>(); set => Set(value); }

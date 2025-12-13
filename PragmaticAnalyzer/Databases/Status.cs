@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace PragmaticAnalyzer.Databases
 {
-    public class CurrentStatus : IDatabase
+    public class CurrentStatus : IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid(); //уникальный идентификатор
         public string NameSoftware { get; set; }
@@ -19,7 +19,7 @@ namespace PragmaticAnalyzer.Databases
         public ObservableCollection<Setting> Settings { get; set; }
     }
 
-    public class ReferenceStatus : IDatabase
+    public class ReferenceStatus : IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid(); //уникальный идентификатор
         public string NameSoftware { get; set; } //Эталонное состояние

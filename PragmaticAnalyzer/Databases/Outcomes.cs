@@ -12,7 +12,7 @@ namespace PragmaticAnalyzer.Databases
         public ObservableCollection<Consequence> Consequences { get; set; } = [];
     }
 
-    public class Technology : ViewModelBase, IDatabase
+    public class Technology : ViewModelBase, IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
 
@@ -50,7 +50,7 @@ namespace PragmaticAnalyzer.Databases
         public string Effort { get => Get<string>(); set => Set(value); }
     }
 
-    public class Consequence : ViewModelBase, IDatabase
+    public class Consequence : ViewModelBase, IHasId
     {
         public Guid GuidId { get; } = Guid.NewGuid();
 

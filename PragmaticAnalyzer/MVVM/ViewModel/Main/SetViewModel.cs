@@ -100,19 +100,19 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                 await _fileService.SaveDTOAsync(techniquesTactics, DataType.Tactic, GlobalConfig.TacticPath);
                 UpdateConfig?.Invoke(rawDto.DateCreation.ToString("f"), DataType.Tactic);
             }
-            else if (rawDto.DtoType is DataType.Vulnerabilitie)
+            else if (rawDto.DtoType is DataType.VulnerabilitiesFstec)
             {
-                var vulnerabilities = await _fileService.LoadDTOAsync<ObservableCollection<Vulnerabilitie>>(pathDto, DataType.Vulnerabilitie);
+                var vulnerabilities = await _fileService.LoadDTOAsync<ObservableCollection<VulnerabilitieFstec>>(pathDto, DataType.VulnerabilitiesFstec);
                 if (vulnerabilities is null)
                 {
                     return;
                 }
                 foreach (var vulnerabilitie in vulnerabilities)
                 {
-                    _viewModelsService.VulnerabilitieVm.Vulnerabilities.Add(vulnerabilitie);
+                    _viewModelsService.VulnerabilitieVm.VulnerabilitiesFstec.Add(vulnerabilitie);
                 }
-                await _fileService.SaveDTOAsync(vulnerabilities, DataType.Vulnerabilitie, GlobalConfig.VulnerabilitiePath);
-                UpdateConfig?.Invoke(rawDto.DateCreation.ToString("f"), DataType.Vulnerabilitie);
+                await _fileService.SaveDTOAsync(vulnerabilities, DataType.VulnerabilitiesFstec, GlobalConfig.VulnerabilitieFstecPath);
+                UpdateConfig?.Invoke(rawDto.DateCreation.ToString("f"), DataType.VulnerabilitiesFstec);
             }
             else if (rawDto.DtoType is DataType.Outcomes)
             {
@@ -221,11 +221,11 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
         private async Task OnUpdateLastUpdateConfig(string updateTime, DataType type)
         {
-            if (type is DataType.Vulnerabilitie)
+            if (type is DataType.VulnerabilitiesFstec)
             {
                 VulnerabilitieButtonBackground = Brushes.Green;
                 LastUpdateConfig.Vulnerabilitie = updateTime;
-                DisplayedPaths.VulnerabilitiePath = GlobalConfig.VulnerabilitiePath;
+                DisplayedPaths.VulnerabilitiePath = GlobalConfig.VulnerabilitieFstecPath;
             }
             else if (type is DataType.Threat)
             {

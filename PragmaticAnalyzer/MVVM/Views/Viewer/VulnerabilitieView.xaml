@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views"
              xmlns:assist="clr-namespace:PragmaticAnalyzer.Assistant"
              xmlns:vmViewer="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.Viewer"
+             xmlns:view="clr-namespace:PragmaticAnalyzer.MVVM.Views.Viewer"
              xmlns:cc="clr-namespace:PragmaticAnalyzer.CastomControls"
              d:DataContext="{d:DesignInstance Type=vmViewer:VulnerabilitieViewModel}"
              mc:Ignorable="d"
@@ -13,40 +14,12 @@
              d:DesignWidth="1000">
     <UserControl.Resources>
         <assist:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
-        <Style x:Key="Button"
-               TargetType="Button">
-            <Setter Property="Margin"
-                    Value="3" />
-            <Setter Property="FontSize"
-                    Value="20" />
-            <Setter Property="Cursor"
-                    Value="Hand" />
-            <Setter Property="FontFamily"
-                    Value="Consolas" />
-        </Style>
-        <Style x:Key="HeadingTextBlock"
-               TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="FontWeight"
-                    Value="Bold" />
-            <Setter Property="TextWrapping"
-                    Value="Wrap" />
-            <Setter Property="MinWidth"
-                    Value="1000" />
-        </Style>
-        <Style x:Key="DynamicTextBlock"
-               TargetType="TextBlock">
-            <Setter Property="FontSize"
-                    Value="15" />
-            <Setter Property="TextWrapping"
-                    Value="Wrap" />
-        </Style>
+        <assist:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
     </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="180" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="0.2*" />
         </Grid.ColumnDefinitions>
@@ -69,7 +42,7 @@
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
                  Style="{StaticResource RoundedListBoxStyle}"
                  ItemContainerStyle="{StaticResource RoundedListBoxItemStyle}"
-                 ItemsSource="{Binding Vulnerabilities}"
+                 ItemsSource="{Binding DisplayedVulnerabilities}"
                  SelectedItem="{Binding SelectedVulnerabilitie}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -78,119 +51,43 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <ComboBox Grid.Row="2"
+                  Grid.Column="0"
+                  ItemsSource="{Binding NamesDatabases}"
+                  SelectedItem="{Binding SelectedDatabase}"
+                  Style="{StaticResource RoundedComboBoxStyle}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
         <Border Grid.Row="0"
                 Grid.Column="1"
                 Grid.RowSpan="4"
-                Margin="1"
+                Margin="5"
                 BorderBrush="Black"
-                BorderThickness="1">
-            <ScrollViewer Visibility="{Binding SelectedVulnerabilitie, Converter={StaticResource NullToVisibilityConverter}}">
-                <StackPanel Margin="5">
-                    <TextBlock Text="Идентификатор"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Identifier}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Наименование уязвимости"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Name}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Описание уязвимости"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Description}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Вендор ПО"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Vendor}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Название ПО"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.NameSoftware}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Версия ПО"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Version}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Тип ПО"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Type}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Наименование ОС и тип аппаратной платформы"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.NameOperatingSystem}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Класс уязвимости"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Class}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Дата выявления"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Date}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="CVSS 2.0"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.CvssTwo}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="CVSS 3.0"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.CvssThree}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Уровень опасности уязвимости"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.DangerLevel}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Возможные меры по устранению"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Measure}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Наличие эксплойта"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Exploit}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Информация об устранении"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Information}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Ссылки на источники"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Links}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Идентификаторы других систем описаний уязвимости"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.OtherIdentifier}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Прочая информация"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.OtherInformation}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Связь с инцидентами ИБ"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Incident}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Способ эксплуатации"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.OperatingMethod}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Способ устранения"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.EliminationMethod}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Описание ошибки CWE"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.DescriptionCwe}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                    <TextBlock Text="Тип ошибки CWE"
-                               Style="{StaticResource HeadingTextBlock}" />
-                    <TextBlock Text="{Binding SelectedVulnerabilitie.Cwe}"
-                               Style="{StaticResource DynamicTextBlock}" />
-                </StackPanel>
-            </ScrollViewer>
+                BorderThickness="1"
+                CornerRadius="6">
+            <ContentControl Content="{Binding CurrentView}"
+                            Margin="5">
+                <FrameworkElement.Resources>
+                    <DataTemplate DataType="{x:Type vmViewer:VulnerabilitieFstecViewModel}">
+                        <view:VulnerabilitieFstecView />
+                    </DataTemplate>
+                    
+                    <DataTemplate DataType="{x:Type vmViewer:VulnerabilitieNvdViewModel}">
+                        <view:VulnerabilitieNvdView />
+                    </DataTemplate>
+                    
+                    <DataTemplate DataType="{x:Type vmViewer:VulnerabilitieJvnViewModel}">
+                        <view:VulnerabilitieJvnView />
+                    </DataTemplate>
+                </FrameworkElement.Resources>
+            </ContentControl>
         </Border>
-
-        <ProgressBar Grid.Row="2"
-                     Grid.Column="0"
-                     Style="{StaticResource RoundedProgressBarStyle}"
-                     IsIndeterminate="{Binding Progress}" />
-
+      
         <Button Grid.Row="3"
                 Grid.Column="0"
                 Content="Обновить"
@@ -204,9 +101,13 @@
 
         <cc:FramedTextBlock Grid.Row="1"
                             Grid.Column="2"
-                            Grid.RowSpan="2"
                             Text="{Binding Status}" />
-        
+
+        <ProgressBar Grid.Row="2"
+                     Grid.Column="2"
+                     Style="{StaticResource RoundedProgressBarStyle}"
+                     IsIndeterminate="{Binding Progress}" />
+
         <Button Grid.Row="3"
                 Grid.Column="2"
                 Content="Остановить"

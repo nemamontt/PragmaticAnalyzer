@@ -9,9 +9,11 @@ namespace PragmaticAnalyzer.Services
 {
     public class ApiService : IApiService
     {
+        private Process? _translatorProcess;
+        private readonly int _port = 5001;
+        public bool IsRunningTranslator => _translatorProcess?.HasExited == false;
         private readonly HttpClient _httpClient;
         private readonly IFileService _fileService;
-        private readonly Process _serverProcess;
 
         public ApiService()
         {
@@ -21,34 +23,62 @@ namespace PragmaticAnalyzer.Services
             };
             _httpClient = new(handler);
             _fileService = new FileService();
-            _serverProcess = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = GlobalConfig.MatcherPath,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = false,
-                    RedirectStandardError = false
-                }
-            };
+            /*  _serverProcess = new Process
+              {
+                  StartInfo = new ProcessStartInfo
+                  {
+                      FileName = GlobalConfig.MatcherPath,
+                      UseShellExecute = false,
+                      CreateNoWindow = true,
+                      RedirectStandardOutput = false,
+                      RedirectStandardError = false
+                  }
+              };*/
         }
 
         public void StartServer()
         {
-          //  _serverProcess.Start();
+            if (IsRunningTranslator)
+            {
+                return;
+            }
+
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = GlobalConfig.TranslatorPath,
+                Arguments = $"--model \"{GlobalConfig.TranslatorYandexModelPath}\" --port {_port} --contextsize 2048",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = false,
+                RedirectStandardError = false
+            };
+
+            _translatorProcess = new Process { StartInfo = startInfo };
+             _translatorProcess.Start();
         }
 
-        public async Task StopServerAsync()
+        public void StopServer()
         {
-         //  await _httpClient.PostAsync("http://127.0.0.1:5000/Shutdown", new StringContent(""));
-            /*       await Task.Delay(1000);
-                   if (!_serverProcess.HasExited)
-                   {
-                       _serverProcess.Kill();
-                   }
-                   await _serverProcess.WaitForExitAsync();
-                   _serverProcess.Dispose();*/
+            try
+            {
+                var processes = Process.GetProcessesByName("koboldcpp");
+                foreach (var process in processes)
+                {
+
+                    if (!process.HasExited)
+                    {
+                        process.Kill();
+                        process.WaitForExit(3000);
+                    }
+                    process.Dispose();
+                }
+            }
+            catch (Exception ex) { }
+            finally
+            {
+                _translatorProcess?.Dispose();
+                _translatorProcess = null;
+            }
         }
 
         public async Task<Result<T>> SendRequestAsync<T>(IRequest request)

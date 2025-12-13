@@ -47,7 +47,7 @@ namespace PragmaticAnalyzer.Services
             MainVm = new(this);
             SetVm = new(_lastUpdateConfig, this);
             ThreatVm = new([], SetVm.UpdateConfig, _threatConfig);
-            VulnerabilitieVm = new([], SetVm.UpdateConfig, _vulConfig);
+            VulnerabilitieVm = new(SetVm.UpdateConfig, _vulConfig);
             ExploitVm = new([], SetVm.UpdateConfig, _exploitConfig);
             OntologyVm = new([]);
             TacticVm = new([], SetVm.UpdateConfig);
@@ -131,16 +131,37 @@ namespace PragmaticAnalyzer.Services
             }
 
             //var vulDto2 = await _fileService.LoadDTOAsync<ObservableCollection<Vulnerabilitie>>(GlobalConfig.VulnerabilitiePath, DataType.Vulnerabilitie);
-            var vulDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Vulnerabilitie>>>(GlobalConfig.VulnerabilitiePath);
-            if (vulDto != default)
+            var vulFstecDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<VulnerabilitieFstec>>>(GlobalConfig.VulnerabilitieFstecPath);
+            if (vulFstecDto != default)
             {
-                foreach (var vul in vulDto.Value)
+                foreach (var vul in vulFstecDto.Value)
                 {
-                    VulnerabilitieVm.Vulnerabilities.Add(vul);
+                    VulnerabilitieVm.VulnerabilitiesFstec.Add(vul);
                 }
-                _filePathToDatabase.Add(GlobalConfig.VulnerabilitiePath, VulnerabilitieVm.Vulnerabilities);
-                SetVm.UpdateConfig?.Invoke(File.GetLastWriteTime(GlobalConfig.VulnerabilitiePath).ToString("f"), DataType.Vulnerabilitie); //эталон без дто
+                _filePathToDatabase.Add(GlobalConfig.VulnerabilitieFstecPath, VulnerabilitieVm.DisplayedVulnerabilities);
+                SetVm.UpdateConfig?.Invoke(File.GetLastWriteTime(GlobalConfig.VulnerabilitieFstecPath).ToString("f"), DataType.VulnerabilitiesFstec); //эталон без дто
             }
+
+            var vulNvdDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<VulnerabilitieNvd>>>(GlobalConfig.VulnerabilitieNvdPath);
+            if (vulNvdDto != default)
+            {
+                foreach (var vul in vulNvdDto.Value)
+                {
+                    VulnerabilitieVm.VulnerabilitiesNvd.Add(vul);
+                }
+                _filePathToDatabase.Add(GlobalConfig.VulnerabilitieNvdPath, VulnerabilitieVm.VulnerabilitiesNvd);
+            }
+
+            var vulJvnDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<VulnerabilitieJvn>>>(GlobalConfig.VulnerabilitieJvnPath);
+            if (vulJvnDto != default)
+            {
+                foreach (var vul in vulJvnDto.Value)
+                {
+                    VulnerabilitieVm.VulnerabilitiesJvn.Add(vul);
+                }
+                _filePathToDatabase.Add(GlobalConfig.VulnerabilitieJvnPath, VulnerabilitieVm.VulnerabilitiesJvn);
+            }
+
             var threatDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Threat>>>(GlobalConfig.ThreatPath);
             if (threatDto != default)
             {
@@ -151,6 +172,7 @@ namespace PragmaticAnalyzer.Services
                 _filePathToDatabase.Add(GlobalConfig.ThreatPath, ThreatVm.Threats);
                 SetVm.UpdateConfig?.Invoke(threatDto.DateCreation.ToString("f"), DataType.Threat);
             }
+
             var protectionMeasureDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<ProtectionMeasure>>>(GlobalConfig.ProtectionMeasurePath);
             if (protectionMeasureDto != default)
             {
@@ -160,6 +182,7 @@ namespace PragmaticAnalyzer.Services
                 }
                 SetVm.UpdateConfig?.Invoke(protectionMeasureDto.DateCreation.ToString("f"), DataType.ProtectionMeasures);
             }
+
             var techniquesTacticDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Tactic>>>(GlobalConfig.TacticPath);
             if (techniquesTacticDto != default)
             {
@@ -170,6 +193,7 @@ namespace PragmaticAnalyzer.Services
                 _filePathToDatabase.Add(GlobalConfig.TacticPath, TacticVm.Tactics);
                 SetVm.UpdateConfig?.Invoke(techniquesTacticDto.DateCreation.ToString("f"), DataType.Tactic);
             }
+
             var exploitDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Exploit>>>(GlobalConfig.ExploitPath);
             if (exploitDto != default)
             {
@@ -180,6 +204,7 @@ namespace PragmaticAnalyzer.Services
                 _filePathToDatabase.Add(GlobalConfig.ExploitPath, ExploitVm.Exploits);
                 SetVm.UpdateConfig?.Invoke(exploitDto.DateCreation.ToString("f"), DataType.Exploit);
             }
+
             var outcomesDto = await _fileService.LoadFileToPathAsync<DTO<Outcomes>>(GlobalConfig.OutcomesPath);
             if (outcomesDto != default)
             {
@@ -193,6 +218,7 @@ namespace PragmaticAnalyzer.Services
                 }
                 SetVm.UpdateConfig?.Invoke(outcomesDto.DateCreation.ToString("f"), DataType.Outcomes);
             }
+
             var specialistDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Specialist>>>(GlobalConfig.SpecialistPath);
             if (specialistDto != default)
             {
@@ -202,6 +228,7 @@ namespace PragmaticAnalyzer.Services
                 }
                 SetVm.UpdateConfig?.Invoke(specialistDto.DateCreation.ToString("f"), DataType.Specialist);
             }
+
             var violatorDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Violator>>>(GlobalConfig.ViolatorPath);
             if (violatorDto != default)
             {
@@ -211,6 +238,7 @@ namespace PragmaticAnalyzer.Services
                 }
                 SetVm.UpdateConfig?.Invoke(violatorDto.DateCreation.ToString("f"), DataType.Violator);
             }
+
             var currentStatusDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<CurrentStatus>>>(GlobalConfig.CurStatPath);
             if (currentStatusDto != default)
             {
@@ -220,6 +248,7 @@ namespace PragmaticAnalyzer.Services
                 }
                 SetVm.UpdateConfig?.Invoke(currentStatusDto.DateCreation.ToString("f"), DataType.CurrentStatus);
             }
+
             var referenceStatusDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<ReferenceStatus>>>(GlobalConfig.RefStatPath);
             if (referenceStatusDto != default)
             {
@@ -229,6 +258,7 @@ namespace PragmaticAnalyzer.Services
                 }
                 SetVm.UpdateConfig?.Invoke(referenceStatusDto.DateCreation.ToString("f"), DataType.ReferenceStatus);
             }
+
             var ontologyDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<Ontology>>>(GlobalConfig.OntologyPath);
             if (ontologyDto != default)
             {
@@ -237,6 +267,7 @@ namespace PragmaticAnalyzer.Services
                     OntologyVm.Ontologys.Add(ontology);
                 }
             }
+
             var schemes = await _fileService.LoadDTOAsync<ObservableCollection<DynamicDatabase>>(GlobalConfig.SchemeDatabasePath, DataType.SchemeDatabase);
             if (schemes != default)
             {
@@ -289,7 +320,7 @@ namespace PragmaticAnalyzer.Services
         public async Task CompletionWorkAsync()
         {
             await _fileService.SaveDTOAsync(SettingVm.WordTwoVecConfigs, DataType.WordTwoVecConfig, GlobalConfig.WordTwoVecConfigPath);
-            await _fileService.SaveDTOAsync(SettingVm.FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);  
+            await _fileService.SaveDTOAsync(SettingVm.FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);
         }
     }
 }
