@@ -6,6 +6,6 @@ namespace PragmaticAnalyzer.Abstractions
     {
         void StartServer();
         void StopServer();
-        Task<Result<T>> SendRequestAsync<T>(IRequest request);
+        Task<Result<T>> SendRequestAsync<T>(IRequest request, CancellationToken ct = default);
     }
 }

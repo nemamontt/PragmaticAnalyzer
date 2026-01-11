@@ -41,7 +41,7 @@
                  VirtualizingStackPanel.VirtualizationMode="Recycling">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding DisplayedId}"
+                    <TextBlock Text="{Binding GroupName}"
                                Style="{StaticResource MainTextBlockStyle}"
                                Margin="1" />
                 </DataTemplate>
@@ -56,20 +56,26 @@
                 CornerRadius="6">
             <WrapPanel Visibility="{Binding SelectedViolator, Converter={StaticResource NullToVisibilityConverter}}">
 
-                <cc:LabeledValueBox LabelText="Источник"
-                                    ValueText="{Binding SelectedViolator.Source, Converter={StaticResource EnumDescriptionConverter}}" />
+                <cc:LabeledValueBox LabelText="Описание"
+                                    ValueText="{Binding SelectedViolator.Description}" />
 
-                <cc:LabeledValueBox LabelText="Потенциал"
-                                    ValueText="{Binding SelectedViolator.Potential, Converter={StaticResource EnumDescriptionConverter}}" />
+                <cc:LabeledValueBox LabelText="Государственная принадлежность"
+                                    ValueText="{Binding SelectedViolator.StateAffiliation}" />
 
-                <cc:LabeledValueBox LabelText="Цель атаки"
-                                    ValueText="{Binding SelectedViolator.Target}" />
+                <cc:LabeledValueBox LabelText="Второстепенные названия"
+                                    ValueText="{Binding SelectedViolator.AlternateNames}" />
 
-                <cc:LabeledValueBox LabelText="Используемые инструменты"
-                                    ValueText="{Binding SelectedViolator.UsingTools}" />
+                <cc:LabeledValueBox LabelText="Объекты атаки"
+                                    ValueText="{Binding SelectedViolator.AttackTargets}" />
 
-                <cc:LabeledValueBox LabelText="Данные о предыдущих атаках"
-                                    ValueText="{Binding SelectedViolator.PreviousAttacks}" />
+                <cc:LabeledValueBox LabelText="Известные атаки"
+                                    ValueText="{Binding SelectedViolator.KnownAttacks}" />
+
+                <cc:LabeledValueBox LabelText="Применяемые инструменты"
+                                    ValueText="{Binding SelectedViolator.UsedTools}" />
+
+                <cc:LabeledValueBox LabelText="Цели атаки"
+                                    ValueText="{Binding SelectedViolator.UsedTools}" />
             </WrapPanel>
         </Border>
 

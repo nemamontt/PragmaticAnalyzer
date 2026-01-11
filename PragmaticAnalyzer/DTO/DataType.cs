@@ -37,5 +37,11 @@ namespace PragmaticAnalyzer.DTO
 
         [Description("Расширенная")]
         VulnerabilitiesExtended = 24,
+
+        [Description("Русифицированная NVD")]
+        VulnerabilitiesNvdTranslated = 25,
+
+        [Description("Русифицированная JVN")]
+        VulnerabilitiesJvnTranslated = 26,
     }
 }

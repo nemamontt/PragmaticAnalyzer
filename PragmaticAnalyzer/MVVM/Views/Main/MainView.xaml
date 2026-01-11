@@ -14,7 +14,7 @@
         MinHeight="850"
         MinWidth="1500"
         WindowStartupLocation="CenterScreen"
-        Title="Модуль работы с источниками знаний ИБ v1.0.7">
+        Title="Модуль работы с источниками знаний ИБ v1.1.0">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="75" />

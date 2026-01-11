@@ -268,6 +268,24 @@ namespace PragmaticAnalyzer.Services
                 }
             }
 
+            var vulNvdTranslated = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<VulnerabilitieNvd>>>(GlobalConfig.VulnerabilitieNvdTranslated);
+            if (vulNvdTranslated != default)
+            {
+                foreach (var vul in vulNvdTranslated.Value)
+                {
+                    VulnerabilitieVm.VulnerabilitiesNvdTranslated.Add(vul);
+                }
+            }
+
+            var vulJvnTranslated = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<VulnerabilitieJvn>>>(GlobalConfig.VulnerabilitieJvnTranslated);
+            if (vulJvnTranslated != default)
+            {
+                foreach (var vul in vulJvnTranslated.Value)
+                {
+                    VulnerabilitieVm.VulnerabilitiesJvnTranslated.Add(vul);
+                }
+            }
+
             var schemes = await _fileService.LoadDTOAsync<ObservableCollection<DynamicDatabase>>(GlobalConfig.SchemeDatabasePath, DataType.SchemeDatabase);
             if (schemes != default)
             {
@@ -290,7 +308,7 @@ namespace PragmaticAnalyzer.Services
 
             SettingVm.NotifySelectedModels();
             _availableDatabasesConfig.ReplaceAll(FileService.GetAvailableDatabaseConfigs());
-            ApiService.StartServer();
+           // ApiService.StartServer();
         }
 
         public async Task SaveDatabaseAsync(object database, string name, DataType dataType)

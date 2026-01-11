@@ -49,7 +49,9 @@ namespace PragmaticAnalyzer.Configs
         public static readonly string RefStatPath = Path.Combine(DatabasePath, "refStatusDb.json");
         public static readonly string CurStatPath = Path.Combine(DatabasePath, "curStatusDb.json");
         public static readonly string OntologyPath = Path.Combine(DatabasePath, "ontologyDb.json");
-        public static readonly string SchemeDatabasePath = Path.Combine(DatabasePath, "schemeDb.json");
+        public static readonly string VulnerabilitieJvnTranslated = Path.Combine(DatabasePath, "vulnerabilitieJvnTranslated.json");
+        public static readonly string VulnerabilitieNvdTranslated = Path.Combine(DatabasePath, "vulnerabilitieNvdTranslated.json");
+        public static readonly string SchemeDatabasePath = Path.Combine(DatabasePath, "schemeDb.json");     
         //
         // Сводка:
         //     Пути к информационным ресурсам.
@@ -60,5 +62,9 @@ namespace PragmaticAnalyzer.Configs
         public static readonly string LinkFive = Path.Combine(ResourcePath, "linkFive.pdf");
         public static readonly string LinkSix = Path.Combine(ResourcePath, "linkSix.pdf");
         public static readonly string LinkSeven = Path.Combine(ResourcePath, "linkSeven.pdf");
+        public static readonly string LinkEight = Path.Combine(ResourcePath, "linkEight.pdf");
+        public static readonly string LinkNine = Path.Combine(ResourcePath, "linkNine.pdf");
+        public static readonly string LinkTen = Path.Combine(ResourcePath, "linkTen.pdf");
+        public static readonly string LinkEleven = Path.Combine(ResourcePath, "linkEleven.pdf");
     }
 }

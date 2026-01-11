@@ -5,6 +5,7 @@ using PragmaticAnalyzer.Databases;
 using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.MVVM.Model;
 using PragmaticAnalyzer.Services;
+using PragmaticAnalyzer.WorkingServer.Translate;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 
@@ -26,6 +27,8 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
         public ObservableCollection<VulnerabilitieFstec> VulnerabilitiesFstec { get; } = [];
         public ObservableCollection<VulnerabilitieNvd> VulnerabilitiesNvd { get; } = [];
         public ObservableCollection<VulnerabilitieJvn> VulnerabilitiesJvn { get; } = [];
+        public ObservableCollection<VulnerabilitieNvd> VulnerabilitiesNvdTranslated { get; } = [];
+        public ObservableCollection<VulnerabilitieJvn> VulnerabilitiesJvnTranslated { get; } = [];
         // public ObservableCollection<> ExtendedtVulnerabilities { get; }
         public object? SelectedVulnerabilitie
         {
@@ -44,8 +47,13 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
                     case DataType.VulnerabilitiesJvn:
                         _jvnVm.SelectedVulnerabilitie = value;
                         break;
+                    case DataType.VulnerabilitiesJvnTranslated:
+                        _jvnVm.SelectedVulnerabilitie = value;
+                        break;
+                    case DataType.VulnerabilitiesNvdTranslated:
+                        _nvdVm.SelectedVulnerabilitie = value;
+                        break;
                 }
-
             }
         }
         public ObservableCollection<DataType> NamesDatabases { get; }
@@ -81,6 +89,22 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
                         }
                         CurrentView = _jvnVm;
                         break;
+                    case DataType.VulnerabilitiesJvnTranslated:
+                        DisplayedVulnerabilities.Clear();
+                        foreach (var vul in VulnerabilitiesJvnTranslated)
+                        {
+                            DisplayedVulnerabilities.Add(vul);
+                        }
+                        CurrentView = _jvnVm;
+                        break;
+                    case DataType.VulnerabilitiesNvdTranslated:
+                        DisplayedVulnerabilities.Clear();
+                        foreach (var vul in VulnerabilitiesNvdTranslated)
+                        {
+                            DisplayedVulnerabilities.Add(vul);
+                        }
+                        CurrentView = _nvdVm;
+                        break;
                 }
             }
         }
@@ -101,7 +125,9 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             [
                 DataType.VulnerabilitiesFstec,
                 DataType.VulnerabilitiesNvd,
+                 DataType.VulnerabilitiesNvdTranslated,
                 DataType.VulnerabilitiesJvn,
+                DataType.VulnerabilitiesJvnTranslated,
                 //DataType.VulnerabilitiesExtended
             ];
         }
@@ -161,6 +187,21 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
                         }
                         await _fileService.SaveDTOAsync(VulnerabilitiesJvn, DataType.VulnerabilitiesJvn, GlobalConfig.VulnerabilitieJvnPath);
                         break;
+                 /*   case DataType.VulnerabilitiesNvdTranslated:
+                        foreach (var item in collection)
+                        {
+                            RequestTranslate request = new("127.0.0.1", "5001", "Hello World");
+                            var response = await _apiService.SendRequestAsync<ResponseTranslate>(request, _updateCancellationTokenSource);
+                            if (response.IsSuccess)
+                            {
+                                var translatedWord = response.Value.Results[0].Text;
+                            }
+                        }
+                        await _fileService.SaveDTOAsync(VulnerabilitiesNvdTranslated, DataType.VulnerabilitiesNvdTranslated, GlobalConfig.VulnerabilitieNvdTranslated);
+                        break;
+                    case DataType.VulnerabilitiesJvnTranslated:
+                        await _fileService.SaveDTOAsync(VulnerabilitiesJvnTranslated, DataType.VulnerabilitiesJvnTranslated, GlobalConfig.VulnerabilitieJvnTranslated);
+                        break;*/
                 }
 
                 await _fileService.SaveDTOAsync(_config, DataType.VulConfig, GlobalConfig.VulConfigPath);

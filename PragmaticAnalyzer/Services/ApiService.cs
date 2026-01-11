@@ -81,11 +81,11 @@ namespace PragmaticAnalyzer.Services
             }
         }
 
-        public async Task<Result<T>> SendRequestAsync<T>(IRequest request)
+        public async Task<Result<T>> SendRequestAsync<T>(IRequest request, CancellationToken ct = default)
         {
             try
             {
-                var responseHttp = await _httpClient.PostAsync(request.Url, request.Content);
+                var responseHttp = await _httpClient.PostAsync(request.Url, request.Content, ct);
 
                 if (!responseHttp.IsSuccessStatusCode)
                 {

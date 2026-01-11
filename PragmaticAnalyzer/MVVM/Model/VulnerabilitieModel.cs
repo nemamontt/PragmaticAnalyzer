@@ -1,6 +1,9 @@
 ﻿using Aspose.Cells;
+using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.Databases;
+using PragmaticAnalyzer.Services;
+using PragmaticAnalyzer.WorkingServer.Translate;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
@@ -14,21 +17,24 @@ namespace PragmaticAnalyzer.MVVM.Model
         private const int _resultsPerPageNvd = 2000;
         private readonly HttpClient _httpClient;
         private readonly VulConfig _vulConfig;
+        private readonly IApiService _apiService;
+
         public event Action<string>? NotifyRequested;
 
         public VulnerabilitieModel(VulConfig vulConfig)
         {
-            _vulConfig = vulConfig;
             var handler = new HttpClientHandler
             {
                 ClientCertificateOptions = ClientCertificateOption.Manual,
                 ServerCertificateCustomValidationCallback =
-                (httpRequestMessage, cert, cetChain, policyErrors) => { return true; }
+               (httpRequestMessage, cert, cetChain, policyErrors) => { return true; }
             };
             _httpClient = new HttpClient(handler)
             {
                 Timeout = TimeSpan.FromSeconds(60)
             };
+            _vulConfig = vulConfig;
+            _apiService = new ApiService();
         }
 
         public async Task<ObservableCollection<VulnerabilitieFstec>> GetByLink(CancellationToken ct)
@@ -229,5 +235,18 @@ namespace PragmaticAnalyzer.MVVM.Model
                 }
             }
         }
+
+      /*  public async Task<string> GetTranslatedWord(CancellationToken ct, string originalWord)
+        {
+            RequestTranslate request = new("127.0.0.1", "5001", "Hello World");
+            var response = await _apiService.SendRequestAsync<ResponseTranslate>(request);
+
+            if (response.IsSuccess)
+            {
+                var translatedWord = response.Value.Results[0].Text;
+            }
+
+
+        }*/
     }
 }

@@ -36,7 +36,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
 
         public RelayCommand AddCommand => GetCommand(async o =>
         {
-            _isAdd = true;
+           /* _isAdd = true;
             ManagerViolator = new()
             {
                 SequenceNumber = Violators.Count + 1,
@@ -46,28 +46,28 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             _manager = new(this);
             _manager.ShowDialog();
             await _fileService.SaveDTOAsync(Violators, DataType.Violator, GlobalConfig.ViolatorPath);
-            UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Violator);
+            UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Violator);*/
         });
 
         public RelayCommand DeleteCommand => GetCommand(async o =>
         {
-            if (SelectedViolator is Violator selectedViolator)
+         /*   if (SelectedViolator is Violator selectedViolator)
             {
                 Violators.Remove(selectedViolator);
             }
             await _fileService.SaveDTOAsync(Violators, DataType.Violator, GlobalConfig.ViolatorPath);
-            UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Violator);
+            UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Violator);*/
         });
 
         public RelayCommand ChangeCommand => GetCommand(async o =>
         {
-            _isAdd = false;
+          /*  _isAdd = false;
             if (SelectedViolator is null) return;
             ManagerViolator = SelectedViolator;
             _manager = new(this);
             _manager.ShowDialog();
             await _fileService.SaveDTOAsync(Violators, DataType.Violator, GlobalConfig.ViolatorPath);
-            UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Violator);
+            UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Violator);*/
         });
 
         public RelayCommand DoneManagerCommand => GetCommand(o =>
