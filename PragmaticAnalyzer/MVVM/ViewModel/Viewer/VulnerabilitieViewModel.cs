@@ -22,6 +22,8 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
         private VulnerabilitieJvnViewModel _jvnVm = new();
         private CancellationTokenSource? _updateCancellationTokenSource;
         private VulConfig _config;
+        private HashSet<Guid> _vulJvnHashSet;
+        private HashSet<Guid> _vulNvdHashSet;
         public object? CurrentView { get => Get<object>(); private set => Set(value); }
         public ObservableCollection<object> DisplayedVulnerabilities { get; private set; } = [];
         public ObservableCollection<VulnerabilitieFstec> VulnerabilitiesFstec { get; } = [];
@@ -111,11 +113,13 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
         public string? Status { get => Get<string>(); set => Set(value); }
         public bool Progress { get => Get<bool>(); set => Set(value); }
 
-        public VulnerabilitieViewModel(Func<string, DataType, Task> updateConfig, VulConfig vulConfig)
+        public VulnerabilitieViewModel(Func<string, DataType, Task> updateConfig, VulConfig vulConfig, HashSet<Guid> vulJvnHashSet, HashSet<Guid> vulNvdHashSet)
         {
             _apiService = new ApiService();
             _fileService = new FileService();
             _config = vulConfig;
+            _vulJvnHashSet = vulJvnHashSet;
+            _vulNvdHashSet = vulNvdHashSet;
             _model = new(_config);
             _model.NotifyRequested += (msg) => Status += "\n\n" + msg;
             CurrentView = _fstecVm;
@@ -134,13 +138,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
 
         public RelayCommand UpdateCommand => GetCommand(async o =>
         {
-            /*         RequestTranslate request = new("127.0.0.1", "5001", "Hello World");
-                     var result = await _apiService.SendRequestAsync<ResponseTranslate>(request);
-
-                     if (result.IsSuccess)
-                     {
-                         var a = result.Value.Results[0].Text;
-                     }*/
             await UpdateVulDb();
         }, o => _updateCancellationTokenSource is null);
 
@@ -187,37 +184,69 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
                         }
                         await _fileService.SaveDTOAsync(VulnerabilitiesJvn, DataType.VulnerabilitiesJvn, GlobalConfig.VulnerabilitieJvnPath);
                         break;
-                 /*   case DataType.VulnerabilitiesNvdTranslated:
-                        foreach (var item in collection)
+                    case DataType.VulnerabilitiesNvdTranslated:
+                        foreach (var vul in VulnerabilitiesNvd)
                         {
-                            RequestTranslate request = new("127.0.0.1", "5001", "Hello World");
-                            var response = await _apiService.SendRequestAsync<ResponseTranslate>(request, _updateCancellationTokenSource);
+                            if (_vulNvdHashSet.Contains(vul.GuidId))
+                                continue;
+
+                            Status += "\n\n" + $"Обращение к серверу (127.0.0.1:{GlobalConfig.TranslatorPort})";
+                            RequestTranslate request = new("127.0.0.1", GlobalConfig.TranslatorPort, vul.Description);
+                            var response = await _apiService.SendRequestAsync<ResponseTranslate>(request, _updateCancellationTokenSource.Token, 1000);
                             if (response.IsSuccess)
                             {
-                                var translatedWord = response.Value.Results[0].Text;
+                                var translatedText = response.Value.Results[0].Text;
+                                var translatedVul = vul.Clone();
+                                translatedVul.Description = translatedText;
+                                VulnerabilitiesNvdTranslated.Add(translatedVul);
+                                _vulNvdHashSet.Add(vul.GuidId);
+                                await _fileService.SaveDTOAsync(VulnerabilitiesNvdTranslated, DataType.VulnerabilitiesNvdTranslated, GlobalConfig.VulnerabilitieNvdTranslated);
+                                await _fileService.SaveFileAsync(_vulNvdHashSet.ToArray(), GlobalConfig.VulNvdHashSetPath);
+                                Status += "\n\n" + $"Запись {vul.Identifier} ({vul.GuidId}) переведена";
+                            }
+                            else
+                            {
+                                Status += "\n\n" + $"{response.ErrorMessage})";
                             }
                         }
-                        await _fileService.SaveDTOAsync(VulnerabilitiesNvdTranslated, DataType.VulnerabilitiesNvdTranslated, GlobalConfig.VulnerabilitieNvdTranslated);
                         break;
                     case DataType.VulnerabilitiesJvnTranslated:
-                        await _fileService.SaveDTOAsync(VulnerabilitiesJvnTranslated, DataType.VulnerabilitiesJvnTranslated, GlobalConfig.VulnerabilitieJvnTranslated);
-                        break;*/
-                }
+                        foreach (var vul in VulnerabilitiesJvn)
+                        {
+                            if (_vulJvnHashSet.Contains(vul.GuidId))
+                                continue;
 
+                            Status += "\n\n" + $"Обращение к серверу (127.0.0.1:{GlobalConfig.TranslatorPort})";
+                            RequestTranslate request = new("127.0.0.1", GlobalConfig.TranslatorPort, vul.Description);
+                            var response = await _apiService.SendRequestAsync<ResponseTranslate>(request, _updateCancellationTokenSource.Token, 1000);
+                            if (response.IsSuccess)
+                            {
+                                var translatedText = response.Value.Results[0].Text;
+                                var translatedVul = vul.Clone();
+                                translatedVul.Description = translatedText;
+                                VulnerabilitiesJvnTranslated.Add(translatedVul);
+                                _vulJvnHashSet.Add(vul.GuidId);
+                                await _fileService.SaveDTOAsync(VulnerabilitiesJvnTranslated, DataType.VulnerabilitiesJvnTranslated, GlobalConfig.VulnerabilitieJvnTranslated);
+                                await _fileService.SaveFileAsync(_vulJvnHashSet.ToArray(), GlobalConfig.VulJvnHashSetPath);
+                                Status += "\n\n" + $"Запись {vul.Identifier} ({vul.GuidId}) переведена";
+                            }
+                        }
+                        break;
+                }
                 await _fileService.SaveDTOAsync(_config, DataType.VulConfig, GlobalConfig.VulConfigPath);
                 UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.VulnerabilitiesFstec);
             }
             catch (HttpRequestException httpEx)
             {
-                Status += "\n" + httpEx.Message;
+                Status += "\n\n" + httpEx.Message;
             }
             catch (OperationCanceledException ctEx)
             {
-                Status += "\n" + ctEx.Message;
+                Status += "\n\n" + ctEx.Message;
             }
             catch (Exception ex)
             {
-                Status += "\n" + ex.Message;
+                Status += "\n\n" + ex.Message;
             }
             finally
             {

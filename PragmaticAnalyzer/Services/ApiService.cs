@@ -10,8 +10,9 @@ namespace PragmaticAnalyzer.Services
     public class ApiService : IApiService
     {
         private Process? _translatorProcess;
-        private readonly int _port = 5001;
+        private Process? _matcherProcess;
         public bool IsRunningTranslator => _translatorProcess?.HasExited == false;
+        public bool IsRunningMatcher => _matcherProcess?.HasExited == false;
         private readonly HttpClient _httpClient;
         private readonly IFileService _fileService;
 
@@ -23,48 +24,60 @@ namespace PragmaticAnalyzer.Services
             };
             _httpClient = new(handler);
             _fileService = new FileService();
-            /*  _serverProcess = new Process
-              {
-                  StartInfo = new ProcessStartInfo
-                  {
-                      FileName = GlobalConfig.MatcherPath,
-                      UseShellExecute = false,
-                      CreateNoWindow = true,
-                      RedirectStandardOutput = false,
-                      RedirectStandardError = false
-                  }
-              };*/
         }
 
         public void StartServer()
         {
-            if (IsRunningTranslator)
+            if (!IsRunningTranslator)
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = GlobalConfig.TranslatorPath,
+                    Arguments = $"--model \"{GlobalConfig.TranslatorYandexModelPath}\" --port {GlobalConfig.TranslatorPort} --contextsize 2048",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false
+                };
+
+                _translatorProcess = new Process { StartInfo = startInfo };
+                _translatorProcess.Start();
+            }
+            else
             {
                 return;
             }
 
-            var startInfo = new ProcessStartInfo
+            if (!IsRunningMatcher)
             {
-                FileName = GlobalConfig.TranslatorPath,
-                Arguments = $"--model \"{GlobalConfig.TranslatorYandexModelPath}\" --port {_port} --contextsize 2048",
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = false,
-                RedirectStandardError = false
-            };
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = GlobalConfig.MatcherPath,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false
+                };
 
-            _translatorProcess = new Process { StartInfo = startInfo };
-             _translatorProcess.Start();
+                //_matcherProcess = new Process { StartInfo = startInfo };
+                // _matcherProcess.Start();
+            }
+            else
+            {
+                return;
+            }
         }
 
         public void StopServer()
         {
             try
             {
-                var processes = Process.GetProcessesByName("koboldcpp");
-                foreach (var process in processes)
-                {
+                var translatorProcesses = Process.GetProcessesByName("koboldcpp");
+                var matcherProcesses = Process.GetProcessesByName("matcher.exe");
+                var result = translatorProcesses.Union(matcherProcesses).ToArray();
 
+                foreach (var process in result)
+                {
                     if (!process.HasExited)
                     {
                         process.Kill();
@@ -77,24 +90,34 @@ namespace PragmaticAnalyzer.Services
             finally
             {
                 _translatorProcess?.Dispose();
+                _matcherProcess?.Dispose();
                 _translatorProcess = null;
+                _matcherProcess = null;
             }
         }
 
-        public async Task<Result<T>> SendRequestAsync<T>(IRequest request, CancellationToken ct = default)
+        public async Task<Result<T>> SendRequestAsync<T>(IRequest request, CancellationToken ct = default, int delay = 0)
         {
             try
             {
+                ct.ThrowIfCancellationRequested();
+                await Task.Delay(delay, ct).ConfigureAwait(false);
+
+                ct.ThrowIfCancellationRequested();
                 var responseHttp = await _httpClient.PostAsync(request.Url, request.Content, ct);
 
                 if (!responseHttp.IsSuccessStatusCode)
                 {
-                    var errorContent = await responseHttp.Content.ReadAsStringAsync();
+                    var errorContent = await responseHttp.Content.ReadAsStringAsync(ct);
                     return Result<T>.Failure($"SОшибка сервера: {responseHttp.StatusCode}. Детали: {errorContent}");
                 }
-                var json = await responseHttp.Content.ReadAsStringAsync();
-                var data = await _fileService.LoadJsonAsync<T>(json);
+                var json = await responseHttp.Content.ReadAsStringAsync(ct);
+                var data = await _fileService.LoadJsonAsync<T>(json, ct);
                 return Result<T>.Success(data);
+            }
+            catch (OperationCanceledException)
+            {
+                throw new OperationCanceledException("Операция была отменена");
             }
             catch (HttpRequestException ex)
             {

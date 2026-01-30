@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="/Styles/MainTextBlockStyle.xaml" />
                 <ResourceDictionary Source="/Styles/RoundedTreeViewStyle.xaml" />
                 <ResourceDictionary Source="/Styles/RoundedTreeViewxItemStyle.xaml" />
+                <ResourceDictionary Source="/Styles/MainBorderStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

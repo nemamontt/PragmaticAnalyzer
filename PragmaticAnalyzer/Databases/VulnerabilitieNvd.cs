@@ -36,6 +36,23 @@ namespace PragmaticAnalyzer.Databases
 
         [JsonIgnore]
         public string ReferencesToString => string.Join(",\n", References);
+
+        public VulnerabilitieNvd Clone()
+        {
+            VulnerabilitieNvd vulnerabilitieNvd = new()
+            {
+                GuidId = GuidId,
+                Identifier = Identifier,
+                Description = Description,
+                Published = Published,
+                LastModified = LastModified,
+                VulnStatus = VulnStatus,
+                References = References,
+                VectorString = VectorString
+            };
+
+            return vulnerabilitieNvd;
+        }
     }
 
     public class NvdApiResponse

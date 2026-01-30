@@ -17,7 +17,10 @@ namespace PragmaticAnalyzer.Services
             DataType.Outcomes,
             DataType.SchemeDatabase,
             DataType.Ontology,
-            DataType.Violator
+            DataType.VulnerabilitiesNvd,
+            DataType.VulnerabilitiesNvdTranslated,
+            DataType.VulnerabilitiesJvn,
+            DataType.VulnerabilitiesJvnTranslated,
         ];
         private readonly JsonSerializerOptions saveOption;
 

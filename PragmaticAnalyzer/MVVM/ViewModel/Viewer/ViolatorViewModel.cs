@@ -1,12 +1,11 @@
-﻿using PragmaticAnalyzer.Enums;
-using PragmaticAnalyzer.Abstractions;
-using PragmaticAnalyzer.Configs;
+﻿using PragmaticAnalyzer.Abstractions;
+using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
 using PragmaticAnalyzer.DTO;
+using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.MVVM.Views.Viewer;
 using PragmaticAnalyzer.Services;
 using System.Collections.ObjectModel;
-using PragmaticAnalyzer.Core;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
 {

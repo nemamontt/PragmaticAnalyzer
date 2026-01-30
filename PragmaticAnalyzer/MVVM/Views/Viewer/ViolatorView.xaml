@@ -54,29 +54,34 @@
                 BorderBrush="Black"
                 BorderThickness="1"
                 CornerRadius="6">
-            <WrapPanel Visibility="{Binding SelectedViolator, Converter={StaticResource NullToVisibilityConverter}}">
+            <ScrollViewer Margin="5">
+                <WrapPanel Visibility="{Binding SelectedViolator, Converter={StaticResource NullToVisibilityConverter}}">
 
-                <cc:LabeledValueBox LabelText="Описание"
-                                    ValueText="{Binding SelectedViolator.Description}" />
+                    <cc:LabeledValueBox LabelText="Описание"
+                                        ValueText="{Binding SelectedViolator.Description}" />
 
-                <cc:LabeledValueBox LabelText="Государственная принадлежность"
-                                    ValueText="{Binding SelectedViolator.StateAffiliation}" />
+                    <cc:LabeledValueBox LabelText="Государственная принадлежность"
+                                        ValueText="{Binding SelectedViolator.StateAffiliation}" />
 
-                <cc:LabeledValueBox LabelText="Второстепенные названия"
-                                    ValueText="{Binding SelectedViolator.AlternateNames}" />
+                    <cc:LabeledValueBox LabelText="Второстепенные названия"
+                                        ValueText="{Binding SelectedViolator.AlternateNames}" />
 
-                <cc:LabeledValueBox LabelText="Объекты атаки"
-                                    ValueText="{Binding SelectedViolator.AttackTargets}" />
+                    <cc:LabeledValueBox LabelText="Объекты атаки"
+                                        ValueText="{Binding SelectedViolator.AttackTargets}" />
 
-                <cc:LabeledValueBox LabelText="Известные атаки"
-                                    ValueText="{Binding SelectedViolator.KnownAttacks}" />
+                    <cc:LabeledValueBox LabelText="Известные атаки"
+                                        ValueText="{Binding SelectedViolator.KnownAttacks}" />
 
-                <cc:LabeledValueBox LabelText="Применяемые инструменты"
-                                    ValueText="{Binding SelectedViolator.UsedTools}" />
+                    <cc:LabeledValueBox LabelText="Применяемые инструменты"
+                                        ValueText="{Binding SelectedViolator.UsedTools}" />
 
-                <cc:LabeledValueBox LabelText="Цели атаки"
-                                    ValueText="{Binding SelectedViolator.UsedTools}" />
-            </WrapPanel>
+                    <cc:LabeledValueBox LabelText="Цели атаки"
+                                        ValueText="{Binding SelectedViolator.AttackObjectives}" />
+
+                    <cc:LabeledValueBox LabelText="Применяемые тактики"
+                                        ValueText="{Binding SelectedViolator.TacticsUsedToString}" />
+                </WrapPanel>
+            </ScrollViewer>
         </Border>
 
         <StackPanel  Grid.Row="2"

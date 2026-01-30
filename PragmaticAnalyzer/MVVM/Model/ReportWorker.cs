@@ -16,6 +16,17 @@ namespace PragmaticAnalyzer.MVVM.Model
             doc.MarginLeft = 28.35f;
             doc.MarginRight = 28.35f;
 
+            if (report.ProtectionMeasure is not null)
+            {
+                Dictionary<string, string> fields = [];
+
+                fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.NameGroup)), report.ProtectionMeasure.NameGroup);
+                fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.DispayedName)), report.ProtectionMeasure.DispayedName);
+                fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.FullName)), report.ProtectionMeasure.FullName);
+                fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.SecurityClasses)), report.ProtectionMeasure.SecurityClasses);
+
+                AddTable(doc, fields, "Мер защиты");
+            }
             if (report.Specialist is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -60,20 +71,32 @@ namespace PragmaticAnalyzer.MVVM.Model
 
                 AddTable(doc, fields, "Технологии оценки риска");
             }
-            /*if(report.Violator is not null)
-            {
-
-            }*/
-            if (report.ProtectionMeasure is not null)
+            if (report.Exploit is not null)
             {
                 Dictionary<string, string> fields = [];
 
-                fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.NameGroup)), report.ProtectionMeasure.NameGroup);
-                fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.DispayedName)), report.ProtectionMeasure.DispayedName);
-                fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.FullName)), report.ProtectionMeasure.FullName);
-                fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.SecurityClasses)), report.ProtectionMeasure.SecurityClasses);
+                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Id)), report.Exploit.Id);
+                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Name)), report.Exploit.Name);
+                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Cve)), report.Exploit.Cve);
+                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Description)), report.Exploit.Description);
+                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Author)), report.Exploit.Author);
+                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Type)), report.Exploit.Type);
+                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Platform)), report.Exploit.Platform);
+                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.DatePublication)), report.Exploit.DatePublication);
 
-                AddTable(doc, fields, "Мер защиты");
+                AddTable(doc, fields, "Эксплойтов");
+            }
+            if (report.Tactic is not null)
+            {
+                Dictionary<string, string> fields = [];
+
+                fields.Add(report.Tactic.Name, report.Tactic.Description);
+                foreach (var technique in report.Tactic.Techniques)
+                {
+                    fields.Add(technique.Name, technique.Description);
+                }
+
+                AddTable(doc, fields, "Техник и тактик");
             }
             if (report.Threat is not null)
             {
@@ -120,35 +143,23 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.DescriptionCwe)), report.Vulnerabilitie.DescriptionCwe);
                 fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Cwe)), report.Vulnerabilitie.Cwe);
 
-                fields.Add(GetDescription<VulnerabilitieFstec>(report.Vulnerabilitie.Identifier), report.Vulnerabilitie.Identifier);
                 AddTable(doc, fields, "Уязвимостей");
             }
-            if (report.Exploit is not null)
+            if (report.Violator is not null)
             {
                 Dictionary<string, string> fields = [];
 
-                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Id)), report.Exploit.Id);
-                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Name)), report.Exploit.Name);
-                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Cve)), report.Exploit.Cve);
-                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Description)), report.Exploit.Description);
-                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Author)), report.Exploit.Author);
-                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Type)), report.Exploit.Type);
-                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.Platform)), report.Exploit.Platform);
-                fields.Add(GetDescription<Exploit>(nameof(report.Exploit.DatePublication)), report.Exploit.DatePublication);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.GroupName)), report.Violator.GroupName);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.Description)), report.Violator.Description);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.StateAffiliation)), report.Violator.StateAffiliation);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.AlternateNames)), report.Violator.AlternateNames);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.AttackTargets)), report.Violator.AttackTargets);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.KnownAttacks)), report.Violator.KnownAttacks);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.UsedTools)), report.Violator.UsedTools);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.AttackObjectives)), report.Violator.AttackObjectives);
+                fields.Add(GetDescription<Violator>(nameof(report.Violator.TacticsUsedToString)), report.Violator.TacticsUsedToString);
 
-                AddTable(doc, fields, "Эксплойтов");
-            }
-            if (report.Tactic is not null)
-            {
-                Dictionary<string, string> fields = [];
-
-                fields.Add(report.Tactic.Name, report.Tactic.Description);
-                foreach (var technique in report.Tactic.Techniques)
-                {
-                    fields.Add(technique.Name, technique.Description);
-                }
-
-                AddTable(doc, fields, "Техник и тактик");
+                AddTable(doc, fields, "Нарушителей");
             }
             if (report.DynamicRecords is not null)
             {

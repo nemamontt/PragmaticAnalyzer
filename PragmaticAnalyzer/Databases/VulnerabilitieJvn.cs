@@ -2,6 +2,7 @@
 using PragmaticAnalyzer.Core;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Security.Policy;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
@@ -59,6 +60,27 @@ namespace PragmaticAnalyzer.Databases
 
         [JsonIgnore]
         public string VersionSoftwareToString => string.Join(",\n", VersionSoftware);
+
+        public VulnerabilitieJvn Clone()
+        {
+            VulnerabilitieJvn vulnerabilitieJvn = new()
+            {
+                GuidId = GuidId,
+                Identifier = Identifier,
+                Description = Description,
+                Link = Link,
+                DateChange = DateChange,
+                DateAdded = DateAdded,
+                References = References,
+                Name = Name,
+                Cvss = Cvss,
+                Vendor = Vendor,
+                NameSoftware = NameSoftware,
+                VersionSoftware = VersionSoftware
+            };
+
+            return vulnerabilitieJvn;
+        }
     }
 
     [XmlRoot("RDF", Namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")]

@@ -21,6 +21,8 @@ namespace PragmaticAnalyzer.Services
         private readonly ObservableCollection<ModelConfig> _wordTwoVecConfig = [];
         private readonly ObservableCollection<ModelConfig> _fastTextVecConfig = [];
         private readonly Dictionary<string, object> _filePathToDatabase = [];
+        private readonly HashSet<Guid> _vulJvnHashSet = [];
+        private readonly HashSet<Guid> _vulNvdHashSet = [];
         public static IApiService ApiService => new ApiService();
 
         public MainViewModel MainVm { get; }
@@ -47,7 +49,7 @@ namespace PragmaticAnalyzer.Services
             MainVm = new(this);
             SetVm = new(_lastUpdateConfig, this);
             ThreatVm = new([], SetVm.UpdateConfig, _threatConfig);
-            VulnerabilitieVm = new(SetVm.UpdateConfig, _vulConfig);
+            VulnerabilitieVm = new(SetVm.UpdateConfig, _vulConfig, _vulJvnHashSet, _vulNvdHashSet);
             ExploitVm = new([], SetVm.UpdateConfig, _exploitConfig);
             OntologyVm = new([]);
             TacticVm = new([], SetVm.UpdateConfig);
@@ -102,6 +104,22 @@ namespace PragmaticAnalyzer.Services
             if (File.Exists(GlobalConfig.VulConfigPath))
             {
                 _vulConfig.Update(await _fileService.LoadDTOAsync<VulConfig>(GlobalConfig.VulConfigPath, DataType.VulConfig) ?? new());
+            }
+            if (File.Exists(GlobalConfig.VulNvdHashSetPath))
+            {
+                HashSet<Guid> hashSet = await _fileService.LoadFileToPathAsync<HashSet<Guid>>(GlobalConfig.VulNvdHashSetPath) ?? [];
+                foreach (var item in hashSet)
+                {
+                    _vulNvdHashSet.Add(item);
+                }
+            }
+            if (File.Exists(GlobalConfig.VulJvnHashSetPath))
+            {
+                HashSet<Guid> hashSet = await _fileService.LoadFileToPathAsync<HashSet<Guid>>(GlobalConfig.VulJvnHashSetPath) ?? [];
+                foreach (var item in hashSet)
+                {
+                    _vulJvnHashSet.Add(item);
+                }
             }
             if (File.Exists(GlobalConfig.WordTwoVecConfigPath))
             {
@@ -236,6 +254,7 @@ namespace PragmaticAnalyzer.Services
                 {
                     ViolatorVm.Violators.Add(violator);
                 }
+                _filePathToDatabase.Add(GlobalConfig.ViolatorPath, ViolatorVm.Violators);
                 SetVm.UpdateConfig?.Invoke(violatorDto.DateCreation.ToString("f"), DataType.Violator);
             }
 
@@ -308,7 +327,7 @@ namespace PragmaticAnalyzer.Services
 
             SettingVm.NotifySelectedModels();
             _availableDatabasesConfig.ReplaceAll(FileService.GetAvailableDatabaseConfigs());
-           // ApiService.StartServer();
+            ApiService.StartServer();
         }
 
         public async Task SaveDatabaseAsync(object database, string name, DataType dataType)

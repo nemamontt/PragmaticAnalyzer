@@ -33,6 +33,8 @@ namespace PragmaticAnalyzer.Configs
         public static readonly string VulConfigPath = Path.Combine(ConfigPath, "vulConfig.json");
         public static readonly string WordTwoVecConfigPath = Path.Combine(ConfigPath, "word2vecConfig.json");
         public static readonly string FastTextConfigPath = Path.Combine(ConfigPath, "fastTextConfig.json");
+        public static readonly string VulJvnHashSetPath = Path.Combine(ConfigPath, "vulJvnHashSetPath.json");
+        public static readonly string VulNvdHashSetPath = Path.Combine(ConfigPath, "vulNvdHashSetPath.json");
         //
         // Сводка:
         //     Пути к базам данных.
@@ -49,8 +51,8 @@ namespace PragmaticAnalyzer.Configs
         public static readonly string RefStatPath = Path.Combine(DatabasePath, "refStatusDb.json");
         public static readonly string CurStatPath = Path.Combine(DatabasePath, "curStatusDb.json");
         public static readonly string OntologyPath = Path.Combine(DatabasePath, "ontologyDb.json");
-        public static readonly string VulnerabilitieJvnTranslated = Path.Combine(DatabasePath, "vulnerabilitieJvnTranslated.json");
-        public static readonly string VulnerabilitieNvdTranslated = Path.Combine(DatabasePath, "vulnerabilitieNvdTranslated.json");
+        public static readonly string VulnerabilitieJvnTranslated = Path.Combine(DatabasePath, "vulnerabilitieJvnTranslatedDb.json");
+        public static readonly string VulnerabilitieNvdTranslated = Path.Combine(DatabasePath, "vulnerabilitieNvdTranslatedDb.json");
         public static readonly string SchemeDatabasePath = Path.Combine(DatabasePath, "schemeDb.json");     
         //
         // Сводка:
@@ -66,5 +68,10 @@ namespace PragmaticAnalyzer.Configs
         public static readonly string LinkNine = Path.Combine(ResourcePath, "linkNine.pdf");
         public static readonly string LinkTen = Path.Combine(ResourcePath, "linkTen.pdf");
         public static readonly string LinkEleven = Path.Combine(ResourcePath, "linkEleven.pdf");
+        //
+        //Сводка:
+        //  Порты серверов
+        public static readonly string MatcherPort = "5000";
+        public static readonly string TranslatorPort = "5001";
     }
 }

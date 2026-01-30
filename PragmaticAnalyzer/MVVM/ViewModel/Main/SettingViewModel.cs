@@ -22,8 +22,8 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         private readonly IFileService _fileService;
         public ObservableCollection<ModelConfig> WordTwoVecConfigs { get; set; }
         public ObservableCollection<ModelConfig> FastTextConfigs { get; set; }
-        public ModelConfig? SelectedWordTwoVecConfig { get => Get<ModelConfig>(); set => Set(value); }
-        public ModelConfig? SelectedFastTextConfig { get => Get<ModelConfig>(); set => Set(value); }
+        public ModelConfig SelectedWordTwoVecConfig { get => Get<ModelConfig>(); set => Set(value); }
+        public ModelConfig SelectedFastTextConfig { get => Get<ModelConfig>(); set => Set(value); }
         public bool ProgressWordTwoVec { get => Get<bool>(); set => Set(value); }
         public bool ProgressFastText { get => Get<bool>(); set => Set(value); }
 
@@ -156,6 +156,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                     IsUsed = WordTwoVecConfigs.Count is 0
                 });
                 await _fileService.SaveDTOAsync(WordTwoVecConfigs, DataType.WordTwoVecConfig, GlobalConfig.WordTwoVecConfigPath);
+                MessageBox.Show($"Модель обучена по алгоритму {Algorithm.WordTwoVec} и сохранена в {result.Value.ModelPath}");
             }
             else
             {
@@ -267,7 +268,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 
             RequestTrain request = new("127.0.0.1", "5000", Algorithm.FastText);
             var result = await _apiService.SendRequestAsync<ResponseTrain>(request);
-            
+
             if (result.IsSuccess)
             {
                 FastTextConfigs.Add(new()
@@ -277,6 +278,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                     IsUsed = FastTextConfigs.Count is 0
                 });
                 await _fileService.SaveDTOAsync(FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);
+                MessageBox.Show($"Модель обучена по алгоритму {Algorithm.FastText} и сохранена в {result.Value.ModelPath}");
             }
             else
             {

@@ -12,6 +12,7 @@ using PragmaticAnalyzer.Services;
 using PragmaticAnalyzer.WorkingServer.Matcher;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Windows;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
@@ -111,8 +112,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                     usedSources.Add(config.FullName);
                 }
             }
-            RequestMatcher request = new("127.0.0.1", "5000", RequestText, SelectedAlgorithm, FilteringCvss, usedModel, usedSources);
-            //RequestMatcher request = new("127.0.0.1", "5000", "Уязвиомсть", Algorithm.TfIdf, false, usedModel, usedSources);
+            RequestMatcher request = new("127.0.0.1", GlobalConfig.MatcherPort, RequestText, SelectedAlgorithm, FilteringCvss, usedModel, usedSources);
 
             var result = await _apiService.SendRequestAsync<ResponseMatcher>(request);
             if (!result.IsSuccess)
@@ -168,6 +168,15 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             _settingSearchView?.Close();
         });
 
+        public RelayCommand OpenFileCommand => GetCommand(o =>
+        {
+            string fullPath = Path.Combine(GlobalConfig.ExploitTextPath, $"{o}.txt");
+            if (File.Exists(fullPath))
+            {
+                System.Diagnostics.Process.Start("notepad.exe", fullPath);
+            }
+        });
+
         public ObservableCollection<Report>? GetReports(ObservableCollection<ResponseMatcher.MatcherObject> responseMatchers)
         {
             if (responseMatchers is null || responseMatchers.Count is 0)
@@ -179,6 +188,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             var threatsDict = _viewModelsService.ThreatVm.Threats.ToDictionary(t => t.GuidId);
             var tacticsDict = _viewModelsService.TacticVm.Tactics.ToDictionary(t => t.GuidId);
             var exploitsDict = _viewModelsService.ExploitVm.Exploits.ToDictionary(e => e.GuidId);
+            var violatorDict = _viewModelsService.ViolatorVm.Violators.ToDictionary(e => e.GuidId);
 
             var results = new ObservableCollection<Report>();
 
@@ -227,6 +237,12 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
                                         report.Exploit = exploit;
                                     }
                                     break;
+                                case DataType.Violator:
+                                    if (violatorDict.TryGetValue(source.Key, out var violator))
+                                    {
+                                        report.Violator = violator;
+                                    }
+                                    break;
                                 case DataType.DunamicDatabase:
                                     var dumanicRecords = (ObservableCollection<DynamicRecord>)_filePathToDatabase.FirstOrDefault(db => db.Key == item.Key).Value;
                                     foreach (var dunamicRecord in dumanicRecords)
@@ -260,17 +276,15 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
     public class Report : ViewModelBase
     {
         public float Coefficient { get => Get<float>(); set => Set(value); }
+        public ProtectionMeasure? ProtectionMeasure { get => Get<ProtectionMeasure>(); set => Set(value); }
+        public Specialist? Specialist { get => Get<Specialist>(); set => Set(value); }
+        public Consequence? Consequence { get => Get<Consequence>(); set => Set(value); }
+        public Technology? Technology { get => Get<Technology>(); set => Set(value); }
         public VulnerabilitieFstec? Vulnerabilitie { get => Get<VulnerabilitieFstec>(); set => Set(value); }
         public Threat? Threat { get => Get<Threat>(); set => Set(value); }
         public Tactic? Tactic { get => Get<Tactic>(); set => Set(value); }
-        public ProtectionMeasure? ProtectionMeasure { get => Get<ProtectionMeasure>(); set => Set(value); }
-        public Technology? Technology { get => Get<Technology>(); set => Set(value); }
-        public Consequence? Consequence { get => Get<Consequence>(); set => Set(value); }
         public Exploit? Exploit { get => Get<Exploit>(); set => Set(value); }
-        public Specialist? Specialist { get => Get<Specialist>(); set => Set(value); }
         public Violator? Violator { get => Get<Violator>(); set => Set(value); }
-        public ReferenceStatus? ReferenceStatus { get => Get<ReferenceStatus>(); set => Set(value); }
-        public CurrentStatus? CurrentStatus { get => Get<CurrentStatus>(); set => Set(value); }
         public ObservableCollection<DynamicRecord>? DynamicRecords { get => Get<ObservableCollection<DynamicRecord>>(); set => Set(value); }
     }
 }
