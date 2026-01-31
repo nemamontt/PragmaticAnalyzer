@@ -43,7 +43,7 @@
                     <Image Grid.Row="1"
                            Grid.Column="0"
                            Margin="10"
-                           Source="/Images/fasttext_ico.png" />
+                           Source="/Images/fasttextIco.png" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
@@ -84,7 +84,7 @@
                     <Image Grid.Row="1"
                            Grid.Column="0"
                            Margin="10"
-                           Source="/Images/wordTwoVec_ico.png" />
+                           Source="/Images/wordTwoVecIco.png" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
@@ -125,7 +125,7 @@
                     <Image Grid.Row="1"
                            Grid.Column="0"
                            Margin="10"
-                           Source="/Images/tfIdf_ico.png" />
+                           Source="/Images/tfIdfIco.png" />
 
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"

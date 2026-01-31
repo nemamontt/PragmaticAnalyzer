@@ -2,7 +2,7 @@
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.DTO;
+using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.MVVM.Model;
 using PragmaticAnalyzer.Services;
 using PragmaticAnalyzer.WorkingServer.Translate;

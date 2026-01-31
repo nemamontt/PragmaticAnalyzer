@@ -9,11 +9,11 @@ namespace PragmaticAnalyzer.Services
 {
     public class ApiService : IApiService
     {
-        private Process? _translatorProcess;
-        private Process? _matcherProcess;
-        public bool IsRunningTranslator => _translatorProcess?.HasExited == false;
-        public bool IsRunningMatcher => _matcherProcess?.HasExited == false;
-        private readonly HttpClient _httpClient;
+        private Process? _translatorProcess; // процесс для сервера перевода
+        private Process? _matcherProcess; // процесс для сервера работы с моделями
+        public bool IsRunningTranslator => _translatorProcess?.HasExited == false; // если процесс для сервера перевода активен true
+        public bool IsRunningMatcher => _matcherProcess?.HasExited == false; // если процесс для сервера работы с моделями активен true
+        private readonly HttpClient _httpClient; 
         private readonly IFileService _fileService;
 
         public ApiService()
@@ -66,7 +66,7 @@ namespace PragmaticAnalyzer.Services
             {
                 return;
             }
-        }
+        } // запуск серверов
 
         public void StopServer()
         {
@@ -94,7 +94,7 @@ namespace PragmaticAnalyzer.Services
                 _translatorProcess = null;
                 _matcherProcess = null;
             }
-        }
+        } // остановка серверов
 
         public async Task<Result<T>> SendRequestAsync<T>(IRequest request, CancellationToken ct = default, int delay = 0)
         {
@@ -132,5 +132,5 @@ namespace PragmaticAnalyzer.Services
                 return Result<T>.Failure($"Неизвестная ошибка: {ex.Message}");
             }
         }
-    }
+    } // сервис для работы с серверамм (внешними ресурсами), управляет процессами и проксирует запросы
 }

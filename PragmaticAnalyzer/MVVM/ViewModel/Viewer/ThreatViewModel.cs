@@ -2,7 +2,7 @@
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.DTO;
+using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.MVVM.Model;
 using PragmaticAnalyzer.Services;
 using System.Collections.ObjectModel;
@@ -49,7 +49,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             _updateCancellationTokenSource = new CancellationTokenSource();
             try
             {
-                var newThreats = await _model.CreateDatabase(_threatConfig.ParsingUrl, _updateCancellationTokenSource.Token);
+                var newThreats = await _model.CreateDatabase(_threatConfig.ParsingFstecUrl, _updateCancellationTokenSource.Token);
                 if (newThreats is null) return;
                 Threats.Clear();
                 foreach (var threat in newThreats)

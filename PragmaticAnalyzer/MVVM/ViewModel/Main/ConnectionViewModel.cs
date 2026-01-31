@@ -3,7 +3,6 @@ using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.Messages;
 using PragmaticAnalyzer.MVVM.Model;
@@ -21,9 +20,9 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
     public class ConnectionViewModel : ViewModelBase,
         IRecipient<FastTextModelSelectedMessage>,
-        IRecipient<Word2VecModelSelectedMessage>
+        IRecipient<WordTwoVecModelSelectedMessage>
     {
-        private readonly IViewModelsService _viewModelsService;
+        private readonly IInfrastructureOrchestrator _viewModelsService;
         private readonly IApiService _apiService;
         private readonly Dictionary<string, object> _filePathToDatabase;
         private SettingSearchView? _settingSearchView;
@@ -47,11 +46,11 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public bool FilteringCvss { get => Get<bool>(); set => Set(value); }
         public Visibility ReportVisibility { get => Get<Visibility>(); set => Set(value); }
 
-        public ConnectionViewModel(IViewModelsService viewModelsService, IApiService apiService,
+        public ConnectionViewModel(IInfrastructureOrchestrator viewModelsService, IApiService apiService,
                                                           ObservableCollection<AvailableDatabaseConfig> availableDatabasesConfig, Dictionary<string, object> filePathToDatabase)
         {
             WeakReferenceMessenger.Default.Register<FastTextModelSelectedMessage>(this);
-            WeakReferenceMessenger.Default.Register<Word2VecModelSelectedMessage>(this);
+            WeakReferenceMessenger.Default.Register<WordTwoVecModelSelectedMessage>(this);
             _viewModelsService = viewModelsService;
             _apiService = apiService;
             AvailableDatabasesConfig = availableDatabasesConfig;
@@ -268,7 +267,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             _fastTextModelPath = message.ModelPath;
         }
 
-        public void Receive(Word2VecModelSelectedMessage message)
+        public void Receive(WordTwoVecModelSelectedMessage message)
         {
             _wordTwoVecModelPath = message.ModelPath;
         }

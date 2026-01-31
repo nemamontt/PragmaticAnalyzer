@@ -7,15 +7,15 @@ namespace PragmaticAnalyzer.MVVM.Views.Viewer
     public partial class TacticManagerView
     {
         private readonly TacticViewModel viewModel;
-        private IEntityTIT? SelectedItemComboBox { get; set; }
+        private IEntityTit? SelectedItemComboBox { get; set; }
 
-        public TacticManagerView(Action<IEntityTIT, string> add, Action<IEntityTIT> change, bool addOrChange, TacticViewModel vm)
+        public TacticManagerView(Action<IEntityTit, string> add, Action<IEntityTit> change, bool addOrChange, TacticViewModel vm)
         {
             InitializeComponent();
             DataContext = vm;
             viewModel = vm;
 
-            IEntityTIT modifiedElement = vm.SelectedItem;
+            IEntityTit modifiedElement = vm.SelectedItem;
 
             if (addOrChange)
             {
@@ -82,7 +82,7 @@ namespace PragmaticAnalyzer.MVVM.Views.Viewer
             if (ListTechniqueComboBox.SelectedItem is null)
                 return;
 
-            SelectedItemComboBox = (IEntityTIT)ListTechniqueComboBox.SelectedItem;
+            SelectedItemComboBox = (IEntityTit)ListTechniqueComboBox.SelectedItem;
             foreach (var tactic in viewModel.Tactics)
             {
                 if (tactic.Name == SelectedItemComboBox.Name)

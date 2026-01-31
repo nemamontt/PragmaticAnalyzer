@@ -8,9 +8,9 @@ namespace PragmaticAnalyzer.Databases
 {
     public class DynamicDatabase : ViewModelBase
     {
-        private int RecordCounter { get; set; }
-        public Guid GuidId { get; set; } = Guid.NewGuid();
-        public string Name { get => Get<string>(); private set => Set(value); }
+        private int RecordCounter { get; set; } // счетчик записей
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
+        public string Name { get => Get<string>(); private set => Set(value); } // наименование базы данных
         public string? IndexPrefix
         {
             get => Get<string>();
@@ -18,10 +18,10 @@ namespace PragmaticAnalyzer.Databases
             {
                 Set(value ?? "Запись");
             }
-        }
-        public ObservableCollection<string> CustomFieldNames { get; private set; }
+        }  // префикс к индексу
+        public ObservableCollection<string> CustomFieldNames { get; private set; } // список наименование кастомных полей
         [JsonIgnore]
-        public ObservableCollection<DynamicRecord> Records { get; private set; }
+        public ObservableCollection<DynamicRecord> Records { get; private set; } // список записей
 
         public DynamicDatabase(string name, string? indexPrefix, ObservableCollection<string> customFieldNames)
         {
@@ -49,7 +49,7 @@ namespace PragmaticAnalyzer.Databases
             {
                 RecordCounter++;
             }
-        }
+        } // изменение индекса записи
 
         private void SyncRecordsWithSchema()
         {
@@ -66,7 +66,7 @@ namespace PragmaticAnalyzer.Databases
                     record.Fields.Remove(key);
                 }
             }
-        }
+        } // синхронизация базы данных со схемой, при ее изменении
 
         public void ChangeScheme(string? name, string? indexPrefix, ObservableCollection<string>? customFieldName)
         {
@@ -94,7 +94,7 @@ namespace PragmaticAnalyzer.Databases
 
                 SyncRecordsWithSchema();
             }
-        }
+        } // изменение схемы
 
         public void AddRecord(string nameDatabase, string? description, Dictionary<string, string> customFields)
         {
@@ -108,7 +108,7 @@ namespace PragmaticAnalyzer.Databases
                 record[field] = customFields.TryGetValue(field, out var value) ? value : string.Empty;
             }
             Records.Add(record);
-        }
+        } // добавление записи в базу данных
 
         public bool ChangeRecord(DynamicRecord record)
         {
@@ -122,15 +122,15 @@ namespace PragmaticAnalyzer.Databases
                 }
             }
             return false;
-        }
-    }
+        } // изменение существующей записи
+    } // схема базы данных, хранящая записи базы данных. Реализация методов управления схемой и базой данных
 
     public class DynamicRecord : ViewModelBase, IHasId, IHasDescription
     {
         [JsonIgnore]
-        public string NameDatadase { get => Get<string>(); set => Set(value); }
-        public Guid GuidId { get; set; } = Guid.NewGuid();
-        public string IndexValue { get => Get<string>(); internal set => Set(value); }
+        public string NameDatadase { get => Get<string>(); set => Set(value); } // наименование базы данных к которой принадлежит запись
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
+        public string IndexValue { get => Get<string>(); internal set => Set(value); } // порядковый номер (значение индекса)
         public string? Description
         {
             get => Get<string>();
@@ -138,8 +138,8 @@ namespace PragmaticAnalyzer.Databases
             {
                 Set(value ?? "Отсутствует");
             }
-        }
-        public Dictionary<string, string> Fields { get => Get<Dictionary<string, string>>(); set => Set(value); }
+        } // обязательное поле - описание
+        public Dictionary<string, string> Fields { get => Get<Dictionary<string, string>>(); set => Set(value); } // словарь кастомных полей с их значением
 
         public DynamicRecord(string indexValue)
         {
@@ -158,6 +158,6 @@ namespace PragmaticAnalyzer.Databases
         {
             get => Fields.TryGetValue(fieldName, out var value) ? value : string.Empty;
             set => Fields[fieldName] = value;
-        }
-    }
+        } // индексатор
+    } // представление динамической записи
 }

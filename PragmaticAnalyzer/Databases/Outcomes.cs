@@ -8,9 +8,9 @@ namespace PragmaticAnalyzer.Databases
 {
     public class Outcomes
     {
-        public ObservableCollection<Technology> Technologys { get; set; } = [];
-        public ObservableCollection<Consequence> Consequences { get; set; } = [];
-    }
+        public ObservableCollection<Technology> Technologys { get; set; } = []; // база данных технологий оценки
+        public ObservableCollection<Consequence> Consequences { get; set; } = []; // база данных негативных последствий (рисков)
+    } // представление исхода (риска)
 
     public class Technology : ViewModelBase, IHasId
     {
@@ -48,7 +48,7 @@ namespace PragmaticAnalyzer.Databases
 
         [Description("Применение усилий")]
         public string Effort { get => Get<string>(); set => Set(value); }
-    }
+    } // представление технологии оценки
 
     public class Consequence : ViewModelBase, IHasId
     {
@@ -68,5 +68,5 @@ namespace PragmaticAnalyzer.Databases
         [JsonIgnore]
         [Description("Связанные угрозы")]
         public string NameThreatsToString => string.Join(", ", NameThreats);
-    }
+    } // представление негативного последствия (риска)
 }

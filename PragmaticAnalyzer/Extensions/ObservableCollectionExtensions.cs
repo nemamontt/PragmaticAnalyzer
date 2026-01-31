@@ -14,6 +14,6 @@ namespace PragmaticAnalyzer.Extensions
                     collection.Add(item);
                 }
             }
-        } 
-    }
+        } // замена всех элементов коллекции
+    } // расширения для ObservableCollection
 }

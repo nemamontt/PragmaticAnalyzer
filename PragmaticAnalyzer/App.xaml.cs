@@ -8,15 +8,15 @@ namespace PragmaticAnalyzer
     {
         protected override async void OnStartup(StartupEventArgs e)
         {
-            var viewModelsService = new ViewModelsService();
-            var mainVm = viewModelsService.MainVm;
+            var infrastructureOrchestrator = new InfrastructureOrchestrator(); // создания экземпляра сервиса InfrastructureOrchestrator
+            var mainVm = infrastructureOrchestrator.MainVm; // создания экземпляра MainVm
 
-            var mainView = new MainView(mainVm);
+            var mainView = new MainView(mainVm); // создание экземпляра MainView
             mainView.Show();
 
             try
             {
-                await viewModelsService.InitializeAsync();
+                await infrastructureOrchestrator.InitializeAsync(); // запуск метода инициализации приложения
             }
             catch (Exception ex) 
             {

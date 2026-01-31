@@ -6,17 +6,17 @@ using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    public interface IEntityTIT
+    public interface IEntityTit
     {
         string Name { get; set; }
         string Description { get; set; }
-    }
+    } // интерфейс для техники и тактики
 
-    public class Tactic : ViewModelBase, IEntityTIT, IHasId, IHasDescription
+    public class Tactic : ViewModelBase, IEntityTit, IHasId, IHasDescription
     {
-        public Guid GuidId { get; set; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
 
-        public string Name { get => Get<string>(); set => Set(value); }
+        public string Name { get => Get<string>(); set => Set(value); } 
 
         [Description("Описание")]
         public string Description { get => Get<string>(); set => Set(value); }
@@ -26,11 +26,11 @@ namespace PragmaticAnalyzer.Databases
         [JsonIgnore]
         [Description("Наименование")]
         public string DisplayName => $"Тактика: {Name}";
-    }
+    } // предсавление тактики
 
-    public class Technique : ViewModelBase, IEntityTIT, IHasId
+    public class Technique : ViewModelBase, IEntityTit, IHasId
     {
-        public Guid GuidId { get; set; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
 
         public string Name { get => Get<string>(); set => Set(value); }
 
@@ -40,5 +40,5 @@ namespace PragmaticAnalyzer.Databases
         [JsonIgnore]
         [Description("Наименование")]
         public string DisplayName => $"Техника: {Name}";
-    }
+    } // представление техники
 }

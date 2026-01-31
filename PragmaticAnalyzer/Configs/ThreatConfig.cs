@@ -2,20 +2,23 @@
 
 namespace PragmaticAnalyzer.Configs
 {
+    /// <summary>
+    /// Объект, хранящий настройки для парсинга угроз
+    /// </summary>
     public class ThreatConfig : ViewModelBase
     {
-        public string ParsingUrl {  get => Get<string>(); set => Set(value); }
+        public string ParsingFstecUrl {  get => Get<string>(); set => Set(value); } // url-адресс для парсинга угроз с сайта ФСТЭК
 
         public ThreatConfig()
         {
-            ParsingUrl = "https://bdu.fstec.ru/files/documents/thrlist.xlsx";
+            ParsingFstecUrl = "https://bdu.fstec.ru/files/documents/thrlist.xlsx";
         }
 
         public void Update(ThreatConfig newThreatConfig)
         {
             if (newThreatConfig is null) return;
 
-            ParsingUrl = newThreatConfig.ParsingUrl;
-        }
+            ParsingFstecUrl = newThreatConfig.ParsingFstecUrl;
+        } // клонирование текущего объекта
     }
 }

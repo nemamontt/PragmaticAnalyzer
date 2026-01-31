@@ -9,12 +9,9 @@ using System.Xml.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    /// <summary>
-    /// База данных "Уязвимостей JVN"
-    /// </summary>
     public class VulnerabilitieJvn : ViewModelBase, IHasId, IHasDescription
     {
-        public Guid GuidId { get; set; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
 
         [Description("Идентификатор")]
         public string Identifier { get => Get<string>(); set => Set(value); }
@@ -81,7 +78,7 @@ namespace PragmaticAnalyzer.Databases
 
             return vulnerabilitieJvn;
         }
-    }
+    } // представление уязвимости JVN
 
     [XmlRoot("RDF", Namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")]
     public class JvnRdf

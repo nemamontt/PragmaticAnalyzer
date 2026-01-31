@@ -1,7 +1,6 @@
 ﻿using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.MVVM.Views.Viewer;
 using PragmaticAnalyzer.Services;
@@ -18,12 +17,6 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
         public ObservableCollection<Violator> Violators { get; set; }
         public Violator? SelectedViolator { get => Get<Violator?>(); set => Set(value); }
         public Violator ManagerViolator { get => Get<Violator>(); set => Set(value); }
-        public ViolatorPotential SelectedPotential { get => Get<ViolatorPotential>(); set => Set(value); }
-        public ViolatorSource SelectedSource { get => Get<ViolatorSource>(); set => Set(value); }
-        public static IEnumerable<ViolatorSource> ViolatorSources =>
-                Enum.GetValues(typeof(ViolatorSource)).Cast<ViolatorSource>();
-        public static IEnumerable<ViolatorPotential> ViolatorPotentials =>
-                Enum.GetValues(typeof(ViolatorPotential)).Cast<ViolatorPotential>();
 
         public ViolatorViewModel(ObservableCollection<Violator> violators, Func<string, DataType, Task> updateConfig)
         {

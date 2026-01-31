@@ -17,14 +17,14 @@ namespace PragmaticAnalyzer.Databases
         public string AtributRequiredValue { get; set; }
         public string ValueTeg {  get; set; }
         public ObservableCollection<Setting> Settings { get; set; }
-    }
+    } // представление текущего состояния
 
     public class ReferenceStatus : IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid(); //уникальный идентификатор
         public string NameSoftware { get; set; } //Эталонное состояние
         public DateTime ArrivalTime { get; set; } //Время поступления ПД в систему
-    }
+    } // представление эталонного состояния
 
     public class Setting
     {

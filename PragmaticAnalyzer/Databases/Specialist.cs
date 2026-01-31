@@ -6,9 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    /// <summary>
-    /// База данных "Специалист по ЗИ"
-    /// </summary>
     public class Specialist : ViewModelBase, IHasId
     {
         public Guid GuidId { get; set; } = Guid.NewGuid();
@@ -42,5 +39,5 @@ namespace PragmaticAnalyzer.Databases
 
         [JsonIgnore]
         public string UsingMeasuresToString => string.Join(", ", UsingMeasures);
-    }
+    } // представление специалиста по ЗИ
 }

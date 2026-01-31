@@ -2,7 +2,6 @@
 using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.Core;
-using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.Messages;
 using PragmaticAnalyzer.Services;
@@ -295,7 +294,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             var fastTextModel = FastTextConfigs.FirstOrDefault(m => m.Algorithm == Algorithm.FastText && m.IsUsed);
 
             WeakReferenceMessenger.Default.Send(new FastTextModelSelectedMessage(fastTextModel?.Path));
-            WeakReferenceMessenger.Default.Send(new Word2VecModelSelectedMessage(wordTwoVecModel?.Path));
+            WeakReferenceMessenger.Default.Send(new WordTwoVecModelSelectedMessage(wordTwoVecModel?.Path));
         }
 
         private void OnModelsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

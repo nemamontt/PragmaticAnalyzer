@@ -1,7 +1,8 @@
 ﻿using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
+using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.DTO;
+using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.Extensions;
 using PragmaticAnalyzer.MVVM.ViewModel.Main;
 using PragmaticAnalyzer.MVVM.ViewModel.Viewer;
@@ -10,7 +11,7 @@ using System.IO;
 
 namespace PragmaticAnalyzer.Services
 {
-    public class ViewModelsService : IViewModelsService
+    public class InfrastructureOrchestrator : IInfrastructureOrchestrator
     {
         private readonly IFileService _fileService = new FileService();
         private readonly VulConfig _vulConfig = new();
@@ -44,7 +45,7 @@ namespace PragmaticAnalyzer.Services
         public InformationViewModel InformationVm { get; }
         public CreatorViewModel CreatorVm { get; }
 
-        public ViewModelsService()
+        public InfrastructureOrchestrator()
         {
             MainVm = new(this);
             SetVm = new(_lastUpdateConfig, this);
@@ -75,36 +76,36 @@ namespace PragmaticAnalyzer.Services
             if (!Directory.Exists(GlobalConfig.DatabasePath))
             {
                 Directory.CreateDirectory(GlobalConfig.DatabasePath);
-            }
+            }      //
             if (!Directory.Exists(GlobalConfig.ExploitTextPath))
             {
                 Directory.CreateDirectory(GlobalConfig.ExploitTextPath);
-            }
+            }   //      проверка наличия каталогов
             if (!Directory.Exists(GlobalConfig.ModelsPath))
             {
                 Directory.CreateDirectory(GlobalConfig.ModelsPath);
-            }
+            }        //
             if (!Directory.Exists(GlobalConfig.ConfigPath))
             {
                 Directory.CreateDirectory(GlobalConfig.ConfigPath);
-            }
+            }        //
 
             if (File.Exists(GlobalConfig.LastUpdateConfig))
             {
                 _lastUpdateConfig.Update(await _fileService.LoadDTOAsync<LastUpdateConfig>(GlobalConfig.LastUpdateConfig, DataType.LastUpdateConfig) ?? new());
-            }
+            }              //
             if (File.Exists(GlobalConfig.ExploitConfigPath))
             {
                 _exploitConfig.Update(await _fileService.LoadDTOAsync<ExploitConfig>(GlobalConfig.ExploitConfigPath, DataType.ExploitConfig) ?? new());
-            }
+            }             //
             if (File.Exists(GlobalConfig.ThreatConfigPath))
             {
                 _threatConfig.Update(await _fileService.LoadDTOAsync<ThreatConfig>(GlobalConfig.ThreatConfigPath, DataType.ThreatConfig) ?? new());
-            }
+            }             //        проверка наличия конфигурационных файлов
             if (File.Exists(GlobalConfig.VulConfigPath))
             {
                 _vulConfig.Update(await _fileService.LoadDTOAsync<VulConfig>(GlobalConfig.VulConfigPath, DataType.VulConfig) ?? new());
-            }
+            }                  //
             if (File.Exists(GlobalConfig.VulNvdHashSetPath))
             {
                 HashSet<Guid> hashSet = await _fileService.LoadFileToPathAsync<HashSet<Guid>>(GlobalConfig.VulNvdHashSetPath) ?? [];
@@ -112,7 +113,7 @@ namespace PragmaticAnalyzer.Services
                 {
                     _vulNvdHashSet.Add(item);
                 }
-            }
+            }         //
             if (File.Exists(GlobalConfig.VulJvnHashSetPath))
             {
                 HashSet<Guid> hashSet = await _fileService.LoadFileToPathAsync<HashSet<Guid>>(GlobalConfig.VulJvnHashSetPath) ?? [];
@@ -120,7 +121,7 @@ namespace PragmaticAnalyzer.Services
                 {
                     _vulJvnHashSet.Add(item);
                 }
-            }
+            }          //
             if (File.Exists(GlobalConfig.WordTwoVecConfigPath))
             {
                 var wordTwoVecConfigs = await _fileService.LoadDTOAsync<ObservableCollection<ModelConfig>>(GlobalConfig.WordTwoVecConfigPath, DataType.WordTwoVecConfig) ?? [];
@@ -133,7 +134,7 @@ namespace PragmaticAnalyzer.Services
                     }
                 }
                 _wordTwoVecConfig.ReplaceAll(wordTwoVecConfigs);
-            }
+            } //
             if (File.Exists(GlobalConfig.FastTextConfigPath))
             {
                 var fastTextConfigs = await _fileService.LoadDTOAsync<ObservableCollection<ModelConfig>>(GlobalConfig.FastTextConfigPath, DataType.FastTextConfig) ?? [];
@@ -146,9 +147,8 @@ namespace PragmaticAnalyzer.Services
                     }
                 }
                 _fastTextVecConfig.ReplaceAll(fastTextConfigs);
-            }
+            }         //
 
-            //var vulDto2 = await _fileService.LoadDTOAsync<ObservableCollection<Vulnerabilitie>>(GlobalConfig.VulnerabilitiePath, DataType.Vulnerabilitie);
             var vulFstecDto = await _fileService.LoadFileToPathAsync<DTO<ObservableCollection<VulnerabilitieFstec>>>(GlobalConfig.VulnerabilitieFstecPath);
             if (vulFstecDto != default)
             {
@@ -325,10 +325,10 @@ namespace PragmaticAnalyzer.Services
                 }
             }
 
-            SettingVm.NotifySelectedModels();
-            _availableDatabasesConfig.ReplaceAll(FileService.GetAvailableDatabaseConfigs());
-            ApiService.StartServer();
-        }
+            SettingVm.NotifySelectedModels(); // оповещение о выборе модели
+            _availableDatabasesConfig.ReplaceAll(FileService.GetAvailableDatabaseConfigs()); // обновление используемых баз данных
+            ApiService.StartServer(); // запуск серверов
+        } // проверятет все глобальные пути (конфиги, базы данных) если нет - создает, если есть - загргужает
 
         public async Task SaveDatabaseAsync(object database, string name, DataType dataType)
         {
@@ -359,5 +359,5 @@ namespace PragmaticAnalyzer.Services
             await _fileService.SaveDTOAsync(SettingVm.WordTwoVecConfigs, DataType.WordTwoVecConfig, GlobalConfig.WordTwoVecConfigPath);
             await _fileService.SaveDTOAsync(SettingVm.FastTextConfigs, DataType.FastTextConfig, GlobalConfig.FastTextConfigPath);
         }
-    }
+    } // сервис инициализации программы
 }

@@ -3,7 +3,10 @@ using PragmaticAnalyzer.MVVM.ViewModel.Viewer;
 
 namespace PragmaticAnalyzer.Abstractions
 {
-    public interface IViewModelsService
+    /// <summary>
+    /// Интерфейс сервиса инициализирующего приложение
+    /// </summary>
+    public interface IInfrastructureOrchestrator
     {
         ThreatViewModel ThreatVm { get; }
         VulnerabilitieViewModel VulnerabilitieVm { get; }

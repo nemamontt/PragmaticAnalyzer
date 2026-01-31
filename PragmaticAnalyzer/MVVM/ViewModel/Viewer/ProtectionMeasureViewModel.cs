@@ -1,6 +1,6 @@
 ﻿using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.DTO;
+using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.MVVM.Views.Viewer;
 using System.Collections.ObjectModel;
 

@@ -6,12 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    /// <summary>
-    /// База данных "Уязвимостей NVD"
-    /// </summary>
     public class VulnerabilitieNvd : ViewModelBase, IHasId, IHasDescription
     {
-        public Guid GuidId { get; set; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
 
         [Description("Идентификатор")]
         public string Identifier { get => Get<string>(); set => Set(value); }
@@ -53,7 +50,7 @@ namespace PragmaticAnalyzer.Databases
 
             return vulnerabilitieNvd;
         }
-    }
+    } // представление уязвимости NVD
 
     public class NvdApiResponse
     {

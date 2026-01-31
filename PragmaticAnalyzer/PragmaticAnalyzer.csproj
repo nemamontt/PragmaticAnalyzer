@@ -23,15 +23,12 @@
     <None Remove="Images\attentionFasttext.jpg" />
     <None Remove="Images\attentionTfIdf.png" />
     <None Remove="Images\directDistributionFasttext.png" />
-    <None Remove="Images\fasttext_ico.png" />
     <None Remove="Images\formilaIdf.png" />
     <None Remove="Images\formulaTf.png" />
     <None Remove="Images\formulaTfIdf.png" />
     <None Remove="Images\ngrammsFasttext.png" />
     <None Remove="Images\reversePropagationFasttext.png" />
     <None Remove="Images\scheme.jpg" />
-    <None Remove="Images\tfIdf_ico.png" />
-    <None Remove="Images\wordTwoVec_ico.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,7 +40,7 @@
     <Resource Include="Images\attentionFasttext.jpg" />
     <Resource Include="Images\attentionTfIdf.png" />
     <Resource Include="Images\directDistributionFasttext.png" />
-    <Resource Include="Images\fasttext_ico.png" />
+    <Resource Include="Images\fasttextIco.png" />
     <Resource Include="Images\formilaIdf.png" />
     <Resource Include="Images\formulaTf.png" />
     <Resource Include="Images\formulaTfIdf.png" />
@@ -51,9 +48,9 @@
     <Resource Include="Images\ngrammsFasttext.png" />
     <Resource Include="Images\reversePropagationFasttext.png" />
     <Resource Include="Images\scheme.jpg" />
-    <Resource Include="Images\tfIdf_ico.png" />
+    <Resource Include="Images\tfIdfIco.png" />
     <Resource Include="Images\attentionWordTwoVec.png" />
-    <Resource Include="Images\wordTwoVec_ico.png" />
+    <Resource Include="Images\wordTwoVecIco.png" />
   </ItemGroup>
 
   <ItemGroup>

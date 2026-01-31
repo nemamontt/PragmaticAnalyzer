@@ -43,5 +43,5 @@ namespace PragmaticAnalyzer.Core
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
+    } // реализация интерфейса INotifyPropertyChanged для дальнейшего наследование vm + реализация свойст с автоматическими уведомлениями
 }

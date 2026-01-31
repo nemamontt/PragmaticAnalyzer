@@ -1,6 +1,6 @@
 ﻿using PragmaticAnalyzer.Core;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.DTO;
+using PragmaticAnalyzer.Enums;
 using PragmaticAnalyzer.MVVM.Views.Viewer;
 using System.Collections.ObjectModel;
 
@@ -8,11 +8,11 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
 {
     public class TacticViewModel : ViewModelBase
     {
-        private readonly Action<IEntityTIT, string> Add;
-        private readonly Action<IEntityTIT> Change;
+        private readonly Action<IEntityTit, string> Add;
+        private readonly Action<IEntityTit> Change;
         private readonly Func<string, DataType, Task> UpdateConfig;
         public ObservableCollection<Tactic> Tactics { get; set; }
-        public IEntityTIT? SelectedItem { get => Get<IEntityTIT>(); set => Set(value); }
+        public IEntityTit? SelectedItem { get => Get<IEntityTit>(); set => Set(value); }
 
         public TacticViewModel(ObservableCollection<Tactic> tactics, Func<string, DataType, Task> updateConfig)
         {
@@ -48,7 +48,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             }
         }, o => SelectedItem is not null);
 
-        public void OnAdd(IEntityTIT newElement, string name)
+        public void OnAdd(IEntityTit newElement, string name)
         {
             if (newElement is Tactic tactic)
             {
@@ -70,7 +70,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
             UpdateConfig?.Invoke(DateTime.Now.ToString("f"), DataType.Tactic);
         }
 
-        public void OnChange(IEntityTIT modifiedElement)
+        public void OnChange(IEntityTit modifiedElement)
         {
             if (modifiedElement is Tactic tactic)
             {

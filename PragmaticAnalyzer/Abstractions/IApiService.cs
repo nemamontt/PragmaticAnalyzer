@@ -2,6 +2,9 @@
 
 namespace PragmaticAnalyzer.Abstractions
 {
+    /// <summary>
+    /// Интерфейс для сервиса взаимодействия с серверами
+    /// </summary>
     public interface IApiService
     {
         void StartServer();

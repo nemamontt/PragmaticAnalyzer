@@ -12,5 +12,5 @@ namespace PragmaticAnalyzer.Enums
 
         [Description("Tf-idf")]
         TfIdf = 3      
-    }
+    } // перечисление AI-алгоритмов в программе
 }

@@ -14,7 +14,7 @@ namespace PragmaticAnalyzer.Assistant
                 return string.Join(separator, list);
             }
             return string.Empty;
-        }
+        } // преобразовывает список в строку
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException("ConvertBack не поддерживается для этого конвертера.");

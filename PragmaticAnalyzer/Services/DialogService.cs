@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using PragmaticAnalyzer.Abstractions;
 
 namespace PragmaticAnalyzer.Services
 {
@@ -17,7 +16,7 @@ namespace PragmaticAnalyzer.Services
                 Filter = filter
             };
             return dialog.ShowDialog() is true ? dialog.FileName : null;
-        }
+        } // возварщает абсолютный путь выбранный в проводнике
 
         public static string? SaveFileDialog(string defaultFileName, string filter)
         {
@@ -27,6 +26,6 @@ namespace PragmaticAnalyzer.Services
                 FileName = defaultFileName
             };
             return dialog.ShowDialog() is true ? dialog.FileName : null;
-        }
-    }
+        } // возварщает абсолютный путь выбранный в проводнике для сохранения
+    } // сервис для работы с проводником Windows
 }

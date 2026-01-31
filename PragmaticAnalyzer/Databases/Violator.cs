@@ -6,12 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace PragmaticAnalyzer.Databases
 {
-    /// <summary>
-    /// База данных "Нарушители"
-    /// </summary>
     public class Violator : ViewModelBase, IHasId, IHasDescription
     {
-        public Guid GuidId { get; set; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
 
         [Description("Описание")]
         public string Description { get => Get<string>(); set => Set(value); }
@@ -43,5 +40,5 @@ namespace PragmaticAnalyzer.Databases
         [JsonIgnore]
         [Description("Применяемые тактики")]
         public string TacticsUsedToString => string.Join(",\n\n", TacticsUsed);
-    }
+    } // представление нарушителя
 }

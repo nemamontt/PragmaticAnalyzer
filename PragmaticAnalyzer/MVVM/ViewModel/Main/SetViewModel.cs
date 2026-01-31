@@ -1,18 +1,18 @@
 ﻿using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.DTO;
 using PragmaticAnalyzer.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using PragmaticAnalyzer.Core;
+using PragmaticAnalyzer.Enums;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
     public class SetViewModel : ViewModelBase
     {
         private readonly IFileService _fileService;
-        private readonly IViewModelsService _viewModelsService;
+        private readonly IInfrastructureOrchestrator _viewModelsService;
         public Func<Task>? UpdateThreatDb;
         public Func<Task>? UpdateExploitDb;
         public Func<Task>? UpdateVulDb;
@@ -31,7 +31,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
         public Brush ReferenceStatusButtonBackground { get => Get<Brush>(); set => Set(value); }
         public Brush SpecialistButtonBackground { get => Get<Brush>(); set => Set(value); }
 
-        public SetViewModel(LastUpdateConfig lastUpdateConfig, IViewModelsService viewModelsService)
+        public SetViewModel(LastUpdateConfig lastUpdateConfig, IInfrastructureOrchestrator viewModelsService)
         {
             LastUpdateConfig = lastUpdateConfig;
             DisplayedPaths = new();

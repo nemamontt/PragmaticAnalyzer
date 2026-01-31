@@ -4,12 +4,9 @@ using System.ComponentModel;
 
 namespace PragmaticAnalyzer.Databases
 {
-    /// <summary>
-    /// База данных "Уязвимостей ФСТЭК"
-    /// </summary>
     public class VulnerabilitieFstec : ViewModelBase, IHasId, IHasDescription
     {
-        public Guid GuidId { get; set; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
 
         [Description("Идентификатор")]
         public string Identifier { get => Get<string>(); set => Set(value); }
@@ -82,5 +79,5 @@ namespace PragmaticAnalyzer.Databases
 
         [Description("Тип ошибки CWE")]
         public string Cwe { get => Get<string>(); set => Set(value); }
-    }
+    } // представление уязвимости ФСТЭК
 }

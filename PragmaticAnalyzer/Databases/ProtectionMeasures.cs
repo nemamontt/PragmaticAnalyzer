@@ -25,5 +25,5 @@ namespace PragmaticAnalyzer.Databases
         [JsonIgnore]
         [Description("Условное обозначение")]
         public string DispayedName => Name + "." + Number;
-    }
+    } // представление меры защиты
 }

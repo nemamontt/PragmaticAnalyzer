@@ -2,14 +2,17 @@
 
 namespace PragmaticAnalyzer.Configs
 {
+    /// <summary>
+    /// Объект, хранящий настройки для парсинга уязвимостей
+    /// </summary>
     public class VulConfig : ViewModelBase
     {
-        public string UrlFstec { get => Get<string>(); set => Set(value); }
-        public string UrlNvd { get => Get<string>(); set => Set(value); }
-        public string UrlJvn { get => Get<string>(); set => Set(value); }
-        public string ApiKeyNvd { get => Get<string>(); set => Set(value); }
-        public int StartIndexNvd { get => Get<int>(); set => Set(value); }
-        public int StartIndexJvn { get => Get<int>(); set => Set(value); }
+        public string UrlFstec { get => Get<string>(); set => Set(value); } // url-адресс для парсинга с сайта ФСТЭК
+        public string UrlNvd { get => Get<string>(); set => Set(value); } // url-адресс для парсинга с сайта NVD
+        public string UrlJvn { get => Get<string>(); set => Set(value); } // url-адресс для парсинга с сайта JVN
+        public string ApiKeyNvd { get => Get<string>(); set => Set(value); } // API-ключ для API NVD
+        public int StartIndexNvd { get => Get<int>(); set => Set(value); } // последняя добавленная запись из NVD
+        public int StartIndexJvn { get => Get<int>(); set => Set(value); } // последняя добавленная запись из JVN
 
         public VulConfig()
         {
@@ -30,6 +33,6 @@ namespace PragmaticAnalyzer.Configs
             UrlJvn = newVulConfig.UrlJvn;
             ApiKeyNvd = newVulConfig.ApiKeyNvd;
             StartIndexNvd = newVulConfig.StartIndexNvd;
-        }
+        } // клонирование текущего объекта
     }
 }

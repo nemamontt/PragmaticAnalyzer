@@ -3,7 +3,7 @@
 namespace PragmaticAnalyzer.Configs
 {
     /// <summary>
-    /// Класс с глобальными путями 
+    /// Глобальные абсолютные пути файлов программы
     /// </summary>
     public static class GlobalConfig
     {

@@ -1,4 +1,4 @@
-﻿using PragmaticAnalyzer.DTO;
+﻿using PragmaticAnalyzer.Enums;
 
 namespace PragmaticAnalyzer.Abstractions
 {

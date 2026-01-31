@@ -1,6 +1,7 @@
 ﻿using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
-using PragmaticAnalyzer.DTO;
+using PragmaticAnalyzer.Core;
+using PragmaticAnalyzer.Enums;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Encodings.Web;
@@ -21,8 +22,8 @@ namespace PragmaticAnalyzer.Services
             DataType.VulnerabilitiesNvdTranslated,
             DataType.VulnerabilitiesJvn,
             DataType.VulnerabilitiesJvnTranslated,
-        ];
-        private readonly JsonSerializerOptions saveOption;
+        ]; // типы файлов программы, которые не попадут в AvailableDatabaseConfig
+        private readonly JsonSerializerOptions saveOption; // опция для серилизации JSON
 
         public FileService()
         {
@@ -52,7 +53,7 @@ namespace PragmaticAnalyzer.Services
             {
                 return default;
             }
-        }
+        } // возварщает объект по абсолютному путю и DataType, который был конвертирован из  DTO
 
         public async Task<T?> LoadFileToPathAsync<T>(string? path, CancellationToken ct = default)
         {
@@ -70,7 +71,7 @@ namespace PragmaticAnalyzer.Services
             {
                 return default;
             }
-        }
+        } // возварщает объект по абсолютному путю, который был конвертирован из JSON
 
         public async Task<T?> LoadJsonAsync<T>(string? json, CancellationToken ct = default)
         {
@@ -88,7 +89,7 @@ namespace PragmaticAnalyzer.Services
             {
                 return default;
             }
-        }
+        } // возварщает объект по строке JSON
 
         public async Task<bool> SaveDTOAsync<T>(T value, DataType type, string path, CancellationToken ct = default)
         {
@@ -113,7 +114,7 @@ namespace PragmaticAnalyzer.Services
             {
                 return false;
             }
-        }
+        } // сохраняет объект по указанному путю, серилизуя в JSON  и оборачивает его в DTO с указанным DataType
 
         public async Task<bool> SaveFileAsync(object value, string path, CancellationToken ct = default)
         {
@@ -132,7 +133,7 @@ namespace PragmaticAnalyzer.Services
             {
                 return false;
             }
-        }
+        } // сохраняет объект по указанному путю серилизуя в JSON
 
         public static bool CheckPath(string? path)
         {
@@ -152,7 +153,7 @@ namespace PragmaticAnalyzer.Services
             {
                 return false;
             }
-        }
+        } // возварщает true если указанный путь существует
 
         public static ObservableCollection<AvailableDatabaseConfig> GetAvailableDatabaseConfigs()
         {
@@ -193,6 +194,6 @@ namespace PragmaticAnalyzer.Services
                 }
             }
             return configs;
-        }
-    }
+        } // возвращает валидные базы данных, которые в дальнейшем будут использованы в программе
+    } // сервис для сохранения/открытия/чтения файлов
 }

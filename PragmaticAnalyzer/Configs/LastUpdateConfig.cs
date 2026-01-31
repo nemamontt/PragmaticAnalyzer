@@ -2,9 +2,9 @@
 
 namespace PragmaticAnalyzer.Configs
 {
-    //
-    //Объект, который хранит даты последнего обновления баз данных, сохраняется в формате .json
-    //
+    /// <summary>
+    ///  Объект, который хранит даты последнего обновления баз данных
+    /// </summary>
     public class LastUpdateConfig : ViewModelBase
     {
         public string Vulnerabilitie { get => Get<string>(); set => Set(value); }
@@ -32,6 +32,6 @@ namespace PragmaticAnalyzer.Configs
             Specialist = newLastUpdateConfig.Specialist;
             RefStatus = newLastUpdateConfig.RefStatus;
             CurStatus = newLastUpdateConfig.CurStatus;
-        }
+        } // метод клонирования текущего объекта
     }
 }

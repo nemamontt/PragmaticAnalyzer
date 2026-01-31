@@ -4,12 +4,9 @@ using System.ComponentModel;
 
 namespace PragmaticAnalyzer.Databases
 {
-    /// <summary>
-    /// База данных "Угроз"
-    /// </summary>
     public class Threat : ViewModelBase, IHasId, IHasDescription
     {
-        public Guid GuidId { get; set; } = Guid.NewGuid();
+        public Guid GuidId { get; set; } = Guid.NewGuid(); // уникальный идентификатор
 
         [Description("Идентификатор УБИ")]
         public string Id { get => Get<string>(); set => Set(value); }
@@ -40,5 +37,5 @@ namespace PragmaticAnalyzer.Databases
 
         [Description("Дата последнего изменения")]
         public string DateChange { get => Get<string>(); set => Set(value); }
-    }
+    } // представление угрозы
 }
