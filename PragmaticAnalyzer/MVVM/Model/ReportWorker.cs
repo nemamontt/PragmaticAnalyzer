@@ -11,10 +11,10 @@ namespace PragmaticAnalyzer.MVVM.Model
     {
         public static void CreateReport(DocX doc, Report report)
         {
-            doc.MarginTop = 28.35f;
-            doc.MarginBottom = 28.35f;
-            doc.MarginLeft = 28.35f;
-            doc.MarginRight = 28.35f;
+            doc.MarginTop = 28.35f; // установка отступа сверху
+            doc.MarginBottom = 28.35f; // установка отступа снизу
+            doc.MarginLeft = 28.35f; // установка отступа слева
+            doc.MarginRight = 28.35f; // установка отступа справа
 
             if (report.ProtectionMeasure is not null)
             {
@@ -26,7 +26,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<ProtectionMeasure>(nameof(report.ProtectionMeasure.SecurityClasses)), report.ProtectionMeasure.SecurityClasses);
 
                 AddTable(doc, fields, "Мер защиты");
-            }
+            }   //
             if (report.Specialist is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -41,7 +41,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<Specialist>(nameof(report.Specialist.UsingMeasures)), report.Specialist.UsingMeasuresToString);
 
                 AddTable(doc, fields, "Специалистов по ЗИ");
-            }
+            }                  //
             if (report.Consequence is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -52,7 +52,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<Consequence>(nameof(report.Consequence.NameThreatsToString)), report.Consequence.NameThreatsToString);
 
                 AddTable(doc, fields, "Негативные последствия");
-            }
+            }           //
             if (report.Technology is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -70,7 +70,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<Technology>(nameof(report.Technology.Effort)), report.Technology.Effort);
 
                 AddTable(doc, fields, "Технологии оценки риска");
-            }
+            }              //           
             if (report.Exploit is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -85,7 +85,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<Exploit>(nameof(report.Exploit.DatePublication)), report.Exploit.DatePublication);
 
                 AddTable(doc, fields, "Эксплойтов");
-            }
+            }                     //        Заполнение и добавление таблиц в документ
             if (report.Tactic is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -97,7 +97,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 }
 
                 AddTable(doc, fields, "Техник и тактик");
-            }
+            }                       //
             if (report.Threat is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -114,7 +114,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<Threat>(nameof(report.Threat.DateChange)), report.Threat.DateChange);
 
                 AddTable(doc, fields, "Угроз");
-            }
+            }                     //
             if (report.Vulnerabilitie is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -144,7 +144,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<VulnerabilitieFstec>(nameof(report.Vulnerabilitie.Cwe)), report.Vulnerabilitie.Cwe);
 
                 AddTable(doc, fields, "Уязвимостей");
-            }
+            }         //
             if (report.Violator is not null)
             {
                 Dictionary<string, string> fields = [];
@@ -160,37 +160,37 @@ namespace PragmaticAnalyzer.MVVM.Model
                 fields.Add(GetDescription<Violator>(nameof(report.Violator.TacticsUsedToString)), report.Violator.TacticsUsedToString);
 
                 AddTable(doc, fields, "Нарушителей");
-            }
+            }                  //
             if (report.DynamicRecords is not null)
             {
                 foreach (var record in report.DynamicRecords)
                 {
                     AddTable(doc, record.Fields, record.NameDatadase);
                 }
-            }
-        }
+            }    //
+        } // создания отчета в формате .docx
 
-        private static void AddTable(DocX doc, Dictionary<string, string> fields, string nameDatadase)
+        private static void AddTable(DocX doc, Dictionary<string, string> fields, string nameDatabase)
         {
-            var columnCount = 2;
-            var rowCount = fields.Count + 1;
+            var columnCount = 2; // определение количества колонок
+            var rowCount = fields.Count + 1; // определение количества столбцов
 
-            var table = doc.AddTable(rowCount, columnCount);
-            table.AutoFit = AutoFit.Contents;
+            var table = doc.AddTable(rowCount, columnCount); // создания экземпляра таблицы
+            table.AutoFit = AutoFit.Contents; // установка свойства AutoFit
 
-            table.Rows[0].MergeCells(0, 1);
-            table.Rows[0].Cells[0].Paragraphs[0].Append($"Источник знания БД: {nameDatadase}").Bold().Alignment = Alignment.center;
-            var rowIterator = 1;
+            table.Rows[0].MergeCells(0, 1); // объединение первого
+            table.Rows[0].Cells[0].Paragraphs[0].Append($"Источник знания БД: {nameDatabase}").Bold().Alignment = Alignment.center; // добавления названия базы данных в первый ряд
+            var rowIterator = 1; // счетчик рядов, начиная со второго (первый название таблицы)
             foreach (var field in fields)
             {
-                table.Rows[rowIterator].Cells[0].Paragraphs[0].Append($"{field.Key}").Alignment = Alignment.left;
-                table.Rows[rowIterator].Cells[1].Paragraphs[0].Append($"{field.Value}").Alignment = Alignment.center;
-                rowIterator++;
+                table.Rows[rowIterator].Cells[0].Paragraphs[0].Append($"{field.Key}").Alignment = Alignment.left; // добавление в таблицу наименования поля
+                table.Rows[rowIterator].Cells[1].Paragraphs[0].Append($"{field.Value}").Alignment = Alignment.center; // добавление в таблицу значения поля
+                rowIterator++; // увеличение счетчика
             }
-            doc.InsertTable(table);
-            doc.InsertParagraph();
-            doc.InsertParagraph();
-        }
+            doc.InsertTable(table); // вставка таблицы в документ
+            doc.InsertParagraph(); // вставка переноса строки
+            doc.InsertParagraph(); // вставка переноса строки
+        } // добавляет таблицу в документ Word
 
         private static string GetDescription<T>(string memberName)
         {
@@ -211,6 +211,6 @@ namespace PragmaticAnalyzer.MVVM.Model
             }
 
             return memberName;
-        }
-    }
+        } // возвращает атрибут Description по указанному названию поля
+    } // модель работы с Word по создания отчета
 }

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation
 {
-    public class WordTwoVectInformationViewModel : ViewModelBase
+    public class WordTwoVecInformationViewModel : ViewModelBase
     {
         public RelayCommand OpenFileCommand => GetCommand(o =>
         {
@@ -29,7 +29,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation
                     {
                     }
                 }
-            }
-        });
-    }
+            } // открытие pdf-документа
+        }); // команда для открытия файла
+    } // vm для TfIdfInformationView
 }

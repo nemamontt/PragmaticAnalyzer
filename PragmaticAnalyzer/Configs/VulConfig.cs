@@ -2,9 +2,6 @@
 
 namespace PragmaticAnalyzer.Configs
 {
-    /// <summary>
-    /// Объект, хранящий настройки для парсинга уязвимостей
-    /// </summary>
     public class VulConfig : ViewModelBase
     {
         public string UrlFstec { get => Get<string>(); set => Set(value); } // url-адресс для парсинга с сайта ФСТЭК
@@ -13,6 +10,7 @@ namespace PragmaticAnalyzer.Configs
         public string ApiKeyNvd { get => Get<string>(); set => Set(value); } // API-ключ для API NVD
         public int StartIndexNvd { get => Get<int>(); set => Set(value); } // последняя добавленная запись из NVD
         public int StartIndexJvn { get => Get<int>(); set => Set(value); } // последняя добавленная запись из JVN
+        public int ResultsPerPageNvd { get => Get<int>(); set => Set(value); } // количество получаемых уязвимостей с одного API-обращения к NVD
 
         public VulConfig()
         {
@@ -22,6 +20,7 @@ namespace PragmaticAnalyzer.Configs
             ApiKeyNvd = "";
             StartIndexNvd = 0;
             StartIndexJvn = 2002;
+            ResultsPerPageNvd = 2000;
         }
 
         public void Update(VulConfig newVulConfig)
@@ -34,5 +33,5 @@ namespace PragmaticAnalyzer.Configs
             ApiKeyNvd = newVulConfig.ApiKeyNvd;
             StartIndexNvd = newVulConfig.StartIndexNvd;
         } // клонирование текущего объекта
-    }
+    } // объект, хранящий настройки для парсинга уязвимостей
 }

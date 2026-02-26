@@ -29,7 +29,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation
                     {
                     }
                 }
-            }
-        });
-    }
+            } // открытие pdf-документа
+        }); // команда для открытия файла
+    } // vm для TfIdfInformationView
 }

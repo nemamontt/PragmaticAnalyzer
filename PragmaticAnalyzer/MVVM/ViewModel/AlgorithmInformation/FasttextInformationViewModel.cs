@@ -4,7 +4,7 @@ using System.IO;
 
 namespace PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation
 {
-    public class FasttextInformationViewModel : ViewModelBase
+    public class FastTextInformationViewModel : ViewModelBase
     {
         public RelayCommand OpenFileCommand => GetCommand(o =>
         {
@@ -15,7 +15,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation
                     FileName = (string)o,
                     UseShellExecute = true
                 });
-            }
+            } // открытия сайта официального сайта fasttext
 
             if (o is string path)
             {
@@ -38,7 +38,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation
                     {
                     }
                 }
-            }
-        });
-    }
+            } // открытие pdf-документа
+        }); // команда для открытия файла
+    } // vm для FastTextInformationView
 }

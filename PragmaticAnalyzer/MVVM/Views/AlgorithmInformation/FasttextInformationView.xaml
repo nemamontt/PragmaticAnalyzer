@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:PragmaticAnalyzer.MVVM.Views.AlgorithmInformation"
              xmlns:config="clr-namespace:PragmaticAnalyzer.Configs"
              xmlns:vm="clr-namespace:PragmaticAnalyzer.MVVM.ViewModel.AlgorithmInformation"
-             d:DataContext="{d:DesignInstance vm:FasttextInformationViewModel}"
+             d:DataContext="{d:DesignInstance vm:FastTextInformationViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="4000"
              d:DesignWidth="1200">

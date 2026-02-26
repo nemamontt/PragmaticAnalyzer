@@ -1,9 +1,6 @@
 ﻿using Aspose.Cells;
-using PragmaticAnalyzer.Abstractions;
 using PragmaticAnalyzer.Configs;
 using PragmaticAnalyzer.Databases;
-using PragmaticAnalyzer.Services;
-using PragmaticAnalyzer.WorkingServer.Translate;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
@@ -12,16 +9,13 @@ using System.Xml.Serialization;
 
 namespace PragmaticAnalyzer.MVVM.Model
 {
-    public class VulnerabilitieModel
+    public class VulnerabilityModel
     {
-        private const int _resultsPerPageNvd = 2000;
-        private readonly HttpClient _httpClient;
-        private readonly VulConfig _vulConfig;
-        private readonly IApiService _apiService;
+        private readonly HttpClient _httpClient; // _httpClient для обращения к веб-ресурсам
+        private readonly VulConfig _vulConfig; // конфигурационный файл настройки парсинга уязвимостей
+        public event Action<string>? NotifyRequested; // Action для оповещения vm
 
-        public event Action<string>? NotifyRequested;
-
-        public VulnerabilitieModel(VulConfig vulConfig)
+        public VulnerabilityModel(VulConfig vulConfig)
         {
             var handler = new HttpClientHandler
             {
@@ -34,7 +28,6 @@ namespace PragmaticAnalyzer.MVVM.Model
                 Timeout = TimeSpan.FromSeconds(60)
             };
             _vulConfig = vulConfig;
-            _apiService = new ApiService();
         }
 
         public async Task<ObservableCollection<VulnerabilitieFstec>> GetByLink(CancellationToken ct)
@@ -43,51 +36,52 @@ namespace PragmaticAnalyzer.MVVM.Model
             using HttpRequestMessage request = new(HttpMethod.Get, _vulConfig.UrlFstec);
             NotifyRequested?.Invoke("Начало работы с БД ФСТЭК");
             NotifyRequested?.Invoke($"Обращение к {_vulConfig.UrlFstec}");
-            using HttpResponseMessage response = await _httpClient.SendAsync(request);
+            using HttpResponseMessage response = await _httpClient.SendAsync(request, ct);
             if (response.IsSuccessStatusCode)
             {
-                using Stream stream = await response.Content.ReadAsStreamAsync();
+                using Stream stream = await response.Content.ReadAsStreamAsync(ct);
                 using Workbook workbook = new(stream, new(LoadFormat.Xlsx));
                 using Worksheet worksheet = workbook.Worksheets[0];
                 var numberRows = worksheet.Cells.MaxDataRow;
 
+                ct.ThrowIfCancellationRequested();
                 NotifyRequested?.Invoke($"Обработка полученной информации от {_vulConfig.UrlFstec}");
                 // for (int rowIterator = 3; rowIterator < numberRows; rowIterator++)
-                ct.ThrowIfCancellationRequested();
                 for (int rowIterator = 3; rowIterator < 200; rowIterator++)
                 {
                     VulnerabilitieFstec vulnerability = new()
                     {
-                        Identifier = worksheet.Cells[rowIterator, 0].Value?.ToString() ?? "Информация отсутсвует",
-                        Name = worksheet.Cells[rowIterator, 1].Value?.ToString() ?? "Информация отсутсвует",
-                        Description = worksheet.Cells[rowIterator, 2].Value?.ToString() ?? "Информация отсутсвует",
-                        Vendor = worksheet.Cells[rowIterator, 3].Value?.ToString() ?? "Информация отсутсвует",
-                        NameSoftware = worksheet.Cells[rowIterator, 4].Value?.ToString() ?? "Информация отсутсвует",
-                        Version = worksheet.Cells[rowIterator, 5].Value?.ToString() ?? "Информация отсутсвует",
-                        Type = worksheet.Cells[rowIterator, 6].Value?.ToString() ?? "Информация отсутсвует",
-                        NameOperatingSystem = worksheet.Cells[rowIterator, 7].Value?.ToString() ?? "Информация отсутсвует",
-                        Class = worksheet.Cells[rowIterator, 8].Value?.ToString() ?? "Информация отсутсвует",
-                        Date = worksheet.Cells[rowIterator, 9].Value?.ToString() ?? "Информация отсутсвует",
-                        CvssTwo = worksheet.Cells[rowIterator, 10].Value?.ToString() ?? "Информация отсутсвует",
-                        CvssThree = worksheet.Cells[rowIterator, 11].Value?.ToString() ?? "Информация отсутсвует",
-                        DangerLevel = worksheet.Cells[rowIterator, 12].Value?.ToString() ?? "Информация отсутсвует",
-                        Measure = worksheet.Cells[rowIterator, 13].Value?.ToString() ?? "Информация отсутсвует",
-                        Exploit = worksheet.Cells[rowIterator, 14].Value?.ToString() ?? "Информация отсутсвует",
-                        Information = worksheet.Cells[rowIterator, 15].Value?.ToString() ?? "Информация отсутсвует",
-                        Links = worksheet.Cells[rowIterator, 16].Value?.ToString() ?? "Информация отсутсвует",
-                        OtherIdentifier = worksheet.Cells[rowIterator, 17].Value?.ToString() ?? "Информация отсутсвует",
-                        OtherInformation = worksheet.Cells[rowIterator, 18].Value?.ToString() ?? "Информация отсутсвует",
-                        Incident = worksheet.Cells[rowIterator, 19].Value?.ToString() ?? "Информация отсутсвует",
-                        OperatingMethod = worksheet.Cells[rowIterator, 20].Value?.ToString() ?? "Информация отсутсвует",
-                        EliminationMethod = worksheet.Cells[rowIterator, 21].Value?.ToString() ?? "Информация отсутсвует",
-                        DescriptionCwe = worksheet.Cells[rowIterator, 22].Value?.ToString() ?? "Информация отсутсвует",
-                        Cwe = worksheet.Cells[rowIterator, 23].Value?.ToString() ?? "Информация отсутсвует"
+                        Identifier = worksheet.Cells[rowIterator, 0].Value?.ToString() ?? "Информация отсутствует",
+                        Name = worksheet.Cells[rowIterator, 1].Value?.ToString() ?? "Информация отсутствует",
+                        Description = worksheet.Cells[rowIterator, 2].Value?.ToString() ?? "Информация отсутствует",
+                        Vendor = worksheet.Cells[rowIterator, 3].Value?.ToString() ?? "Информация отсутствует",
+                        NameSoftware = worksheet.Cells[rowIterator, 4].Value?.ToString() ?? "Информация отсутствует",
+                        Version = worksheet.Cells[rowIterator, 5].Value?.ToString() ?? "Информация отсутствует",
+                        Type = worksheet.Cells[rowIterator, 6].Value?.ToString() ?? "Информация отсутствует",
+                        NameOperatingSystem = worksheet.Cells[rowIterator, 7].Value?.ToString() ?? "Информация отсутствует",
+                        Class = worksheet.Cells[rowIterator, 8].Value?.ToString() ?? "Информация отсутствует",
+                        Date = worksheet.Cells[rowIterator, 9].Value?.ToString() ?? "Информация отсутствует",
+                        CvssTwo = worksheet.Cells[rowIterator, 10].Value?.ToString() ?? "Информация отсутствует",
+                        CvssThree = worksheet.Cells[rowIterator, 11].Value?.ToString() ?? "Информация отсутствует",
+                        DangerLevel = worksheet.Cells[rowIterator, 12].Value?.ToString() ?? "Информация отсутствует",
+                        Measure = worksheet.Cells[rowIterator, 13].Value?.ToString() ?? "Информация отсутствует",
+                        Exploit = worksheet.Cells[rowIterator, 14].Value?.ToString() ?? "Информация отсутствует",
+                        Information = worksheet.Cells[rowIterator, 15].Value?.ToString() ?? "Информация отсутствует",
+                        Links = worksheet.Cells[rowIterator, 16].Value?.ToString() ?? "Информация отсутствует",
+                        OtherIdentifier = worksheet.Cells[rowIterator, 17].Value?.ToString() ?? "Информация отсутствует",
+                        OtherInformation = worksheet.Cells[rowIterator, 18].Value?.ToString() ?? "Информация отсутствует",
+                        Incident = worksheet.Cells[rowIterator, 19].Value?.ToString() ?? "Информация отсутствует",
+                        OperatingMethod = worksheet.Cells[rowIterator, 20].Value?.ToString() ?? "Информация отсутствует",
+                        EliminationMethod = worksheet.Cells[rowIterator, 21].Value?.ToString() ?? "Информация отсутствует",
+                        DescriptionCwe = worksheet.Cells[rowIterator, 22].Value?.ToString() ?? "Информация отсутствует",
+                        Cwe = worksheet.Cells[rowIterator, 23].Value?.ToString() ?? "Информация отсутствует"
                     };
                     vulnerabilities.Add(vulnerability);
+                    NotifyRequested?.Invoke($"Добавлена запись {vulnerability.Identifier}");
                 }
             }
             return vulnerabilities;
-        }
+        } // возвращает базу данных уязвимостей ФСТЭК
 
         public async Task<ObservableCollection<VulnerabilitieNvd>?> GetByApiRequest(CancellationToken ct)
         {
@@ -101,7 +95,7 @@ namespace PragmaticAnalyzer.MVVM.Model
 
             while (true)
             {
-                var url = $"{_vulConfig.UrlNvd}?resultsPerPage={_resultsPerPageNvd}&startIndex={_vulConfig.StartIndexNvd}";
+                var url = $"{_vulConfig.UrlNvd}?resultsPerPage={_vulConfig.ResultsPerPageNvd}&startIndex={_vulConfig.StartIndexNvd}";
 
                 try
                 {
@@ -123,7 +117,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                     {
                         var cve = wrapper.Cve;
 
-                        var enDesc = cve.Descriptions
+                        var enDescription = cve.Descriptions
                             .FirstOrDefault(d => d.Lang.Equals("en", StringComparison.OrdinalIgnoreCase))?.Value
                             ?? cve.Descriptions.FirstOrDefault()?.Value
                             ?? string.Empty;
@@ -142,22 +136,22 @@ namespace PragmaticAnalyzer.MVVM.Model
                                 .Select(r => r.Url)
                         );
 
-                        var vuln = new VulnerabilitieNvd
+                        var vul = new VulnerabilitieNvd
                         {
-                            Identifier = cve.Id ?? "Информация отсутсвует",
-                            Published = cve.Published.ToString("d") ?? "Информация отсутсвует",
-                            LastModified = cve.LastModified.ToString("d") ?? "Информация отсутсвует",
-                            VulnStatus = cve.VulnStatus ?? "Информация отсутсвует",
-                            Description = enDesc ?? "Информация отсутсвует",
-                            VectorString = vector ?? "Информация отсутсвует",
+                            Identifier = cve.Id ?? "Информация отсутствует",
+                            Published = cve.Published.ToString("d") ?? "Информация отсутствует",
+                            LastModified = cve.LastModified.ToString("d") ?? "Информация отсутствует",
+                            VulnStatus = cve.VulnStatus ?? "Информация отсутствует",
+                            Description = enDescription ?? "Информация отсутствует",
+                            VectorString = vector ?? "Информация отсутствует",
                             References = references
                         };
 
-                        vulnerabilities.Add(vuln);
-                        NotifyRequested?.Invoke($"Добавлкна запись {cve.Id}");
+                        vulnerabilities.Add(vul);
+                        NotifyRequested?.Invoke($"Добавлена запись {cve.Id}");
                     }
 
-                    _vulConfig.StartIndexNvd += _resultsPerPageNvd;
+                    _vulConfig.StartIndexNvd += _vulConfig.ResultsPerPageNvd;
 
                     var delayMs = string.IsNullOrWhiteSpace(_vulConfig.ApiKeyNvd) ? 7000 : 600;
                     await Task.Delay(delayMs, ct);
@@ -169,7 +163,7 @@ namespace PragmaticAnalyzer.MVVM.Model
                 }
             }
             return vulnerabilities;
-        }
+        } // возвращает базу данных уязвимостей NVD
 
         public async Task<ObservableCollection<VulnerabilitieJvn>?> GetByPageParsing(CancellationToken ct)
         {
@@ -184,24 +178,24 @@ namespace PragmaticAnalyzer.MVVM.Model
                 {
                     vulnerabilities.Add(new VulnerabilitieJvn()
                     {
-                        Identifier = item.Identifier ?? "Информация отсутсвует",
-                        Description = item.Description ?? "Информация отсутсвует",
-                        Link = item.Link ?? "Информация отсутсвует",
-                        DateChange = item.Modified ?? "Информация отсутсвует",
-                        DateAdded = item.Date ?? "Информация отсутсвует",
-                        Name = item.Title ?? "Информация отсутсвует",
-                        Cvss = item.Cvss?.Vector ?? "Информация отсутсвует"
+                        Identifier = item.Identifier ?? "Информация отсутствует",
+                        Description = item.Description ?? "Информация отсутствует",
+                        Link = item.Link ?? "Информация отсутствует",
+                        DateChange = item.Modified ?? "Информация отсутствует",
+                        DateAdded = item.Date ?? "Информация отсутствует",
+                        Name = item.Title ?? "Информация отсутствует",
+                        Cvss = item.Cvss?.Vector ?? "Информация отсутствует"
                     });
                     var vul = vulnerabilities.Last();
-                    foreach (var referenc in item.References)
+                    foreach (var reference in item.References)
                     {
-                        vul.References.Add(referenc?.Url ?? "Информация отсутсвует");
+                        vul.References.Add(reference?.Url ?? "Информация отсутствует");
                     }
                     foreach (var cpe in item.Cpes)
                     {
-                        vul.Vendor.Add(cpe?.Vendor ?? "Информация отсутсвует");
-                        vul.NameSoftware.Add(cpe?.Product ?? "Информация отсутсвует");
-                        vul.VersionSoftware.Add(cpe?.Version ?? "Информация отсутсвует");
+                        vul.Vendor.Add(cpe?.Vendor ?? "Информация отсутствует");
+                        vul.NameSoftware.Add(cpe?.Product ?? "Информация отсутствует");
+                        vul.VersionSoftware.Add(cpe?.Version ?? "Информация отсутствует");
                     }
                     NotifyRequested?.Invoke($"Добавлена запись {item.Identifier}");
                 }
@@ -234,19 +228,6 @@ namespace PragmaticAnalyzer.MVVM.Model
                     return null;
                 }
             }
-        }
-
-      /*  public async Task<string> GetTranslatedWord(CancellationToken ct, string originalWord)
-        {
-            RequestTranslate request = new("127.0.0.1", "5001", "Hello World");
-            var response = await _apiService.SendRequestAsync<ResponseTranslate>(request);
-
-            if (response.IsSuccess)
-            {
-                var translatedWord = response.Value.Results[0].Text;
-            }
-
-
-        }*/
+        } // возвращает базу данных уязвимостей JVN
     }
 }

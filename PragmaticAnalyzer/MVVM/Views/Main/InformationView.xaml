@@ -79,7 +79,7 @@
                             Content="Просмотреть информацию об алгоритме Word2Vec"
                             Style="{StaticResource OutlinedGrayButtonStyle}"
                             Command="{Binding ShowInformationCommand}"
-                            CommandParameter="{Binding WordTwoVectInformationVm}" />
+                            CommandParameter="{Binding WordTwoVecInformationVm}" />
                     
                     <Image Grid.Row="1"
                            Grid.Column="0"

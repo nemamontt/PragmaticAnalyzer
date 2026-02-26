@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace PragmaticAnalyzer.Core
 {
@@ -27,6 +28,7 @@ namespace PragmaticAnalyzer.Core
         {
             _properties[propertyName] = newValue;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            CommandManager.InvalidateRequerySuggested();
         }
 
         protected RelayCommand GetCommand(Action<object> execute, Predicate<object>? canExecute = null, [CallerMemberName] string commandName = null)
@@ -43,5 +45,5 @@ namespace PragmaticAnalyzer.Core
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    } // реализация интерфейса INotifyPropertyChanged для дальнейшего наследование vm + реализация свойст с автоматическими уведомлениями
+    } // реализация интерфейса INotifyPropertyChanged для дальнейшего наследование vm + реализация свойств с автоматическими уведомлениями
 }

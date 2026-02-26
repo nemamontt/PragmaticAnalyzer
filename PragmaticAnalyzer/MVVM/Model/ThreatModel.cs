@@ -8,8 +8,8 @@ namespace PragmaticAnalyzer.MVVM.Model
 {
     public class ThreatModel
     {
-        private readonly HttpClient httpClient;
-        public event Action<string>? NotifyRequested;
+        private readonly HttpClient httpClient; // httpClient для обращения к веб-ресурсу
+        public event Action<string>? NotifyRequested; // Action для уведомления vm
 
         public ThreatModel()
         {
@@ -64,6 +64,6 @@ namespace PragmaticAnalyzer.MVVM.Model
             }
             NotifyRequested?.Invoke("Конец выполнения задачи");
             return threats;
-        }
+        } // возвращает базу данных угроз
     }
 }

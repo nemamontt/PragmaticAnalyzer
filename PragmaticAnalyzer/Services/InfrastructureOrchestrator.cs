@@ -44,6 +44,7 @@ namespace PragmaticAnalyzer.Services
         public ConnectionViewModel ConnectionVm { get; }
         public InformationViewModel InformationVm { get; }
         public CreatorViewModel CreatorVm { get; }
+        public CommunicationViewModel CommunicationVm { get; }
 
         public InfrastructureOrchestrator()
         {
@@ -65,9 +66,10 @@ namespace PragmaticAnalyzer.Services
             SettingVm = new(_wordTwoVecConfig, _fastTextVecConfig, ApiService);
             InformationVm = new(MainVm.OnSetCurrentView);
             CreatorVm = new([], SaveDatabaseAsync, DeleteDatabase);
+            CommunicationVm = new(ApiService);
 
             SetVm.UpdateThreatDb = ThreatVm.UpdateThreatDb;
-            SetVm.UpdateExploitDb = ExploitVm.UpdateExploittDb;
+            SetVm.UpdateExploitDb = ExploitVm.UpdateExploitDb;
             SetVm.UpdateVulDb = VulnerabilitieVm.UpdateVulDb;
         }
 

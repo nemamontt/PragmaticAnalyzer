@@ -11,15 +11,15 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
 {
     public class OntologyViewModel : ViewModelBase
     {
-        private readonly IFileService _fileService;
+        private readonly IFileService _fileService; 
         private OntologyManagerView? _manager;
-        public ObservableCollection<Ontology> Ontologys { get; set; }
-        public IObjectOntology? SelectedItem { get => Get<IObjectOntology>(); set => Set(value); }
-        public string EnteredName { get => Get<string>(); set => Set(value); }
-        public string EnteredDescription { get => Get<string>(); set => Set(value); }
-        public bool IsAdd { get => Get<bool>(); set => Set(value); }
-        public bool AddNewEntity { get => Get<bool>(); set => Set(value); }
-        public bool IsEnabledCheckBox { get => Get<bool>(); set => Set(value); }
+        public ObservableCollection<Ontology> Ontologys { get; set; } // коллекция онтологий
+        public IObjectOntology? SelectedItem { get => Get<IObjectOntology>(); set => Set(value); } // выбранная онтология или сущность
+        public string EnteredName { get => Get<string>(); set => Set(value); } // введенное наименование сущности в менеджере
+        public string EnteredDescription { get => Get<string>(); set => Set(value); } // введенное описание сущности в менеджере
+        public bool IsAdd { get => Get<bool>(); set => Set(value); } // true если необходимо добавить элемент, false если удалить
+        public bool AddNewEntity { get => Get<bool>(); set => Set(value); } // true если CheckBox на OntologyManagerView выбран и false если не выбран
+        public bool IsEnabledCheckBox { get => Get<bool>(); set => Set(value); } // регулировка свойством IsEnabled у CheckBox на OntologyManagerView
 
         public OntologyViewModel(ObservableCollection<Ontology> ontologys)
         {  
@@ -36,7 +36,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             if (ontology is null) return;
             Ontologys.Add(ontology);
             await _fileService.SaveDTOAsync(Ontologys, DataType.Ontology, GlobalConfig.OntologyPath);
-        });
+        }); // обработчик нажатия на кнопку "Загрузить" на OntologyView
 
         public RelayCommand AddCommand => GetCommand(o =>
         {
@@ -44,7 +44,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             IsAdd = true;
             _manager = new(this);
             _manager.ShowDialog();
-        });
+        }); // обработчик нажатия на кнопку "Добавить" на OntologyView
 
         public RelayCommand ChangeCommand => GetCommand(o =>
         {
@@ -62,7 +62,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             }
             _manager = new(this);
             _manager.ShowDialog();
-        }, o => Ontologys.Count != 0 && SelectedItem is not null);
+        }, o => Ontologys.Count != 0 && SelectedItem is not null); // обработчик нажатия на кнопку "Изменить" на OntologyView
 
         public RelayCommand DeleteCommand => GetCommand(async o =>
         {
@@ -77,7 +77,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             }
             await _fileService.SaveDTOAsync(Ontologys, DataType.Ontology, GlobalConfig.OntologyPath);
             SelectedItem = null;
-        }, o => Ontologys.Count != 0 && SelectedItem is not null);
+        }, o => Ontologys.Count != 0 && SelectedItem is not null); // обработчик нажатия на кнопку "Удалить" на OntologyView
 
         public RelayCommand ApplyCommand => GetCommand(async o =>
         {
@@ -110,25 +110,25 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Main
             _manager?.Close();
             await _fileService.SaveDTOAsync(Ontologys, DataType.Ontology, GlobalConfig.OntologyPath);
             SelectedItem = null;
-        });
+        }); // обработчик нажатия на кнопку "Применить" на OntologyManagerView
 
         public RelayCommand BackCommand => GetCommand(o =>
         {
             ResetUIManager();
             _manager?.Close();
             SelectedItem = null;
-        });
+        }); // обработчик нажатия на кнопку "Назад" на OntologyManagerView
 
         public RelayCommand SelectedItemChangedCommand => GetCommand(selectedItem =>
         {
             SelectedItem = (IObjectOntology)selectedItem;
-        });
+        }); // обработчик выбора элемента в TreeView на OntologyView
 
         private void ResetUIManager()
         {
             EnteredName = string.Empty;
             EnteredDescription = string.Empty;
-            AddNewEntity = false; 
-        }
+            AddNewEntity = false;
+        } // сброс полей на OntologyManagerView
     }
 }

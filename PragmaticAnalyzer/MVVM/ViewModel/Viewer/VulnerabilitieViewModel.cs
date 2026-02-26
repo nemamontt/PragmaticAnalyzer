@@ -15,7 +15,7 @@ namespace PragmaticAnalyzer.MVVM.ViewModel.Viewer
     {
         private readonly IApiService _apiService;
         private readonly IFileService _fileService;
-        private readonly VulnerabilitieModel _model;
+        private readonly VulnerabilityModel _model;
         private readonly Func<string, DataType, Task> UpdateConfig;
         private VulnerabilitieFstecViewModel _fstecVm = new();
         private VulnerabilitieNvdViewModel _nvdVm = new();

@@ -14,7 +14,7 @@
         MinHeight="850"
         MinWidth="1500"
         WindowStartupLocation="CenterScreen"
-        Title="Модуль работы с источниками знаний ИБ v1.1.1">
+        Title="Модуль работы с источниками знаний ИБ v1.1.2">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="75" />
@@ -60,6 +60,11 @@
                         Command="{Binding SetCurrentViewCommand}"
                         CommandParameter="{Binding ViewModelsService.ConnectionVm}" />
 
+                <Button Content="Общение с моделью"
+                        Style="{StaticResource OutlinedGrayButtonStyle}"
+                        Command="{Binding SetCurrentViewCommand}"
+                        CommandParameter="{Binding ViewModelsService.CommunicationVm}" />
+
                 <Button Content="Информация"
                         Style="{StaticResource OutlinedGrayButtonStyle}"
                         Command="{Binding SetCurrentViewCommand}"
@@ -104,6 +109,11 @@
                         <viewMain:ConnectionView />
                     </DataTemplate>
                     <!--Сформировать отчет-->
+
+                    <DataTemplate DataType="{x:Type vmMain:CommunicationViewModel}">
+                        <viewMain:CommunicationView />
+                    </DataTemplate>
+                    <!--Общение с моделью-->
 
                     <DataTemplate DataType="{x:Type vmMain:InformationViewModel}">
                         <viewMain:InformationView />
@@ -155,12 +165,12 @@
                     </DataTemplate>
                     <!--Эталонное состояние-->
 
-                    <DataTemplate DataType="{x:Type vmAlg:FasttextInformationViewModel}">
+                    <DataTemplate DataType="{x:Type vmAlg:FastTextInformationViewModel}">
                         <viewAlg:FasttextInformationView />
                     </DataTemplate>
                     <!--Алгоритм Fasttext-->
 
-                    <DataTemplate DataType="{x:Type vmAlg:WordTwoVectInformationViewModel}">
+                    <DataTemplate DataType="{x:Type vmAlg:WordTwoVecInformationViewModel}">
                         <viewAlg:WordTwoVectInformationView />
                     </DataTemplate>
                     <!--Алгоритм Word2Vec-->

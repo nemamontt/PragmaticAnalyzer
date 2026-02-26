@@ -9,9 +9,9 @@ namespace PragmaticAnalyzer.Services
 {
     public class ApiService : IApiService
     {
-        private Process? _translatorProcess; // процесс для сервера перевода
+        private Process? _koboldcppProcess; // процесс для сервера, который развертывает локальную модель
         private Process? _matcherProcess; // процесс для сервера работы с моделями
-        public bool IsRunningTranslator => _translatorProcess?.HasExited == false; // если процесс для сервера перевода активен true
+        public bool IsRunningKoboldcpp => _koboldcppProcess?.HasExited == false; // если процесс для сервера , который развертывает локальную модель активен true
         public bool IsRunningMatcher => _matcherProcess?.HasExited == false; // если процесс для сервера работы с моделями активен true
         private readonly HttpClient _httpClient; 
         private readonly IFileService _fileService;
@@ -28,7 +28,7 @@ namespace PragmaticAnalyzer.Services
 
         public void StartServer()
         {
-            if (!IsRunningTranslator)
+ /*           if (!IsRunningKoboldcpp)
             {
                 var startInfo = new ProcessStartInfo
                 {
@@ -40,15 +40,15 @@ namespace PragmaticAnalyzer.Services
                     RedirectStandardError = false
                 };
 
-                _translatorProcess = new Process { StartInfo = startInfo };
-                _translatorProcess.Start();
+                _koboldcppProcess = new Process { StartInfo = startInfo };
+                _koboldcppProcess.Start();
             }
             else
             {
                 return;
-            }
+            }*/
 
-            if (!IsRunningMatcher)
+          /*  if (!IsRunningMatcher)
             {
                 var startInfo = new ProcessStartInfo
                 {
@@ -59,18 +59,18 @@ namespace PragmaticAnalyzer.Services
                     RedirectStandardError = false
                 };
 
-                //_matcherProcess = new Process { StartInfo = startInfo };
-                // _matcherProcess.Start();
+                _matcherProcess = new Process { StartInfo = startInfo };
+                 _matcherProcess.Start();
             }
             else
             {
                 return;
-            }
+            }*/
         } // запуск серверов
 
         public void StopServer()
         {
-            try
+          /*  try
             {
                 var translatorProcesses = Process.GetProcessesByName("koboldcpp");
                 var matcherProcesses = Process.GetProcessesByName("matcher.exe");
@@ -89,11 +89,11 @@ namespace PragmaticAnalyzer.Services
             catch (Exception ex) { }
             finally
             {
-                _translatorProcess?.Dispose();
+                _koboldcppProcess?.Dispose();
                 _matcherProcess?.Dispose();
-                _translatorProcess = null;
+                _koboldcppProcess = null;
                 _matcherProcess = null;
-            }
+            }*/
         } // остановка серверов
 
         public async Task<Result<T>> SendRequestAsync<T>(IRequest request, CancellationToken ct = default, int delay = 0)
@@ -132,5 +132,5 @@ namespace PragmaticAnalyzer.Services
                 return Result<T>.Failure($"Неизвестная ошибка: {ex.Message}");
             }
         }
-    } // сервис для работы с серверамм (внешними ресурсами), управляет процессами и проксирует запросы
+    } // сервис для работы с сервером (внешними ресурсами), управляет процессами и проксирует запросы
 }
